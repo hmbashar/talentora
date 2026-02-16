@@ -67,6 +67,11 @@ class ApplicationMeta
         // Get statuses
         $default_statuses = "Pending\nReviewed\nShortlisted\nRejected\nHired";
         $statuses_option = get_option('hiretalent_application_statuses', $default_statuses);
+
+        if (empty(trim($statuses_option))) {
+            $statuses_option = $default_statuses;
+        }
+
         $statuses = array_map('trim', explode("\n", $statuses_option));
         $statuses = array_filter($statuses);
 
@@ -180,7 +185,7 @@ class ApplicationMeta
                     <?php esc_html_e('Submitted:', 'hiretalent'); ?>
                 </span>
                 <span class="detail-value">
-                    <?php echo esc_html(get_the_date('', $post)); ?>
+                    <?php echo esc_html(get_the_date('', $post) . ' / ' . get_the_time('', $post)); ?>
                 </span>
             </div>
 

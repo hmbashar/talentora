@@ -135,6 +135,23 @@ class Settings
     }
 
     /**
+     * Application statuses field callback.
+     *
+     * @since 1.0.0
+     */
+    public function application_statuses_callback()
+    {
+        $default_statuses = "Pending\nReviewed\nShortlisted\nRejected\nHired";
+        $value = get_option('hiretalent_application_statuses', $default_statuses);
+        ?>
+        <textarea id="hiretalent_application_statuses" name="hiretalent_application_statuses" rows="5" cols="50" class="large-text"><?php echo esc_textarea($value); ?></textarea>
+        <p class="description">
+            <?php esc_html_e('Enter one status per line. These statuses will be available in the application details.', 'hiretalent'); ?>
+        </p>
+        <?php
+    }
+
+    /**
      * Render settings page.
      *
      * @since 1.0.0
