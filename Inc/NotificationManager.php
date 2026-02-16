@@ -20,6 +20,22 @@ if (!defined('ABSPATH')) {
 class NotificationManager
 {
     /**
+     * Activity Logger instance.
+     *
+     * @var \HireTalent\Inc\ActivityLogger
+     */
+    private $activity_logger;
+
+    /**
+     * Constructor.
+     *
+     * @since 1.0.0
+     */
+    public function __construct()
+    {
+        $this->activity_logger = new \HireTalent\ActivityLogger();
+    }
+    /**
      * Send admin notification email.
      *
      * @param int $application_id Application ID.
@@ -35,7 +51,16 @@ class NotificationManager
         $subject = $this->replace_placeholders($subject, $application_id);
         $message = $this->replace_placeholders($message, $application_id);
 
-        return wp_mail($admin_email, $subject, $message);
+        $result = wp_mail($admin_email, $subject, $message);
+        $this->log_email($admin_email, $subject, $message, $result);
+
+        if ($result) {
+            $this->activity_logger->log($application_id, __('Admin notification email sent.', 'hiretalent'), 'info');
+        } else {
+            $this->activity_logger->log($application_id, __('Failed to send admin notification email.', 'hiretalent'), 'error');
+        }
+
+        return $result;
     }
 
     /**
@@ -58,7 +83,16 @@ class NotificationManager
         $subject = $this->replace_placeholders($subject, $application_id);
         $message = $this->replace_placeholders($message, $application_id);
 
-        return wp_mail($email, $subject, $message);
+        $result = wp_mail($email, $subject, $message);
+        $this->log_email($email, $subject, $message, $result);
+
+        if ($result) {
+            $this->activity_logger->log($application_id, __('Application confirmation email sent.', 'hiretalent'), 'info');
+        } else {
+            $this->activity_logger->log($application_id, __('Failed to send application confirmation email.', 'hiretalent'), 'error');
+        }
+
+        return $result;
     }
 
     /**
@@ -83,7 +117,16 @@ class NotificationManager
         $subject = $this->replace_placeholders($subject, $application_id, $new_status);
         $message = $this->replace_placeholders($message, $application_id, $new_status);
 
-        return wp_mail($email, $subject, $message);
+        $result = wp_mail($email, $subject, $message);
+        $this->log_email($email, $subject, $message, $result);
+
+        if ($result) {
+            $this->activity_logger->log($application_id, sprintf(__('Status change email sent for status: %s', 'hiretalent'), $new_status), 'info');
+        } else {
+            $this->activity_logger->log($application_id, sprintf(__('Failed to send status change email for status: %s', 'hiretalent'), $new_status), 'error');
+        }
+
+        return $result;
     }
 
     /**
@@ -112,5 +155,29 @@ class NotificationManager
         );
 
         return str_replace(array_keys($replacements), array_values($replacements), $text);
+    }
+
+    /**
+     * Log email activity.
+     *
+     * @param string $to      Recipient email.
+     * @param string $subject Email subject.
+     * @param string $message Email message.
+     * @param bool   $success Whether the email was sent successfully.
+     * @since 1.0.0
+     */
+    private function log_email($to, $subject, $message, $success)
+    {
+        $log_dir = wp_upload_dir()['basedir'] . '/hiretalent-logs';
+        if (!file_exists($log_dir)) {
+            wp_mkdir_p($log_dir);
+        }
+
+        $log_file = $log_dir . '/email.log';
+        $timestamp = current_time('mysql');
+        $status = $success ? 'SUCCESS' : 'FAILED';
+        $log_entry = "[{$timestamp}] [{$status}] To: {$to} | Subject: {$subject}" . PHP_EOL;
+
+        error_log($log_entry, 3, $log_file);
     }
 }

@@ -59,6 +59,19 @@ class Assets
                 array(),
                 HIRETALENT_VERSION
             );
+
+            wp_enqueue_script(
+                'hiretalent-frontend',
+                HIRETALENT_URL . 'assets/js/frontend.js',
+                array('jquery'),
+                HIRETALENT_VERSION,
+                true
+            );
+
+            wp_localize_script('hiretalent-frontend', 'hiretalent_ajax', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('hiretalent_filter_nonce'),
+            ));
         }
     }
 }

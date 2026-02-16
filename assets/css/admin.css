@@ -1,61 +1,66 @@
-/**
- * Admin Styles for HireTalent
- *
- * @package HireTalent
- * @since 1.0.0
- */
-
-/* ==========================================================================
-   Settings Page
-   ========================================================================== */
-
-.hiretalent-settings-wrapper {
-    max-width: 800px;
-    margin: 20px 0;
-}
-
-.hiretalent-settings-card {
-    background: #fff;
-    border: 1px solid #ccd0d4;
-    border-radius: 4px;
-    padding: 20px;
+/* Admin Styles */
+.hiretalent-settings-wrap .nav-tab-wrapper {
     margin-bottom: 20px;
 }
 
-.hiretalent-settings-card h2 {
-    margin-top: 0;
-    padding-bottom: 10px;
+.hiretalent-settings-wrap .form-table th {
+    width: 200px;
+}
+
+/* Application Details Metabox */
+.hiretalent-application-details .detail-row {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
     border-bottom: 1px solid #e0e0e0;
 }
 
-.hiretalent-setting-field {
-    margin-bottom: 20px;
+.hiretalent-application-details .detail-row:last-child {
+    border-bottom: none;
 }
 
-.hiretalent-setting-field label {
-    display: block;
+.hiretalent-application-details .detail-label {
     font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.hiretalent-application-details .detail-value {
+    display: block;
+}
+
+.hiretalent-application-details .cover-letter-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccd0d4;
+}
+
+/* Activity Log Metabox */
+.hiretalent-activity-log {
+    margin: 0;
+}
+
+.hiretalent-activity-log li {
     margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
 }
 
-.hiretalent-setting-field input[type="text"],
-.hiretalent-setting-field input[type="number"] {
-    width: 100%;
-    max-width: 500px;
+.hiretalent-activity-log li:last-child {
+    border-bottom: none;
 }
 
-.hiretalent-setting-field .description {
-    margin-top: 5px;
-    font-size: 13px;
-    color: #646970;
+/* Log Viewer */
+.hiretalent-log-viewer {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    padding: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    font-family: monospace;
+    white-space: pre-wrap;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
 }
-
-/* ==========================================================================
-   Metabox Styles
-   ========================================================================== */
-
-.hiretalent-metabox {
-    padding: 10px 0;
-}
-
-/* Additional admin styles can be added here */

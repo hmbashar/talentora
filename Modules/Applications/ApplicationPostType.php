@@ -56,6 +56,7 @@ class ApplicationPostType
             'labels' => $labels,
             'public' => false,
             'publicly_queryable' => false,
+            'exclude_from_search' => true,
             'show_ui' => true,
             'show_in_menu' => 'edit.php?post_type=hiretalent_job',
             'query_var' => false,
