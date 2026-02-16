@@ -184,7 +184,7 @@ class ApplicationHandler
     {
         $application_data = array(
             'post_title' => sprintf(__('Application from %s for %s', 'hiretalent'), $name, get_the_title($job_id)),
-            'post_type' => 'hiretalent_application',
+            'post_type' => 'hiretalent_app',
             'post_status' => 'publish',
         );
 
