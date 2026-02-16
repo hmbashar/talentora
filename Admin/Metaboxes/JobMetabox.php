@@ -184,7 +184,7 @@ class JobMetabox
                 </div>
 
                 <div class="field-row">
-                    <div class="field-group half-width">
+                    <div class="field-group full-width">
                         <label for="hiretalent_expiry_date">
                             <span class="dashicons dashicons-clock"></span>
                             <?php esc_html_e('Expiry Date (Optional)', 'hiretalent'); ?>
@@ -192,6 +192,7 @@ class JobMetabox
                         <input type="date" id="hiretalent_expiry_date" name="hiretalent_expiry_date"
                             value="<?php echo esc_attr($expiry_date); ?>" class="hiretalent-input">
                         <p class="description">
+                            <span class="dashicons dashicons-info"></span>
                             <?php esc_html_e('Job will be automatically hidden after this date.', 'hiretalent'); ?>
                         </p>
                     </div>
@@ -227,35 +228,37 @@ class JobMetabox
                     </div>
                 </div>
 
-                <div class="field-group">
-                    <label>
-                        <span class="dashicons dashicons-format-image"></span>
-                        <?php esc_html_e('Company Logo', 'hiretalent'); ?>
-                    </label>
-                    <div class="logo-upload-wrapper">
-                        <input type="hidden" id="hiretalent_company_logo_id" name="hiretalent_company_logo_id"
-                            value="<?php echo esc_attr($company_logo_id); ?>">
-                        <div class="logo-upload-area">
-                            <div class="company-logo-preview" id="hiretalent_logo_preview">
-                                <?php if ($company_logo_id): ?>
-                                    <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
-                                <?php else: ?>
-                                    <div class="logo-placeholder">
-                                        <span class="dashicons dashicons-format-image"></span>
-                                        <p><?php esc_html_e('No logo uploaded', 'hiretalent'); ?></p>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="logo-buttons">
-                                <button type="button" class="button button-primary" id="hiretalent_upload_logo_button">
-                                    <span class="dashicons dashicons-upload"></span>
-                                    <?php esc_html_e('Upload Logo', 'hiretalent'); ?>
-                                </button>
-                                <button type="button" class="button button-secondary" id="hiretalent_remove_logo_button"
-                                    style="<?php echo empty($company_logo_id) ? 'display:none;' : ''; ?>">
-                                    <span class="dashicons dashicons-trash"></span>
-                                    <?php esc_html_e('Remove', 'hiretalent'); ?>
-                                </button>
+                <div class="field-row">
+                    <div class="field-group full-width">
+                        <label>
+                            <span class="dashicons dashicons-format-image"></span>
+                            <?php esc_html_e('Company Logo', 'hiretalent'); ?>
+                        </label>
+                        <div class="logo-upload-wrapper">
+                            <input type="hidden" id="hiretalent_company_logo_id" name="hiretalent_company_logo_id"
+                                value="<?php echo esc_attr($company_logo_id); ?>">
+                            <div class="logo-upload-area">
+                                <div class="company-logo-preview" id="hiretalent_logo_preview">
+                                    <?php if ($company_logo_id): ?>
+                                        <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
+                                    <?php else: ?>
+                                        <div class="logo-placeholder">
+                                            <span class="dashicons dashicons-format-image"></span>
+                                            <p><?php esc_html_e('No logo uploaded', 'hiretalent'); ?></p>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="logo-buttons">
+                                    <button type="button" class="button button-primary" id="hiretalent_upload_logo_button">
+                                        <span class="dashicons dashicons-upload"></span>
+                                        <?php esc_html_e('Upload Logo', 'hiretalent'); ?>
+                                    </button>
+                                    <button type="button" class="button button-secondary" id="hiretalent_remove_logo_button"
+                                        style="<?php echo empty($company_logo_id) ? 'display:none;' : ''; ?>">
+                                        <span class="dashicons dashicons-trash"></span>
+                                        <?php esc_html_e('Remove', 'hiretalent'); ?>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -314,34 +317,40 @@ class JobMetabox
                             </option>
                         </select>
                         <p class="description">
+                            <span class="dashicons dashicons-info"></span>
                             <?php esc_html_e('Choose how applicants will apply for this job.', 'hiretalent'); ?>
                         </p>
                     </div>
                 </div>
 
-                <div class="field-group" id="hiretalent_third_party_field"
+                <div class="field-row" id="hiretalent_third_party_field"
                     style="<?php echo ($application_type === 'builtin') ? 'display:none;' : ''; ?>">
-                    <label for="hiretalent_third_party_shortcode">
-                        <span class="dashicons dashicons-shortcode"></span>
-                        <?php esc_html_e('Third Party Form Shortcode', 'hiretalent'); ?>
-                    </label>
-                    <input type="text" id="hiretalent_third_party_shortcode" name="hiretalent_third_party_shortcode"
-                        value="<?php echo esc_attr($third_party_shortcode); ?>"
-                        placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>" class="hiretalent-input">
-                    <p class="description">
-                        <span class="dashicons dashicons-info"></span>
-                        <?php esc_html_e('Enter the shortcode for your contact form. Leave empty to use global setting.', 'hiretalent'); ?>
-                    </p>
+                    <div class="field-group full-width">
+                        <label for="hiretalent_third_party_shortcode">
+                            <span class="dashicons dashicons-shortcode"></span>
+                            <?php esc_html_e('Third Party Form Shortcode', 'hiretalent'); ?>
+                        </label>
+                        <input type="text" id="hiretalent_third_party_shortcode" name="hiretalent_third_party_shortcode"
+                            value="<?php echo esc_attr($third_party_shortcode); ?>"
+                            placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>"
+                            class="hiretalent-input">
+                        <p class="description">
+                            <span class="dashicons dashicons-info"></span>
+                            <?php esc_html_e('Enter the shortcode for your contact form. Leave empty to use global setting.', 'hiretalent'); ?>
+                        </p>
+                    </div>
                 </div>
 
-                <div class="field-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
-                        <span class="checkbox-text">
-                            <span class="dashicons dashicons-yes"></span>
-                            <?php esc_html_e('Mark this job as filled', 'hiretalent'); ?>
-                        </span>
-                    </label>
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
+                            <span class="checkbox-text">
+                                <span class="dashicons dashicons-yes"></span>
+                                <?php esc_html_e('Mark this job as filled', 'hiretalent'); ?>
+                            </span>
+                        </label>
+                    </div>
                 </div>
             </div>
 

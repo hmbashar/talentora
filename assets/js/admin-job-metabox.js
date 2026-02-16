@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
         mediaUploader.on('select', function () {
             var attachment = mediaUploader.state().get('selection').first().toJSON();
             $('#hiretalent_company_logo_id').val(attachment.id);
-            $('#hiretalent_logo_preview').html('<img src="' + attachment.url + '" style="max-width:150px;">');
+            $('#hiretalent_logo_preview').html('<img src="' + attachment.url + '">');
             $('#hiretalent_remove_logo_button').show();
         });
 
