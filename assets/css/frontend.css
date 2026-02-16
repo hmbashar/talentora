@@ -1,423 +1,351 @@
 /**
  * Frontend Styles for HireTalent
- *
- * @package HireTalent
- * @since 1.0.0
+ * Premium Design Overhaul
  */
 
-/* ==========================================================================
-   Job List & Filter Bar
-   ========================================================================== */
-
-.hiretalent-jobs-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+:root {
+    --ht-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --ht-color-primary: #4f46e5;
+    --ht-color-primary-dark: #4338ca;
+    --ht-color-text: #1e293b;
+    --ht-color-text-light: #64748b;
+    --ht-color-bg: #f8fafc;
+    --ht-color-white: #ffffff;
+    --ht-border-color: #e2e8f0;
+    
+    --ht-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --ht-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --ht-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    --ht-radius: 0.5rem;
 }
 
+/* Wrapper */
+.hiretalent-jobs-wrapper {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: var(--ht-font-sans);
+    color: var(--ht-color-text);
+}
+
+/* Filter Bar */
 .hiretalent-filter-bar {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
+    background: var(--ht-color-white);
+    padding: 1.5rem;
+    border-radius: var(--ht-radius);
+    box-shadow: var(--ht-shadow-md);
+    margin-bottom: 2rem;
+    border: 1px solid var(--ht-border-color);
 }
 
 .hiretalent-filters {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    align-items: end;
 }
 
-.filter-field input[type="text"],
+.filter-field input,
 .filter-field select {
     width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ht-border-color);
+    border-radius: var(--ht-radius);
+    font-size: 0.95rem;
+    color: var(--ht-color-text);
+    background-color: var(--ht-color-bg);
+    transition: all 0.2s ease;
 }
 
-.filter-field input[type="text"]:focus,
+.filter-field input:focus,
 .filter-field select:focus {
     outline: none;
-    border-color: #0073aa;
-    box-shadow: 0 0 0 1px #0073aa;
+    border-color: var(--ht-color-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    background-color: var(--ht-color-white);
 }
 
 .hiretalent-btn {
     display: inline-block;
-    padding: 10px 20px;
-    background: #0073aa;
-    color: #fff;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: var(--ht-color-primary);
+    color: var(--ht-color-white);
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
+    border-radius: var(--ht-radius);
     font-weight: 600;
-    transition: background 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
 .hiretalent-btn:hover {
-    background: #005a87;
-    color: #fff;
+    background: var(--ht-color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--ht-shadow-md);
+    color: var(--ht-color-white);
 }
 
-/* ==========================================================================
-   Job Cards
-   ========================================================================== */
-
+/* Jobs Grid */
 .hiretalent-jobs-list {
     display: grid;
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
 }
 
+/* Job Card */
 .hiretalent-job-card {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 25px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    background: var(--ht-color-white);
+    border: 1px solid var(--ht-border-color);
+    border-radius: var(--ht-radius);
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .hiretalent-job-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--ht-shadow-lg);
+    border-color: var(--ht-color-primary);
 }
 
 .hiretalent-job-card.job-filled {
     opacity: 0.7;
-    background: #f5f5f5;
+    background: var(--ht-color-bg);
+    pointer-events: none;
 }
 
 .job-card-header {
+    margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 15px;
+    align-items: start;
 }
 
 .job-title {
+    font-size: 1.25rem;
+    font-weight: 700;
     margin: 0;
-    font-size: 20px;
-    font-weight: 600;
+    line-height: 1.4;
 }
 
 .job-title a {
-    color: #333;
+    color: var(--ht-color-text);
     text-decoration: none;
+    transition: color 0.2s;
 }
 
 .job-title a:hover {
-    color: #0073aa;
+    color: var(--ht-color-primary);
 }
 
+/* Badges */
 .job-filled-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    background: #dc3545;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 12px;
+    background: #fee2e2;
+    color: #ef4444;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.job-type-badge {
+    background: #e0e7ff;
+    color: var(--ht-color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
+/* Meta Data */
 .job-card-meta {
+    margin-bottom: auto; /* Pushes footer to bottom */
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    color: #666;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--ht-color-text-light);
+    font-size: 0.9rem;
 }
 
 .job-card-meta span {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.5rem;
 }
 
 .job-card-meta .dashicons {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    color: var(--ht-color-primary);
+    opacity: 0.8;
 }
 
+/* Card Footer */
 .job-card-footer {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 15px;
-    border-top: 1px solid #e0e0e0;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--ht-border-color);
 }
 
-/* ==========================================================================
-   Pagination
-   ========================================================================== */
+.job-card-footer .hiretalent-btn {
+    background: transparent;
+    color: var(--ht-color-primary);
+    border: 1px solid var(--ht-color-primary);
+}
 
+.job-card-footer .hiretalent-btn:hover {
+    background: var(--ht-color-primary);
+    color: var(--ht-color-white);
+}
+
+/* Pagination */
 .hiretalent-pagination {
-    margin-top: 30px;
-    text-align: center;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .hiretalent-pagination .page-numbers {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 0 4px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: var(--ht-radius);
+    background: var(--ht-color-white);
+    border: 1px solid var(--ht-border-color);
+    color: var(--ht-color-text);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
 }
 
-.hiretalent-pagination .page-numbers:hover,
-.hiretalent-pagination .page-numbers.current {
-    background: #0073aa;
-    color: #fff;
-    border-color: #0073aa;
+.hiretalent-pagination .page-numbers.current,
+.hiretalent-pagination .page-numbers:hover {
+    background: var(--ht-color-primary);
+    color: var(--ht-color-white);
+    border-color: var(--ht-color-primary);
 }
 
-.hiretalent-no-jobs {
-    text-align: center;
-    padding: 40px;
-    font-size: 16px;
-    color: #666;
-}
-
-/* ==========================================================================
-   Single Job Page
-   ========================================================================== */
-
+/* Single Job Page */
 .hiretalent-single-job {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 40px auto;
 }
 
 .hiretalent-job-container {
-    background: #fff;
-    padding: 40px;
-    border-radius: 8px;
+    background: var(--ht-color-white);
+    border-radius: var(--ht-radius);
+    box-shadow: var(--ht-shadow-md);
+    overflow: hidden;
 }
 
 .job-header {
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 2px solid #e0e0e0;
+    background: #1e293b;
+    padding: 3rem;
+    color: var(--ht-color-white);
 }
 
 .job-header .job-title {
-    font-size: 32px;
-    margin-bottom: 20px;
+    color: var(--ht-color-white);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 .job-meta-info {
-    display: grid;
-    gap: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1.5rem;
 }
 
 .meta-item {
+    color: #94a3b8;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 15px;
+    gap: 0.5rem;
 }
 
-.meta-item .dashicons {
-    color: #0073aa;
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-}
-
-.company-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 6px;
-}
-
-.company-logo img {
-    max-width: 80px;
-    height: auto;
-    border-radius: 4px;
-}
-
-.company-details a {
-    color: #0073aa;
-    text-decoration: none;
-}
-
-.company-details a:hover {
-    text-decoration: underline;
+.job-content-body {
+    padding: 3rem;
 }
 
 .job-description {
-    margin-bottom: 40px;
-}
-
-.job-description h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--ht-color-text);
+    margin-bottom: 3rem;
 }
 
 .job-apply-section {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 8px;
+    background: var(--ht-color-bg);
+    padding: 2.5rem;
+    border-radius: var(--ht-radius);
+    border: 1px solid var(--ht-border-color);
 }
 
-.hiretalent-apply-form h3 {
-    font-size: 22px;
-    margin-bottom: 20px;
-}
-
-.hiretalent-apply-form-notice {
-    background: #fff3cd;
-    border: 1px solid #ffc107;
-    padding: 15px;
-    border-radius: 4px;
-}
-
-.job-filled-notice {
-    background: #f8d7da;
-    border: 1px solid #dc3545;
-    padding: 20px;
-    border-radius: 4px;
-    text-align: center;
-}
-
-/* ==========================================================================
-   Application Form
-   ========================================================================== */
-
-.hiretalent-application-form {
-    margin-top: 20px;
-}
-
-.hiretalent-message {
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-
-.hiretalent-message.hiretalent-success {
-    background: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-}
-
-.hiretalent-message.hiretalent-error {
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
-}
-
-.hiretalent-message ul {
-    margin: 0;
-    padding-left: 20px;
-}
-
-.hiretalent-form {
-    background: #fff;
-    padding: 25px;
-    border-radius: 6px;
-}
-
+/* Forms */
 .hiretalent-form-field {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .hiretalent-form-field label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #333;
+    color: var(--ht-color-text);
 }
 
-.hiretalent-form-field .required {
-    color: #dc3545;
-}
-
-.hiretalent-form-field input[type="text"],
-.hiretalent-form-field input[type="email"],
-.hiretalent-form-field input[type="tel"],
-.hiretalent-form-field input[type="file"],
+.hiretalent-form-field input,
 .hiretalent-form-field textarea {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: inherit;
+    padding: 0.875rem;
+    border: 1px solid var(--ht-border-color);
+    border-radius: var(--ht-radius);
+    font-size: 1rem;
+    transition: all 0.2s;
+    background: var(--ht-color-white);
 }
 
-.hiretalent-form-field input[type="text"]:focus,
-.hiretalent-form-field input[type="email"]:focus,
-.hiretalent-form-field input[type="tel"]:focus,
-.hiretalent-form-field input[type="file"]:focus,
+.hiretalent-form-field input:focus,
 .hiretalent-form-field textarea:focus {
+    border-color: var(--ht-color-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     outline: none;
-    border-color: #0073aa;
-    box-shadow: 0 0 0 1px #0073aa;
 }
 
-.hiretalent-form-field textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.hiretalent-form-submit {
-    margin-top: 25px;
-}
-
-.hiretalent-button {
-    display: inline-block;
-    padding: 12px 30px;
-    background: #0073aa;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
+.hiretalent-file-upload {
+    background: white;
+    padding: 2rem;
+    border: 2px dashed var(--ht-border-color);
+    border-radius: var(--ht-radius);
+    text-align: center;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background 0.3s ease;
+    transition: all 0.2s;
 }
 
-.hiretalent-button:hover {
-    background: #005a87;
+.hiretalent-file-upload:hover {
+    border-color: var(--ht-color-primary);
+    background: #fdfeff;
 }
 
-.hiretalent-button:active {
-    transform: translateY(1px);
+/* Success/Error Alerts */
+.hiretalent-alert {
+    padding: 1rem;
+    border-radius: var(--ht-radius);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
 }
 
-/* ==========================================================================
-   Responsive Design
-   ========================================================================== */
+.hiretalent-alert-success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
 
-@media (max-width: 768px) {
-    .hiretalent-filters {
-        grid-template-columns: 1fr;
-    }
-
-    .job-card-meta {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .hiretalent-job-container {
-        padding: 20px;
-    }
-
-    .job-header .job-title {
-        font-size: 24px;
-    }
-
-    .company-info {
-        flex-direction: column;
-        text-align: center;
-    }
+.hiretalent-alert-error, 
+.hiretalent-alert-warning {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
 }

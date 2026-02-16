@@ -1,203 +1,225 @@
-/* Admin Styles - HireTalent Premium UI */
 :root {
-    --ht-primary: #2271b1;
-    --ht-primary-hover: #135e96;
-    --ht-bg: #f0f2f5;
+    /* Premium Color Palette */
+    --ht-primary: #4f46e5; /* Indigo 600 */
+    --ht-primary-hover: #4338ca; /* Indigo 700 */
+    --ht-secondary: #64748b; /* Slate 500 */
+    --ht-success: #10b981; /* Emerald 500 */
+    --ht-danger: #ef4444; /* Red 500 */
+    --ht-warning: #f59e0b; /* Amber 500 */
+    --ht-bg-light: #f8fafc; /* Slate 50 */
+    --ht-text-main: #0f172a; /* Slate 900 */
+    --ht-text-muted: #64748b; /* Slate 500 */
+    --ht-border: #e2e8f0; /* Slate 200 */
     --ht-card-bg: #ffffff;
-    --ht-text: #3c434a;
-    --ht-text-light: #646970;
-    --ht-border: #dcdcde;
-    --ht-danger: #d63638;
-    --ht-success: #00a32a;
-    --ht-radius: 8px;
-    --ht-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    /* Shadows */
+    --ht-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --ht-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --ht-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* Spacing & Radius */
+    --ht-radius-sm: 0.375rem;
+    --ht-radius-md: 0.5rem;
+    --ht-radius-lg: 0.75rem;
 }
 
-.hiretalent-settings-wrap {
-    max-width: 1000px;
-    margin: 20px auto 0;
+/* Base Dashboard Styles */
+.hiretalent-settings-wrapper {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ht-text-main);
+    max-width: 1200px;
+    margin: 20px auto;
 }
 
-.hiretalent-settings-wrap h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #1d2327;
+.hiretalent-settings-wrapper h1,
+.hiretalent-settings-wrapper h2,
+.hiretalent-settings-wrapper h3 {
+    font-weight: 700;
+    color: var(--ht-text-main);
 }
 
-/* Tabs */
-.hiretalent-settings-wrap .nav-tab-wrapper {
-    margin-bottom: 20px;
-    border-bottom: none;
+/* Clean Header */
+.hiretalent-header {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.hiretalent-settings-wrap .nav-tab {
+.hiretalent-header h1 {
+    font-size: 1.875rem;
+    margin: 0;
+}
+
+/* Tabs - Pill Style */
+.nav-tab-wrapper {
+    border-bottom: none !important;
+    padding: 0 !important;
+    margin-bottom: 2rem !important;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-tab {
     background: transparent;
-    border: none;
-    border-bottom: 3px solid transparent;
-    color: var(--ht-text-light);
+    border: 1px solid transparent !important;
+    color: var(--ht-text-muted);
     font-weight: 500;
-    padding: 10px 15px;
-    margin-right: 5px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--ht-radius-md);
     transition: all 0.2s ease;
-    font-size: 14px;
+    margin: 0 !important;
+    font-size: 0.95rem;
 }
 
-.hiretalent-settings-wrap .nav-tab:hover {
+.nav-tab:hover {
     color: var(--ht-primary);
-    background: transparent;
+    background: var(--ht-bg-light);
 }
 
-.hiretalent-settings-wrap .nav-tab-active,
-.hiretalent-settings-wrap .nav-tab-active:hover {
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid var(--ht-primary);
-    color: var(--ht-primary);
-    font-weight: 600;
+.nav-tab-active,
+.nav-tab-active:hover {
+    background: var(--ht-primary) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--ht-primary) !important;
+    box-shadow: var(--ht-shadow-sm);
 }
 
-/* Cards */
+/* Card Layout */
 .hiretalent-card {
     background: var(--ht-card-bg);
-    border-radius: var(--ht-radius);
-    box-shadow: var(--ht-shadow);
-    padding: 30px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: var(--ht-radius-lg);
+    box-shadow: var(--ht-shadow-md);
+    border: 1px solid var(--ht-border);
+    margin-bottom: 2rem;
+    overflow: hidden;
 }
 
-.hiretalent-card h3 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #1d2327;
-    border-bottom: 1px solid var(--ht-bg);
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+.hiretalent-card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--ht-border);
+    background: #ffffff;
 }
 
-/* Form Tables inside Cards */
-.hiretalent-settings-wrap .form-table th {
+.hiretalent-card-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hiretalent-card-header h2 .dashicons {
+    color: var(--ht-primary);
+}
+
+.hiretalent-card-body {
+    padding: 2rem;
+}
+
+/* Forms */
+.form-table th {
     font-weight: 600;
-    color: var(--ht-text);
+    color: var(--ht-text-main);
     padding: 20px 10px 20px 0;
 }
 
-.hiretalent-settings-wrap .form-table td {
+.form-table td {
     padding: 15px 10px;
 }
 
-/* Inputs */
-.hiretalent-settings-wrap input[type="text"],
-.hiretalent-settings-wrap input[type="number"],
-.hiretalent-settings-wrap input[type="email"],
-.hiretalent-settings-wrap textarea,
-.hiretalent-settings-wrap select {
-    border: 1px solid var(--ht-border);
-    border-radius: 4px;
-    padding: 8px 12px;
-    box-shadow: none;
-    transition: border-color 0.2s;
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+    border: 1px solid var(--ht-border) !important;
+    border-radius: var(--ht-radius-md) !important;
+    padding: 0.625rem 1rem !important;
+    box-shadow: var(--ht-shadow-sm) !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
+    font-size: 0.95rem;
+    color: var(--ht-text-main);
 }
 
-.hiretalent-settings-wrap input:focus,
-.hiretalent-settings-wrap textarea:focus,
-.hiretalent-settings-wrap select:focus {
-    border-color: var(--ht-primary);
-    box-shadow: 0 0 0 1px var(--ht-primary);
-    outline: none;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--ht-primary) !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    outline: none !important;
 }
 
-.hiretalent-settings-wrap .description {
-    color: var(--ht-text-light);
-    font-style: normal;
-    margin-top: 8px;
-    font-size: 13px;
+.description {
+    color: var(--ht-text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
 }
 
 /* Buttons */
-.hiretalent-settings-wrap .button-primary {
-    background: var(--ht-primary);
-    border-color: var(--ht-primary);
-    text-shadow: none;
-    box-shadow: 0 2px 4px rgba(34, 113, 177, 0.3);
-    border-radius: 4px;
-    padding: 6px 20px;
-    font-weight: 500;
-    transition: all 0.2s;
+.button.button-primary {
+    background: var(--ht-primary) !important;
+    border-color: var(--ht-primary) !important;
+    color: #ffffff !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: var(--ht-radius-md) !important;
+    font-weight: 600 !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: var(--ht-shadow-sm) !important;
+    text-shadow: none !important;
 }
 
-.hiretalent-settings-wrap .button-primary:hover {
-    background: var(--ht-primary-hover);
-    box-shadow: 0 4px 6px rgba(34, 113, 177, 0.4);
+.button.button-primary:hover {
+    background: var(--ht-primary-hover) !important;
     transform: translateY(-1px);
+    box-shadow: var(--ht-shadow-md) !important;
 }
 
-.hiretalent-settings-wrap .button-danger {
-    color: #fff;
-    background: var(--ht-danger);
-    border-color: var(--ht-danger);
-    box-shadow: 0 2px 4px rgba(214, 54, 56, 0.3);
-    transition: all 0.2s;
+#hiretalent-clear-log {
+    background: #ffffff !important;
+    color: var(--ht-danger) !important;
+    border: 1px solid var(--ht-border) !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: var(--ht-radius-md) !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease;
 }
 
-.hiretalent-settings-wrap .button-danger:hover {
-    background: #b32d2e;
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(214, 54, 56, 0.4);
+#hiretalent-clear-log:hover {
+    background: #fee2e2 !important;
+    border-color: var(--ht-danger) !important;
 }
 
 /* Log Viewer */
 .hiretalent-log-viewer {
-    background: #1e1e1e;
-    color: #d4d4d4;
-    border-radius: 6px;
-    padding: 20px;
-    max-height: 500px;
+    background: #1e293b; /* Slate 800 */
+    color: #cbd5e1; /* Slate 300 */
+    padding: 1.5rem;
+    border-radius: var(--ht-radius-md);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875rem;
+    height: 400px;
     overflow-y: auto;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 13px;
-    line-height: 1.5;
     white-space: pre-wrap;
-    border: 1px solid #333;
-    margin-bottom: 20px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    line-height: 1.6;
+    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.3);
 }
 
 .hiretalent-log-viewer::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 .hiretalent-log-viewer::-webkit-scrollbar-track {
-    background: #2d2d2d;
+    background: #0f172a;
 }
 
 .hiretalent-log-viewer::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 5px;
-}
-
-.hiretalent-log-viewer::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
-
-.hiretalent-actions {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.hiretalent-settings-wrap .description.warning {
-    color: #d63638;
-    background: #fcf0f1;
-    border-left: 4px solid #d63638;
-    padding: 10px 15px;
-}
-
-.hiretalent-settings-wrap .description.details {
-    margin-bottom: 15px;
+    background: #475569;
+    border-radius: 4px;
 }
