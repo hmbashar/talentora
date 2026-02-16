@@ -150,40 +150,60 @@ class Settings
 
         $active_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'general';
         ?>
-        <div class="wrap hiretalent-settings-wrap">
-            <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <div class="wrap hiretalent-settings-wrapper">
+            <!-- Modern Header -->
+            <div class="hiretalent-header">
+                <div class="hiretalent-header-content">
+                    <h1 class="hiretalent-page-title">
+                        <span class="dashicons dashicons-admin-settings"></span>
+                        <?php echo esc_html(get_admin_page_title()); ?>
+                    </h1>
+                    <p class="hiretalent-subtitle">
+                        <?php esc_html_e('Manage your recruitment settings and preferences', 'hiretalent'); ?>
+                    </p>
+                </div>
+            </div>
 
-            <h2 class="nav-tab-wrapper">
+            <!-- Modern Tab Navigation -->
+            <nav class="nav-tab-wrapper hiretalent-nav-tabs">
                 <a href="?post_type=hiretalent_job&page=hiretalent-settings&tab=general"
                     class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e('General Settings', 'hiretalent'); ?>
+                    <span class="dashicons dashicons-admin-generic"></span>
+                    <span><?php esc_html_e('General Settings', 'hiretalent'); ?></span>
                 </a>
                 <a href="?post_type=hiretalent_job&page=hiretalent-settings&tab=email_templates"
                     class="nav-tab <?php echo $active_tab == 'email_templates' ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e('Email Templates', 'hiretalent'); ?>
+                    <span class="dashicons dashicons-email"></span>
+                    <span><?php esc_html_e('Email Templates', 'hiretalent'); ?></span>
                 </a>
                 <a href="?post_type=hiretalent_job&page=hiretalent-settings&tab=email_logs"
                     class="nav-tab <?php echo $active_tab == 'email_logs' ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e('Email Logs', 'hiretalent'); ?>
+                    <span class="dashicons dashicons-media-text"></span>
+                    <span><?php esc_html_e('Email Logs', 'hiretalent'); ?></span>
                 </a>
-            </h2>
+            </nav>
 
+            <!-- Tab Content -->
             <?php if ($active_tab == 'email_logs'): ?>
                 <?php $this->render_email_log_tab(); ?>
             <?php else: ?>
-                <form action="options.php" method="post">
+                <form action="options.php" method="post" class="hiretalent-settings-form">
                     <div class="hiretalent-card">
-                        <?php
-                        if ($active_tab == 'general') {
-                            settings_fields('hiretalent_general_settings');
-                            do_settings_sections('hiretalent_general_settings');
-                        } else if ($active_tab == 'email_templates') {
-                            settings_fields('hiretalent_email_settings');
-                            do_settings_sections('hiretalent_email_settings');
-                        }
-                        ?>
+                        <div class="hiretalent-card-body">
+                            <?php
+                            if ($active_tab == 'general') {
+                                settings_fields('hiretalent_general_settings');
+                                do_settings_sections('hiretalent_general_settings');
+                            } else if ($active_tab == 'email_templates') {
+                                settings_fields('hiretalent_email_settings');
+                                do_settings_sections('hiretalent_email_settings');
+                            }
+                            ?>
+                        </div>
                     </div>
-                    <?php submit_button(); ?>
+                    <div class="hiretalent-submit-wrapper">
+                        <?php submit_button(__('Save Changes', 'hiretalent'), 'primary large', 'submit', false); ?>
+                    </div>
                 </form>
             <?php endif; ?>
         </div>
@@ -198,21 +218,45 @@ class Settings
         $log_file = wp_upload_dir()['basedir'] . '/hiretalent-logs/email.log';
 
         echo '<div class="hiretalent-card">';
-        echo '<h3>' . esc_html__('Application Emails Log', 'hiretalent') . '</h3>';
+        echo '<div class="hiretalent-card-header">';
+        echo '<h2><span class="dashicons dashicons-media-text"></span>' . esc_html__('Application Emails Log', 'hiretalent') . '</h2>';
+        echo '<p class="description">' . esc_html__('View all email notifications sent by the system', 'hiretalent') . '</p>';
+        echo '</div>';
+        echo '<div class="hiretalent-card-body">';
 
         if (file_exists($log_file)) {
             $content = file_get_contents($log_file);
-            echo '<div class="hiretalent-log-viewer">' . esc_html($content) . '</div>';
-            echo '<p class="description details">' . esc_html__('This log file is located at: ', 'hiretalent') . esc_html($log_file) . '</p>';
+            
+            echo '<div class="hiretalent-log-container">';
+            if (empty(trim($content))) {
+                echo '<div class="hiretalent-empty-state">';
+                echo '<span class="dashicons dashicons-admin-page"></span>';
+                echo '<p>' . esc_html__('No email logs yet. Logs will appear here when emails are sent.', 'hiretalent') . '</p>';
+                echo '</div>';
+            } else {
+                echo '<div class="hiretalent-log-viewer">' . esc_html($content) . '</div>';
+            }
+            echo '</div>';
+            
+            echo '<div class="hiretalent-log-info">';
+            echo '<p class="description"><span class="dashicons dashicons-info"></span> ' . esc_html__('Log file location: ', 'hiretalent') . esc_html($log_file) . '</p>';
+            echo '</div>';
 
             // Clear log button
             echo '<div class="hiretalent-actions">';
-            echo '<button type="button" id="hiretalent-clear-log" class="button button-danger">' . esc_html__('Clear Log', 'hiretalent') . '</button>';
+            echo '<button type="button" id="hiretalent-clear-log" class="button button-secondary">';
+            echo '<span class="dashicons dashicons-trash"></span> ';
+            echo esc_html__('Clear Log', 'hiretalent');
+            echo '</button>';
+            echo '<p class="description warning"><span class="dashicons dashicons-warning"></span> ' . esc_html__('Warning: This action cannot be undone.', 'hiretalent') . '</p>';
             echo '</div>';
-            echo '<p class="description warning" style="margin-top: 10px;">' . esc_html__('Note: Clearing the log is permanent.', 'hiretalent') . '</p>';
         } else {
-            echo '<p>' . esc_html__('No log file found.', 'hiretalent') . '</p>';
+            echo '<div class="hiretalent-empty-state">';
+            echo '<span class="dashicons dashicons-info"></span>';
+            echo '<p>' . esc_html__('No log file found. Logs will be created automatically when emails are sent.', 'hiretalent') . '</p>';
+            echo '</div>';
         }
+        echo '</div>';
         echo '</div>';
     }
 
@@ -223,11 +267,15 @@ class Settings
     {
         $value = get_option('hiretalent_apply_form_shortcode', '');
         ?>
-        <input type="text" name="hiretalent_apply_form_shortcode" value="<?php echo esc_attr($value); ?>" class="regular-text"
-            placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>">
-        <p class="description">
-            <?php esc_html_e('Global Fallback: Enter a shortcode here only if you want to use the same form for ALL jobs. You can override this per job in the post editor.', 'hiretalent'); ?>
-        </p>
+        <div class="hiretalent-field-wrapper">
+            <input type="text" name="hiretalent_apply_form_shortcode" value="<?php echo esc_attr($value); ?>" 
+                class="regular-text hiretalent-input"
+                placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>">
+            <p class="description">
+                <span class="dashicons dashicons-info"></span>
+                <?php esc_html_e('Global fallback shortcode for all jobs. Can be overridden per job in the post editor.', 'hiretalent'); ?>
+            </p>
+        </div>
         <?php
     }
 
@@ -238,8 +286,14 @@ class Settings
     {
         $value = get_option('hiretalent_jobs_per_page', 10);
         ?>
-        <input type="number" name="hiretalent_jobs_per_page" value="<?php echo esc_attr($value); ?>" min="1" max="100" step="1">
-        <p class="description"><?php esc_html_e('Number of jobs to display per page in the job list.', 'hiretalent'); ?></p>
+        <div class="hiretalent-field-wrapper">
+            <input type="number" name="hiretalent_jobs_per_page" value="<?php echo esc_attr($value); ?>" 
+                class="small-text hiretalent-input" min="1" max="100" step="1">
+            <p class="description">
+                <span class="dashicons dashicons-info"></span>
+                <?php esc_html_e('Number of jobs to display per page in the job listings.', 'hiretalent'); ?>
+            </p>
+        </div>
         <?php
     }
 
@@ -253,11 +307,18 @@ class Settings
         if (empty(trim($value)))
             $value = $default_statuses;
         ?>
-        <textarea name="hiretalent_application_statuses" rows="3" cols="50"
-            class="large-text"><?php echo esc_textarea($value); ?></textarea>
-        <p class="description">
-            <?php esc_html_e('Enter statuses separated by commas or newlines (e.g., Pending, Reviewed, Shortlisted). Warning: Changing these may affect existing application filtering.', 'hiretalent'); ?>
-        </p>
+        <div class="hiretalent-field-wrapper">
+            <textarea name="hiretalent_application_statuses" rows="3" cols="50"
+                class="large-text hiretalent-textarea"><?php echo esc_textarea($value); ?></textarea>
+            <p class="description">
+                <span class="dashicons dashicons-info"></span>
+                <?php esc_html_e('Comma-separated list of application statuses (e.g., Pending, Reviewed, Shortlisted).', 'hiretalent'); ?>
+            </p>
+            <p class="description warning">
+                <span class="dashicons dashicons-warning"></span>
+                <?php esc_html_e('Changing these may affect existing application filtering.', 'hiretalent'); ?>
+            </p>
+        </div>
         <?php
     }
 
@@ -266,7 +327,24 @@ class Settings
      */
     public function email_templates_section_callback()
     {
-        echo '<p>' . esc_html__('Configure email templates. Supported placeholders: {applicant_name}, {job_title}, {site_name}, {status}, {application_url}', 'hiretalent') . '</p>';
+        ?>
+        <div class="hiretalent-section-intro">
+            <p class="description">
+                <span class="dashicons dashicons-email"></span>
+                <?php esc_html_e('Customize email templates sent to applicants and administrators.', 'hiretalent'); ?>
+            </p>
+            <div class="hiretalent-info-box">
+                <h4><?php esc_html_e('Available Placeholders:', 'hiretalent'); ?></h4>
+                <ul class="hiretalent-placeholder-list">
+                    <li><code>{applicant_name}</code> - <?php esc_html_e('Name of the applicant', 'hiretalent'); ?></li>
+                    <li><code>{job_title}</code> - <?php esc_html_e('Job position title', 'hiretalent'); ?></li>
+                    <li><code>{site_name}</code> - <?php esc_html_e('Your website name', 'hiretalent'); ?></li>
+                    <li><code>{status}</code> - <?php esc_html_e('Application status', 'hiretalent'); ?></li>
+                    <li><code>{application_url}</code> - <?php esc_html_e('Link to view application', 'hiretalent'); ?></li>
+                </ul>
+            </div>
+        </div>
+        <?php
     }
 
     /**
@@ -275,7 +353,12 @@ class Settings
     public function admin_notification_subject_callback()
     {
         $value = get_option('hiretalent_admin_notification_subject', __('[%site_name] New Job Application: {job_title}', 'hiretalent'));
-        echo '<input type="text" name="hiretalent_admin_notification_subject" value="' . esc_attr($value) . '" class="large-text">';
+        ?>
+        <div class="hiretalent-field-wrapper">
+            <input type="text" name="hiretalent_admin_notification_subject" value="<?php echo esc_attr($value); ?>" 
+                class="large-text hiretalent-input">
+        </div>
+        <?php
     }
 
     /**
@@ -284,7 +367,12 @@ class Settings
     public function admin_notification_message_callback()
     {
         $value = get_option('hiretalent_admin_notification_message', __("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent'));
-        echo '<textarea name="hiretalent_admin_notification_message" rows="10" cols="50" class="large-text">' . esc_textarea($value) . '</textarea>';
+        ?>
+        <div class="hiretalent-field-wrapper">
+            <textarea name="hiretalent_admin_notification_message" rows="10" cols="50" 
+                class="large-text hiretalent-textarea code-editor"><?php echo esc_textarea($value); ?></textarea>
+        </div>
+        <?php
     }
 
     /**
@@ -293,7 +381,12 @@ class Settings
     public function applicant_confirmation_subject_callback()
     {
         $value = get_option('hiretalent_applicant_confirmation_subject', __('Application Received: {job_title}', 'hiretalent'));
-        echo '<input type="text" name="hiretalent_applicant_confirmation_subject" value="' . esc_attr($value) . '" class="large-text">';
+        ?>
+        <div class="hiretalent-field-wrapper">
+            <input type="text" name="hiretalent_applicant_confirmation_subject" value="<?php echo esc_attr($value); ?>" 
+                class="large-text hiretalent-input">
+        </div>
+        <?php
     }
 
     /**
@@ -302,7 +395,12 @@ class Settings
     public function applicant_confirmation_message_callback()
     {
         $value = get_option('hiretalent_applicant_confirmation_message', __("Dear {applicant_name},\n\nThank you for applying for the position of {job_title}.\n\nWe have received your application and will review it shortly.\n\nBest regards,\n{site_name}", 'hiretalent'));
-        echo '<textarea name="hiretalent_applicant_confirmation_message" rows="10" cols="50" class="large-text">' . esc_textarea($value) . '</textarea>';
+        ?>
+        <div class="hiretalent-field-wrapper">
+            <textarea name="hiretalent_applicant_confirmation_message" rows="10" cols="50" 
+                class="large-text hiretalent-textarea code-editor"><?php echo esc_textarea($value); ?></textarea>
+        </div>
+        <?php
     }
 
     /**
@@ -311,7 +409,12 @@ class Settings
     public function status_change_subject_callback()
     {
         $value = get_option('hiretalent_status_change_subject', __('Application Update: {job_title}', 'hiretalent'));
-        echo '<input type="text" name="hiretalent_status_change_subject" value="' . esc_attr($value) . '" class="large-text">';
+        ?>
+        <div class="hiretalent-field-wrapper">
+            <input type="text" name="hiretalent_status_change_subject" value="<?php echo esc_attr($value); ?>" 
+                class="large-text hiretalent-input">
+        </div>
+        <?php
     }
 
     /**
@@ -320,7 +423,12 @@ class Settings
     public function status_change_message_callback()
     {
         $value = get_option('hiretalent_status_change_message', __("Dear {applicant_name},\n\nYour application status for {job_title} has been updated to: {status}.\n\nBest regards,\n{site_name}", 'hiretalent'));
-        echo '<textarea name="hiretalent_status_change_message" rows="10" cols="50" class="large-text">' . esc_textarea($value) . '</textarea>';
+        ?>
+        <div class="hiretalent-field-wrapper">
+            <textarea name="hiretalent_status_change_message" rows="10" cols="50" 
+                class="large-text hiretalent-textarea code-editor"><?php echo esc_textarea($value); ?></textarea>
+        </div>
+        <?php
     }
 
     /**

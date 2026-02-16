@@ -276,6 +276,9 @@ class JobsList
         $location = get_post_meta($job_id, 'hiretalent_location', true);
         $deadline = get_post_meta($job_id, 'hiretalent_deadline', true);
         $is_filled = get_post_meta($job_id, 'hiretalent_is_filled', true);
+        $salary_min = get_post_meta($job_id, 'hiretalent_salary_min', true);
+        $salary_max = get_post_meta($job_id, 'hiretalent_salary_max', true);
+        $company_logo_id = get_post_meta($job_id, 'hiretalent_company_logo_id', true);
 
         $job_types = get_the_terms($job_id, 'hiretalent_job_type');
         $job_type_names = array();
@@ -287,52 +290,88 @@ class JobsList
 
         ?>
         <div class="hiretalent-job-card <?php echo $is_filled ? 'job-filled' : ''; ?>">
+            
             <div class="job-card-header">
-                <h3 class="job-title">
-                    <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
-                        <?php echo esc_html(get_the_title($job_id)); ?>
-                    </a>
-                </h3>
+                <?php if ($company_logo_id): ?>
+                    <div class="company-logo-mini">
+                        <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="job-card-title-area">
+                    <h3 class="job-title">
+                        <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
+                            <?php echo esc_html(get_the_title($job_id)); ?>
+                        </a>
+                    </h3>
+                    <?php if ($company_name): ?>
+                        <p class="job-company-name">
+                            <span class="dashicons dashicons-building"></span>
+                            <?php echo esc_html($company_name); ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
+
                 <?php if ($is_filled): ?>
                     <span class="job-filled-badge">
+                        <span class="dashicons dashicons-yes"></span>
                         <?php esc_html_e('Filled', 'hiretalent'); ?>
                     </span>
                 <?php endif; ?>
             </div>
 
-            <div class="job-card-meta">
-                <?php if ($company_name): ?>
-                    <span class="job-company">
-                        <i class="dashicons dashicons-building"></i>
-                        <?php echo esc_html($company_name); ?>
-                    </span>
-                <?php endif; ?>
+            <div class="job-card-body">
+                <div class="job-card-meta">
+                    <?php if ($location): ?>
+                        <span class="job-meta-item">
+                            <span class="dashicons dashicons-location"></span>
+                            <?php echo esc_html($location); ?>
+                        </span>
+                    <?php endif; ?>
 
-                <?php if ($location): ?>
-                    <span class="job-location">
-                        <i class="dashicons dashicons-location"></i>
-                        <?php echo esc_html($location); ?>
-                    </span>
-                <?php endif; ?>
+                    <?php if (!empty($job_type_names)): ?>
+                        <span class="job-meta-item">
+                            <span class="dashicons dashicons-tag"></span>
+                            <?php echo esc_html(implode(', ', $job_type_names)); ?>
+                        </span>
+                    <?php endif; ?>
 
-                <?php if (!empty($job_type_names)): ?>
-                    <span class="job-type">
-                        <i class="dashicons dashicons-tag"></i>
-                        <?php echo esc_html(implode(', ', $job_type_names)); ?>
-                    </span>
-                <?php endif; ?>
+                    <?php if ($salary_min || $salary_max): ?>
+                        <span class="job-meta-item">
+                            <span class="dashicons dashicons-money-alt"></span>
+                            <?php
+                            if ($salary_min && $salary_max) {
+                                echo esc_html('$' . number_format($salary_min) . ' - $' . number_format($salary_max));
+                            } elseif ($salary_min) {
+                                echo esc_html('$' . number_format($salary_min) . '+');
+                            } else {
+                                echo esc_html('$' . number_format($salary_max));
+                            }
+                            ?>
+                        </span>
+                    <?php endif; ?>
 
-                <?php if ($deadline): ?>
-                    <span class="job-deadline">
-                        <i class="dashicons dashicons-calendar-alt"></i>
-                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($deadline))); ?>
-                    </span>
+                    <?php if ($deadline): ?>
+                        <span class="job-meta-item">
+                            <span class="dashicons dashicons-calendar-alt"></span>
+                            <?php esc_html_e('Deadline:', 'hiretalent'); ?>
+                            <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($deadline))); ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <?php
+                $excerpt = get_the_excerpt($job_id);
+                if ($excerpt):
+                ?>
+                    <p class="job-excerpt"><?php echo esc_html(wp_trim_words($excerpt, 20)); ?></p>
                 <?php endif; ?>
             </div>
 
             <div class="job-card-footer">
-                <a href="<?php echo esc_url(get_permalink($job_id)); ?>" class="hiretalent-btn">
+                <a href="<?php echo esc_url(get_permalink($job_id)); ?>" class="hiretalent-btn hiretalent-btn-primary">
                     <?php esc_html_e('View Details', 'hiretalent'); ?>
+                    <span class="dashicons dashicons-arrow-right-alt2"></span>
                 </a>
             </div>
         </div>

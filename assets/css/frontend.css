@@ -287,7 +287,7 @@
 .job-hero-header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     padding: 4rem 1rem;
-    margin-bottom: -3rem; /* Overlap effect */
+    /* margin-bottom: -3rem;  */
     position: relative;
     color: #ffffff;
 }
@@ -571,14 +571,14 @@
 .summary-items {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .summary-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 0.75rem;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid var(--ht-border-color);
 }
 
@@ -587,14 +587,43 @@
     padding-bottom: 0;
 }
 
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ht-color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ht-color-primary);
+    flex-shrink: 0;
+}
+
+.summary-icon .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
 .summary-label {
     color: var(--ht-color-text-light);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
 }
 
 .summary-value {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--ht-color-text);
+    font-size: 1rem;
+    line-height: 1.4;
 }
 
 /* Application Form */
@@ -629,5 +658,34 @@
     
     .job-info-cards {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .job-apply-section,
+    .elementor-location-header,
+    .elementor-location-footer,
+    .site-header,
+    .site-footer,
+    .actions-card,
+    #wpadminbar {
+        display: none !important;
+    }
+
+    .job-content-grid {
+        display: block;
+    }
+
+    .job-sidebar {
+        margin-top: 2rem;
+        page-break-inside: avoid;
+    }
+
+    .info-card, 
+    .sidebar-card,
+    .job-description-section {
+        box-shadow: none;
+        border: 1px solid #ddd;
     }
 }

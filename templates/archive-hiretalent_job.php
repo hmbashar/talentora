@@ -17,19 +17,26 @@ get_header();
 ?>
 
 <div class="hiretalent-archive-wrapper">
-    <header class="page-header">
-        <h1 class="page-title">
-            <?php esc_html_e('Job Listings', 'hiretalent'); ?>
-        </h1>
-        <?php
-        $description = get_the_archive_description();
-        if ($description) {
-            echo '<div class="archive-description">' . wp_kses_post($description) . '</div>';
-        }
-        ?>
+    <header class="hiretalent-page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">
+                <span class="dashicons dashicons-portfolio"></span>
+                <?php esc_html_e('Job Opportunities', 'hiretalent'); ?>
+            </h1>
+            <?php
+            $description = get_the_archive_description();
+            if ($description) {
+                echo '<div class="archive-description">' . wp_kses_post($description) . '</div>';
+            } else {
+                echo '<p class="archive-subtitle">' . esc_html__('Explore exciting career opportunities and find your next role', 'hiretalent') . '</p>';
+            }
+            ?>
+        </div>
     </header>
 
-    <?php echo do_shortcode('[hiretalent_jobs]'); ?>
+    <div class="hiretalent-archive-content">
+        <?php echo do_shortcode('[hiretalent_jobs]'); ?>
+    </div>
 </div>
 
 <?php

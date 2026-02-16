@@ -63,6 +63,10 @@ class JobMetabox
         $salary_min = get_post_meta($post->ID, 'hiretalent_salary_min', true);
         $salary_max = get_post_meta($post->ID, 'hiretalent_salary_max', true);
         $deadline = get_post_meta($post->ID, 'hiretalent_deadline', true);
+        $experience = get_post_meta($post->ID, 'hiretalent_experience', true);
+        $vacancy = get_post_meta($post->ID, 'hiretalent_vacancy', true);
+        $working_hours = get_post_meta($post->ID, 'hiretalent_working_hours', true);
+        $working_days = get_post_meta($post->ID, 'hiretalent_working_days', true);
         $joining_date = get_post_meta($post->ID, 'hiretalent_joining_date', true);
         $company_name = get_post_meta($post->ID, 'hiretalent_company_name', true);
         $company_website = get_post_meta($post->ID, 'hiretalent_company_website', true);
@@ -72,173 +76,275 @@ class JobMetabox
 
         ?>
         <div class="hiretalent-metabox">
-            <div class="field-group">
-                <label for="hiretalent_location">
-                    <?php esc_html_e('Location', 'hiretalent'); ?>
-                </label>
-                <input type="text" id="hiretalent_location" name="hiretalent_location"
-                    value="<?php echo esc_attr($location); ?>"
-                    placeholder="<?php esc_attr_e('e.g., New York, NY', 'hiretalent'); ?>">
-            </div>
 
-            <div class="field-group">
-                <label>
-                    <?php esc_html_e('Salary Range', 'hiretalent'); ?>
-                </label>
-                <div class="salary-fields">
-                    <div>
-                        <label for="hiretalent_salary_min">
-                            <?php esc_html_e('Minimum', 'hiretalent'); ?>
+            <!-- Job Information Section -->
+            <div class="hiretalent-section">
+                <div class="section-header">
+                    <h3><span class="dashicons dashicons-portfolio"></span>
+                        <?php esc_html_e('Job Information', 'hiretalent'); ?></h3>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_location">
+                            <span class="dashicons dashicons-location"></span>
+                            <?php esc_html_e('Location', 'hiretalent'); ?>
                         </label>
-                        <input type="number" id="hiretalent_salary_min" name="hiretalent_salary_min"
-                            value="<?php echo esc_attr($salary_min); ?>"
-                            placeholder="<?php esc_attr_e('e.g., 50000', 'hiretalent'); ?>" min="0" step="1000">
+                        <input type="text" id="hiretalent_location" name="hiretalent_location"
+                            value="<?php echo esc_attr($location); ?>"
+                            placeholder="<?php esc_attr_e('e.g., New York, NY', 'hiretalent'); ?>" class="hiretalent-input">
                     </div>
-                    <div>
-                        <label for="hiretalent_salary_max">
-                            <?php esc_html_e('Maximum', 'hiretalent'); ?>
+
+                    <div class="field-group half-width">
+                        <label>
+                            <span class="dashicons dashicons-money-alt"></span>
+                            <?php esc_html_e('Salary Range', 'hiretalent'); ?>
                         </label>
-                        <input type="number" id="hiretalent_salary_max" name="hiretalent_salary_max"
-                            value="<?php echo esc_attr($salary_max); ?>"
-                            placeholder="<?php esc_attr_e('e.g., 80000', 'hiretalent'); ?>" min="0" step="1000">
+                        <div class="salary-fields">
+                            <div class="salary-field">
+                                <input type="number" id="hiretalent_salary_min" name="hiretalent_salary_min"
+                                    value="<?php echo esc_attr($salary_min); ?>"
+                                    placeholder="<?php esc_attr_e('Min', 'hiretalent'); ?>" min="0" step="1000"
+                                    class="hiretalent-input">
+                            </div>
+                            <span class="salary-separator">—</span>
+                            <div class="salary-field">
+                                <input type="number" id="hiretalent_salary_max" name="hiretalent_salary_max"
+                                    value="<?php echo esc_attr($salary_max); ?>"
+                                    placeholder="<?php esc_attr_e('Max', 'hiretalent'); ?>" min="0" step="1000"
+                                    class="hiretalent-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_experience">
+                            <span class="dashicons dashicons-welcome-learn-more"></span>
+                            <?php esc_html_e('Experience', 'hiretalent'); ?>
+                        </label>
+                        <input type="text" id="hiretalent_experience" name="hiretalent_experience"
+                            value="<?php echo esc_attr($experience); ?>"
+                            placeholder="<?php esc_attr_e('e.g., 2 Years+', 'hiretalent'); ?>" class="hiretalent-input">
+                    </div>
+
+                    <div class="field-group half-width">
+                        <label for="hiretalent_vacancy">
+                            <span class="dashicons dashicons-groups"></span>
+                            <?php esc_html_e('Vacancy', 'hiretalent'); ?>
+                        </label>
+                        <input type="number" id="hiretalent_vacancy" name="hiretalent_vacancy"
+                            value="<?php echo esc_attr($vacancy); ?>"
+                            placeholder="<?php esc_attr_e('e.g., 3', 'hiretalent'); ?>" min="1" class="hiretalent-input">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_working_hours">
+                            <span class="dashicons dashicons-clock"></span>
+                            <?php esc_html_e('Working Hours', 'hiretalent'); ?>
+                        </label>
+                        <input type="text" id="hiretalent_working_hours" name="hiretalent_working_hours"
+                            value="<?php echo esc_attr($working_hours); ?>"
+                            placeholder="<?php esc_attr_e('e.g., 9:00 AM - 5:00 PM', 'hiretalent'); ?>"
+                            class="hiretalent-input">
+                    </div>
+
+                    <div class="field-group half-width">
+                        <label for="hiretalent_working_days">
+                            <span class="dashicons dashicons-calendar-alt"></span>
+                            <?php esc_html_e('Working Days', 'hiretalent'); ?>
+                        </label>
+                        <input type="text" id="hiretalent_working_days" name="hiretalent_working_days"
+                            value="<?php echo esc_attr($working_days); ?>"
+                            placeholder="<?php esc_attr_e('e.g., Mon - Fri', 'hiretalent'); ?>" class="hiretalent-input">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_deadline">
+                            <span class="dashicons dashicons-calendar-alt"></span>
+                            <?php esc_html_e('Application Deadline', 'hiretalent'); ?>
+                        </label>
+                        <input type="date" id="hiretalent_deadline" name="hiretalent_deadline"
+                            value="<?php echo esc_attr($deadline); ?>" class="hiretalent-input">
+                    </div>
+
+                    <div class="field-group half-width">
+                        <label for="hiretalent_joining_date">
+                            <span class="dashicons dashicons-calendar"></span>
+                            <?php esc_html_e('Expected Joining Date', 'hiretalent'); ?>
+                        </label>
+                        <input type="date" id="hiretalent_joining_date" name="hiretalent_joining_date"
+                            value="<?php echo esc_attr($joining_date); ?>" class="hiretalent-input">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_expiry_date">
+                            <span class="dashicons dashicons-clock"></span>
+                            <?php esc_html_e('Expiry Date (Optional)', 'hiretalent'); ?>
+                        </label>
+                        <input type="date" id="hiretalent_expiry_date" name="hiretalent_expiry_date"
+                            value="<?php echo esc_attr($expiry_date); ?>" class="hiretalent-input">
+                        <p class="description">
+                            <?php esc_html_e('Job will be automatically hidden after this date.', 'hiretalent'); ?>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="field-group">
-                <label for="hiretalent_deadline">
-                    <?php esc_html_e('Application Deadline', 'hiretalent'); ?>
-                </label>
-                <input type="date" id="hiretalent_deadline" name="hiretalent_deadline"
-                    value="<?php echo esc_attr($deadline); ?>">
-            </div>
-
-            <div class="field-group">
-                <label for="hiretalent_joining_date">
-                    <?php esc_html_e('Expected Joining Date', 'hiretalent'); ?>
-                </label>
-                <input type="date" id="hiretalent_joining_date" name="hiretalent_joining_date"
-                    value="<?php echo esc_attr($joining_date); ?>">
-            </div>
-
-            <div class="field-group">
-                <label for="hiretalent_company_name">
-                    <?php esc_html_e('Company Name', 'hiretalent'); ?>
-                </label>
-                <input type="text" id="hiretalent_company_name" name="hiretalent_company_name"
-                    value="<?php echo esc_attr($company_name); ?>"
-                    placeholder="<?php esc_attr_e('e.g., Acme Corporation', 'hiretalent'); ?>">
-            </div>
-
-            <div class="field-group">
-                <label for="hiretalent_company_website">
-                    <?php esc_html_e('Company Website', 'hiretalent'); ?>
-                </label>
-                <input type="url" id="hiretalent_company_website" name="hiretalent_company_website"
-                    value="<?php echo esc_attr($company_website); ?>"
-                    placeholder="<?php esc_attr_e('https://example.com', 'hiretalent'); ?>">
-            </div>
-
-            <div class="field-group">
-                <label>
-                    <?php esc_html_e('Company Logo', 'hiretalent'); ?>
-                </label>
-                <input type="hidden" id="hiretalent_company_logo_id" name="hiretalent_company_logo_id"
-                    value="<?php echo esc_attr($company_logo_id); ?>">
-                <button type="button" class="button" id="hiretalent_upload_logo_button">
-                    <?php esc_html_e('Upload Logo', 'hiretalent'); ?>
-                </button>
-                <button type="button" class="button" id="hiretalent_remove_logo_button"
-                    style="<?php echo empty($company_logo_id) ? 'display:none;' : ''; ?>">
-                    <?php esc_html_e('Remove Logo', 'hiretalent'); ?>
-                </button>
-                <div class="company-logo-preview" id="hiretalent_logo_preview">
-                    <?php if ($company_logo_id): ?>
-                        <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
-                    <?php endif; ?>
+            <!-- Company Information Section -->
+            <div class="hiretalent-section">
+                <div class="section-header">
+                    <h3><span class="dashicons dashicons-building"></span>
+                        <?php esc_html_e('Company Information', 'hiretalent'); ?></h3>
                 </div>
-            </div>
 
-            <div class="field-group">
-                <label for="hiretalent_expiry_date">
-                    <?php esc_html_e('Expiry Date (Optional)', 'hiretalent'); ?>
-                </label>
-                <input type="date" id="hiretalent_expiry_date" name="hiretalent_expiry_date"
-                    value="<?php echo esc_attr($expiry_date); ?>">
-                <p class="description">
-                    <?php esc_html_e('Job will be automatically hidden after this date.', 'hiretalent'); ?>
-                </p>
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_company_name">
+                            <span class="dashicons dashicons-businessperson"></span>
+                            <?php esc_html_e('Company Name', 'hiretalent'); ?>
+                        </label>
+                        <input type="text" id="hiretalent_company_name" name="hiretalent_company_name"
+                            value="<?php echo esc_attr($company_name); ?>"
+                            placeholder="<?php esc_attr_e('e.g., Acme Corporation', 'hiretalent'); ?>" class="hiretalent-input">
+                    </div>
+
+                    <div class="field-group half-width">
+                        <label for="hiretalent_company_website">
+                            <span class="dashicons dashicons-admin-site"></span>
+                            <?php esc_html_e('Company Website', 'hiretalent'); ?>
+                        </label>
+                        <input type="url" id="hiretalent_company_website" name="hiretalent_company_website"
+                            value="<?php echo esc_attr($company_website); ?>"
+                            placeholder="<?php esc_attr_e('https://example.com', 'hiretalent'); ?>" class="hiretalent-input">
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>
+                        <span class="dashicons dashicons-format-image"></span>
+                        <?php esc_html_e('Company Logo', 'hiretalent'); ?>
+                    </label>
+                    <div class="logo-upload-wrapper">
+                        <input type="hidden" id="hiretalent_company_logo_id" name="hiretalent_company_logo_id"
+                            value="<?php echo esc_attr($company_logo_id); ?>">
+                        <div class="logo-upload-area">
+                            <div class="company-logo-preview" id="hiretalent_logo_preview">
+                                <?php if ($company_logo_id): ?>
+                                    <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
+                                <?php else: ?>
+                                    <div class="logo-placeholder">
+                                        <span class="dashicons dashicons-format-image"></span>
+                                        <p><?php esc_html_e('No logo uploaded', 'hiretalent'); ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="logo-buttons">
+                                <button type="button" class="button button-primary" id="hiretalent_upload_logo_button">
+                                    <span class="dashicons dashicons-upload"></span>
+                                    <?php esc_html_e('Upload Logo', 'hiretalent'); ?>
+                                </button>
+                                <button type="button" class="button button-secondary" id="hiretalent_remove_logo_button"
+                                    style="<?php echo empty($company_logo_id) ? 'display:none;' : ''; ?>">
+                                    <span class="dashicons dashicons-trash"></span>
+                                    <?php esc_html_e('Remove', 'hiretalent'); ?>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Application Settings Section -->
-            <hr style="margin: 30px 0; border: none; border-top: 2px solid #ddd;">
-            <h3><?php esc_html_e('Application Settings', 'hiretalent'); ?></h3>
+            <div class="hiretalent-section">
+                <div class="section-header">
+                    <h3><span class="dashicons dashicons-admin-settings"></span>
+                        <?php esc_html_e('Application Settings', 'hiretalent'); ?></h3>
+                </div>
 
-            <?php
-            $application_type = get_post_meta($post->ID, 'hiretalent_application_type', true);
-            if (empty($application_type)) {
-                $application_type = 'third_party'; // Default
-            }
-            $third_party_shortcode = get_post_meta($post->ID, 'hiretalent_third_party_shortcode', true);
-            $status = get_post_meta($post->ID, 'hiretalent_job_status', true);
-            if (empty($status)) {
-                $status = 'open'; // Default
-            }
-            ?>
+                <?php
+                $application_type = get_post_meta($post->ID, 'hiretalent_application_type', true);
+                if (empty($application_type)) {
+                    $application_type = 'third_party'; // Default
+                }
+                $third_party_shortcode = get_post_meta($post->ID, 'hiretalent_third_party_shortcode', true);
+                $status = get_post_meta($post->ID, 'hiretalent_job_status', true);
+                if (empty($status)) {
+                    $status = 'open'; // Default
+                }
+                ?>
 
-            <div class="field-group">
-                <label for="hiretalent_job_status">
-                    <?php esc_html_e('Job Status', 'hiretalent'); ?>
-                </label>
-                <select id="hiretalent_job_status" name="hiretalent_job_status" style="max-width: 400px;">
-                    <option value="open" <?php selected($status, 'open'); ?>>
-                        <?php esc_html_e('Open', 'hiretalent'); ?>
-                    </option>
-                    <option value="closed" <?php selected($status, 'closed'); ?>>
-                        <?php esc_html_e('Closed', 'hiretalent'); ?>
-                    </option>
-                    <option value="filled" <?php selected($status, 'filled'); ?>>
-                        <?php esc_html_e('Filled', 'hiretalent'); ?>
-                    </option>
-                </select>
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <label for="hiretalent_job_status">
+                            <span class="dashicons dashicons-marker"></span>
+                            <?php esc_html_e('Job Status', 'hiretalent'); ?>
+                        </label>
+                        <select id="hiretalent_job_status" name="hiretalent_job_status" class="hiretalent-select">
+                            <option value="open" <?php selected($status, 'open'); ?>>
+                                <?php esc_html_e('✓ Open', 'hiretalent'); ?>
+                            </option>
+                            <option value="closed" <?php selected($status, 'closed'); ?>>
+                                <?php esc_html_e('✕ Closed', 'hiretalent'); ?>
+                            </option>
+                            <option value="filled" <?php selected($status, 'filled'); ?>>
+                                <?php esc_html_e('★ Filled', 'hiretalent'); ?>
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="field-group half-width">
+                        <label for="hiretalent_application_type">
+                            <span class="dashicons dashicons-forms"></span>
+                            <?php esc_html_e('Application Type', 'hiretalent'); ?>
+                        </label>
+                        <select id="hiretalent_application_type" name="hiretalent_application_type" class="hiretalent-select">
+                            <option value="third_party" <?php selected($application_type, 'third_party'); ?>>
+                                <?php esc_html_e('Third Party Form', 'hiretalent'); ?>
+                            </option>
+                            <option value="builtin" <?php selected($application_type, 'builtin'); ?>>
+                                <?php esc_html_e('Built-in Application System', 'hiretalent'); ?>
+                            </option>
+                        </select>
+                        <p class="description">
+                            <?php esc_html_e('Choose how applicants will apply for this job.', 'hiretalent'); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="field-group" id="hiretalent_third_party_field"
+                    style="<?php echo ($application_type === 'builtin') ? 'display:none;' : ''; ?>">
+                    <label for="hiretalent_third_party_shortcode">
+                        <span class="dashicons dashicons-shortcode"></span>
+                        <?php esc_html_e('Third Party Form Shortcode', 'hiretalent'); ?>
+                    </label>
+                    <input type="text" id="hiretalent_third_party_shortcode" name="hiretalent_third_party_shortcode"
+                        value="<?php echo esc_attr($third_party_shortcode); ?>"
+                        placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>" class="hiretalent-input">
+                    <p class="description">
+                        <span class="dashicons dashicons-info"></span>
+                        <?php esc_html_e('Enter the shortcode for your contact form. Leave empty to use global setting.', 'hiretalent'); ?>
+                    </p>
+                </div>
+
+                <div class="field-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
+                        <span class="checkbox-text">
+                            <span class="dashicons dashicons-yes"></span>
+                            <?php esc_html_e('Mark this job as filled', 'hiretalent'); ?>
+                        </span>
+                    </label>
+                </div>
             </div>
 
-            <div class="field-group">
-                <label for="hiretalent_application_type">
-                    <?php esc_html_e('Application Type', 'hiretalent'); ?>
-                </label>
-                <select id="hiretalent_application_type" name="hiretalent_application_type" style="max-width: 400px;">
-                    <option value="third_party" <?php selected($application_type, 'third_party'); ?>>
-                        <?php esc_html_e('Third Party Form', 'hiretalent'); ?>
-                    </option>
-                    <option value="builtin" <?php selected($application_type, 'builtin'); ?>>
-                        <?php esc_html_e('Built-in Application System', 'hiretalent'); ?>
-                    </option>
-                </select>
-                <p class="description">
-                    <?php esc_html_e('Choose how applicants will apply for this job.', 'hiretalent'); ?>
-                </p>
-            </div>
-
-            <div class="field-group" id="hiretalent_third_party_field"
-                style="<?php echo ($application_type === 'builtin') ? 'display:none;' : ''; ?>">
-                <label for="hiretalent_third_party_shortcode">
-                    <?php esc_html_e('Third Party Form Shortcode', 'hiretalent'); ?>
-                </label>
-                <input type="text" id="hiretalent_third_party_shortcode" name="hiretalent_third_party_shortcode"
-                    value="<?php echo esc_attr($third_party_shortcode); ?>"
-                    placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>" style="max-width: 400px;">
-                <p class="description">
-                    <?php esc_html_e('Enter the shortcode for your contact form. Leave empty to use global setting.', 'hiretalent'); ?>
-                </p>
-            </div>
-
-            <div class="field-group">
-                <label>
-                    <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
-                    <?php esc_html_e('Mark this job as filled', 'hiretalent'); ?>
-                </label>
-            </div>
         </div>
         <?php
     }
@@ -290,6 +396,26 @@ class JobMetabox
         // Save joining date
         if (isset($_POST['hiretalent_joining_date'])) {
             update_post_meta($post_id, 'hiretalent_joining_date', sanitize_text_field($_POST['hiretalent_joining_date']));
+        }
+
+        // Save experience
+        if (isset($_POST['hiretalent_experience'])) {
+            update_post_meta($post_id, 'hiretalent_experience', sanitize_text_field($_POST['hiretalent_experience']));
+        }
+
+        // Save vacancy
+        if (isset($_POST['hiretalent_vacancy'])) {
+            update_post_meta($post_id, 'hiretalent_vacancy', absint($_POST['hiretalent_vacancy']));
+        }
+
+        // Save working hours
+        if (isset($_POST['hiretalent_working_hours'])) {
+            update_post_meta($post_id, 'hiretalent_working_hours', sanitize_text_field($_POST['hiretalent_working_hours']));
+        }
+
+        // Save working days
+        if (isset($_POST['hiretalent_working_days'])) {
+            update_post_meta($post_id, 'hiretalent_working_days', sanitize_text_field($_POST['hiretalent_working_days']));
         }
 
         // Save company name
