@@ -40,12 +40,23 @@ class ApplicationHandler
     {
         $this->notification_manager = new \HireTalent\NotificationManager();
 
-        add_action('init', array($this, 'handle_application_submission'));
+        add_action('admin_post_hiretalent_submit_application', array($this, 'handle_application_submission'));
+        add_action('admin_post_nopriv_hiretalent_submit_application', array($this, 'handle_application_submission'));
+
+        // AJAX handlers
+        add_action('wp_ajax_hiretalent_submit_application', array($this, 'handle_ajax_application_submission'));
+        add_action('wp_ajax_nopriv_hiretalent_submit_application', array($this, 'handle_ajax_application_submission'));
+
         add_shortcode('hiretalent_application_form', array($this, 'render_application_form'));
     }
 
     /**
      * Handle application form submission.
+     *
+     * @since 1.0.0
+     */
+    /**
+     * Handle application form submission via standard POST.
      *
      * @since 1.0.0
      */
@@ -60,17 +71,77 @@ class ApplicationHandler
             wp_die(__('Security check failed.', 'hiretalent'));
         }
 
-        // Get and validate job ID
+        $result = $this->process_application_submission($_POST, $_FILES);
         $job_id = isset($_POST['job_id']) ? absint($_POST['job_id']) : 0;
+
+        if ($result['success']) {
+            set_transient('hiretalent_application_success_' . $job_id, true, 60);
+            wp_safe_redirect(get_permalink($job_id) . '#application-success');
+            exit;
+        } else {
+            if (!empty($result['errors'])) {
+                set_transient('hiretalent_application_errors_' . $job_id, $result['errors'], 60);
+                set_transient('hiretalent_application_data_' . $job_id, $_POST, 60);
+            }
+            wp_safe_redirect(get_permalink($job_id) . '#application-form');
+            exit;
+        }
+    }
+
+    /**
+     * Handle AJAX application form submission.
+     *
+     * @since 1.1.0
+     */
+    public function handle_ajax_application_submission()
+    {
+        check_ajax_referer('hiretalent_submit_application', 'hiretalent_application_nonce');
+
+        $result = $this->process_application_submission($_POST, $_FILES);
+
+        if ($result['success']) {
+            wp_send_json_success(array('message' => $result['message']));
+        } else {
+            wp_send_json_error(array(
+                'message' => $result['message'],
+                'messages' => $result['errors']
+            ));
+        }
+    }
+
+    /**
+     * Process application submission logic.
+     *
+     * @param array $post_data Submitted POST data.
+     * @param array $files     Submitted FILES data.
+     * @return array Results array with success and errors.
+     * @since 1.1.0
+     */
+    private function process_application_submission($post_data, $files)
+    {
+        // Get and validate job ID
+        $job_id = isset($post_data['job_id']) ? absint($post_data['job_id']) : 0;
         if (!$job_id || get_post_type($job_id) !== 'hiretalent_job') {
-            wp_die(__('Invalid job ID.', 'hiretalent'));
+            return array(
+                'success' => false,
+                'message' => __('Invalid job ID.', 'hiretalent'),
+                'errors' => array(__('Invalid job ID.', 'hiretalent'))
+            );
+        }
+
+        // Honeypot check
+        if (!empty($post_data['hiretalent_website'])) {
+            return array(
+                'success' => true, // Silently succeed for bots
+                'message' => __('Application submitted successfully.', 'hiretalent')
+            );
         }
 
         // Sanitize inputs
-        $name = isset($_POST['applicant_name']) ? sanitize_text_field($_POST['applicant_name']) : '';
-        $email = isset($_POST['applicant_email']) ? sanitize_email($_POST['applicant_email']) : '';
-        $phone = isset($_POST['applicant_phone']) ? sanitize_text_field($_POST['applicant_phone']) : '';
-        $cover_letter = isset($_POST['cover_letter']) ? sanitize_textarea_field($_POST['cover_letter']) : '';
+        $name = isset($post_data['applicant_name']) ? sanitize_text_field($post_data['applicant_name']) : '';
+        $email = isset($post_data['applicant_email']) ? sanitize_email($post_data['applicant_email']) : '';
+        $phone = isset($post_data['applicant_phone']) ? sanitize_text_field($post_data['applicant_phone']) : '';
+        $cover_letter = isset($post_data['cover_letter']) ? sanitize_textarea_field($post_data['cover_letter']) : '';
 
         // Validate required fields
         $errors = array();
@@ -93,18 +164,19 @@ class ApplicationHandler
 
         // Handle resume upload
         $resume_id = 0;
-        if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
-            $resume_id = $this->handle_resume_upload($_FILES['resume'], $errors);
+        if (isset($files['resume']) && $files['resume']['error'] === UPLOAD_ERR_OK) {
+            $resume_id = $this->handle_resume_upload($files['resume'], $errors);
         } else {
             $errors[] = __('Resume is required.', 'hiretalent');
         }
 
-        // If there are errors, store them in session and redirect back
+        // Return error if any
         if (!empty($errors)) {
-            set_transient('hiretalent_application_errors_' . $job_id, $errors, 60);
-            set_transient('hiretalent_application_data_' . $job_id, $_POST, 60);
-            wp_safe_redirect(get_permalink($job_id) . '#application-form');
-            exit;
+            return array(
+                'success' => false,
+                'message' => __('Please fix the errors below.', 'hiretalent'),
+                'errors' => $errors
+            );
         }
 
         // Create application post
@@ -112,18 +184,22 @@ class ApplicationHandler
 
         if ($application_id) {
             // Send notifications
-            $this->notification_manager->send_admin_notification($application_id);
-            $this->notification_manager->send_applicant_confirmation($application_id);
+            if (isset($this->notification_manager)) {
+                $this->notification_manager->send_admin_notification($application_id);
+                $this->notification_manager->send_applicant_confirmation($application_id);
+            }
 
-            // Set success message
-            set_transient('hiretalent_application_success_' . $job_id, true, 60);
-            wp_safe_redirect(get_permalink($job_id) . '#application-success');
-            exit;
-        } else {
-            set_transient('hiretalent_application_errors_' . $job_id, array(__('Failed to submit application. Please try again.', 'hiretalent')), 60);
-            wp_safe_redirect(get_permalink($job_id) . '#application-form');
-            exit;
+            return array(
+                'success' => true,
+                'message' => __('Thank you! Your application has been submitted successfully.', 'hiretalent')
+            );
         }
+
+        return array(
+            'success' => false,
+            'message' => __('Failed to submit application. Please try again.', 'hiretalent'),
+            'errors' => array(__('Failed to submit application. Please try again.', 'hiretalent'))
+        );
     }
 
     /**
@@ -264,65 +340,90 @@ class ApplicationHandler
         ob_start();
         ?>
         <div id="application-form" class="hiretalent-application-form">
-            <?php if ($errors): ?>
-                <div class="hiretalent-message hiretalent-error">
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li>
-                                <?php echo esc_html($error); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
+            <div id="hiretalent-form-state" class="hiretalent-form-state" data-state="<?php
+            if ($success) {
+                echo esc_attr(json_encode(array('status' => 'success', 'message' => __('Thank you! Your application has been submitted successfully.', 'hiretalent'))));
+            } elseif ($errors) {
+                echo esc_attr(json_encode(array('status' => 'error', 'messages' => $errors)));
+            }
+            ?>"></div>
 
             <form method="post" enctype="multipart/form-data" class="hiretalent-form">
                 <?php wp_nonce_field('hiretalent_submit_application', 'hiretalent_application_nonce'); ?>
                 <input type="hidden" name="job_id" value="<?php echo esc_attr($job_id); ?>">
 
-                <div class="hiretalent-form-field">
-                    <label for="applicant_name">
-                        <?php esc_html_e('Full Name', 'hiretalent'); ?> <span class="required">*</span>
-                    </label>
-                    <input type="text" id="applicant_name" name="applicant_name"
-                        value="<?php echo isset($data['applicant_name']) ? esc_attr($data['applicant_name']) : ''; ?>" required>
+                <!-- Honeypot Field -->
+                <div style="display:none;">
+                    <label for="hiretalent_website"><?php esc_html_e('Website', 'hiretalent'); ?></label>
+                    <input type="text" id="hiretalent_website" name="hiretalent_website" value="">
                 </div>
 
-                <div class="hiretalent-form-field">
-                    <label for="applicant_email">
-                        <?php esc_html_e('Email Address', 'hiretalent'); ?> <span class="required">*</span>
-                    </label>
-                    <input type="email" id="applicant_email" name="applicant_email"
-                        value="<?php echo isset($data['applicant_email']) ? esc_attr($data['applicant_email']) : ''; ?>"
-                        required>
+                <div class="form-grid-row">
+                    <div class="hiretalent-form-field">
+                        <label for="applicant_name">
+                            <?php esc_html_e('Full Name', 'hiretalent'); ?> <span class="required">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <span class="dashicons dashicons-admin-users"></span>
+                            <input type="text" id="applicant_name" name="applicant_name"
+                                value="<?php echo isset($data['applicant_name']) ? esc_attr($data['applicant_name']) : ''; ?>"
+                                placeholder="<?php esc_attr_e('John Doe', 'hiretalent'); ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="hiretalent-form-field">
+                        <label for="applicant_email">
+                            <?php esc_html_e('Email Address', 'hiretalent'); ?> <span class="required">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <span class="dashicons dashicons-email"></span>
+                            <input type="email" id="applicant_email" name="applicant_email"
+                                value="<?php echo isset($data['applicant_email']) ? esc_attr($data['applicant_email']) : ''; ?>"
+                                placeholder="<?php esc_attr_e('john@example.com', 'hiretalent'); ?>" required>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="hiretalent-form-field">
-                    <label for="applicant_phone">
-                        <?php esc_html_e('Phone Number', 'hiretalent'); ?> <span class="required">*</span>
-                    </label>
-                    <input type="tel" id="applicant_phone" name="applicant_phone"
-                        value="<?php echo isset($data['applicant_phone']) ? esc_attr($data['applicant_phone']) : ''; ?>"
-                        required>
+                <div class="form-grid-row">
+                    <div class="hiretalent-form-field">
+                        <label for="applicant_phone">
+                            <?php esc_html_e('Phone Number', 'hiretalent'); ?> <span class="required">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <span class="dashicons dashicons-smartphone"></span>
+                            <input type="tel" id="applicant_phone" name="applicant_phone"
+                                value="<?php echo isset($data['applicant_phone']) ? esc_attr($data['applicant_phone']) : ''; ?>"
+                                placeholder="<?php esc_attr_e('+1 234 567 8900', 'hiretalent'); ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="hiretalent-form-field">
+                        <label for="resume">
+                            <?php esc_html_e('Resume / CV', 'hiretalent'); ?> <span class="required">*</span>
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="inputfile" required>
+                            <label for="resume" class="file-input-label">
+                                <span class="dashicons dashicons-upload"></span>
+                                <span class="file-label-text"><?php esc_html_e('Choose a file...', 'hiretalent'); ?></span>
+                            </label>
+                            <span class="file-help-text"><?php esc_html_e('PDF or DOC, max 5MB', 'hiretalent'); ?></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="hiretalent-form-field">
-                    <label for="resume">
-                        <?php esc_html_e('Resume (PDF or DOC, max 5MB)', 'hiretalent'); ?> <span class="required">*</span>
-                    </label>
-                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
-                </div>
-
-                <div class="hiretalent-form-field">
+                <div class="hiretalent-form-field full-width">
                     <label for="cover_letter">
                         <?php esc_html_e('Cover Letter', 'hiretalent'); ?> <span class="required">*</span>
                     </label>
-                    <textarea id="cover_letter" name="cover_letter" rows="8"
+                    <textarea id="cover_letter" name="cover_letter" rows="6"
+                        placeholder="<?php esc_attr_e('Tell us why you are a great fit for this role...', 'hiretalent'); ?>"
                         required><?php echo isset($data['cover_letter']) ? esc_textarea($data['cover_letter']) : ''; ?></textarea>
                 </div>
 
                 <div class="hiretalent-form-submit">
-                    <button type="submit" name="hiretalent_submit_application" class="hiretalent-button">
+                    <button type="submit" name="hiretalent_submit_application" class="hiretalent-button primary large">
+                        <span class="dashicons dashicons-paperplane"></span>
                         <?php esc_html_e('Submit Application', 'hiretalent'); ?>
                     </button>
                 </div>

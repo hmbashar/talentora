@@ -72,6 +72,29 @@ class Assets
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('hiretalent_filter_nonce'),
             ));
+
+            // Enqueue SweetAlert2
+            wp_enqueue_script(
+                'sweetalert2',
+                HIRETALENT_URL . 'assets/js/sweetalert2.all.min.js',
+                array(),
+                '11.0.18',
+                true
+            );
+
+            // Enqueue Application Form Redesign JS
+            wp_enqueue_script(
+                'hiretalent-application-form',
+                HIRETALENT_URL . 'assets/js/application-form.js',
+                array('jquery', 'sweetalert2'),
+                HIRETALENT_VERSION,
+                true
+            );
+
+            wp_localize_script('hiretalent-application-form', 'hiretalent_form_ajax', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('hiretalent_application_nonce'),
+            ));
         }
     }
 }

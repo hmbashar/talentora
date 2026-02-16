@@ -626,14 +626,180 @@
     line-height: 1.4;
 }
 
-/* Application Form */
-.job-apply-section {
-    background: var(--ht-color-white);
-    padding: 2.5rem;
-    border-radius: var(--ht-radius);
-    box-shadow: var(--ht-shadow-md);
-    border: 1px solid var(--ht-border-color);
+/* Application Form Redesign */
+.hiretalent-form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
+
+.form-grid-row {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.hiretalent-form-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.hiretalent-form-field.full-width {
+    width: 100%;
+}
+
+.hiretalent-form-field label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ht-color-text);
+}
+
+.hiretalent-form-field label .required {
+    color: #e53e3e;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon .dashicons {
+    position: absolute;
+    left: 1rem;
+    color: var(--ht-color-text-light);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.hiretalent-form-field input[type="text"],
+.hiretalent-form-field input[type="email"],
+.hiretalent-form-field input[type="tel"],
+.hiretalent-form-field textarea {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.75rem; /* Left padding for icon */
+    border: 1px solid var(--ht-border-color);
+    border-radius: var(--ht-radius);
+    font-size: 1rem;
+    color: var(--ht-color-text);
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.hiretalent-form-field textarea {
+    padding-left: 1rem; /* No icon for textarea usually */
+    resize: vertical;
+}
+
+.hiretalent-form-field input:focus,
+.hiretalent-form-field textarea:focus {
+    outline: none;
+    border-color: var(--ht-color-primary);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(var(--ht-color-primary-rgb), 0.1);
+}
+
+/* File Input Styling */
+.file-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background-color: #f8fafc;
+    border: 1px dashed var(--ht-border-color);
+    border-radius: var(--ht-radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.file-input-label:hover {
+    background-color: #edf2f7;
+    border-color: var(--ht-color-primary);
+}
+
+.inputfile:focus + .file-input-label {
+    box-shadow: 0 0 0 3px rgba(var(--ht-color-primary-rgb), 0.1);
+    border-color: var(--ht-color-primary);
+}
+
+.file-input-label .dashicons {
+    font-size: 1.25rem;
+    color: var(--ht-color-primary);
+}
+
+.file-label-text {
+    font-weight: 500;
+    color: var(--ht-color-text);
+}
+
+.file-help-text {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--ht-color-text-light);
+}
+
+/* Submit Button */
+.hiretalent-form-submit {
+    margin-top: 1rem;
+}
+
+.hiretalent-button.large {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: var(--ht-color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--ht-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.hiretalent-button.large:hover {
+    background: var(--ht-color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.hiretalent-button.large:active {
+    transform: translateY(0);
+}
+
+/* Responsive Form */
+@media (max-width: 768px) {
+    .form-grid-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
 
 .apply-subtitle {
     margin-bottom: 2rem;
@@ -688,4 +854,15 @@
         box-shadow: none;
         border: 1px solid #ddd;
     }
+}
+
+/* Loading Spinner */
+@keyframes ht-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: ht-spin 1s linear infinite;
+    display: inline-block;
 }
