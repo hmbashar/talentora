@@ -226,7 +226,7 @@ class Settings
         <input type="text" name="hiretalent_apply_form_shortcode" value="<?php echo esc_attr($value); ?>" class="regular-text"
             placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>">
         <p class="description">
-            <?php esc_html_e('Enter the shortcode of your contact/application form plugin. Leave empty to use the built-in form.', 'hiretalent'); ?>
+            <?php esc_html_e('Global Fallback: Enter a shortcode here only if you want to use the same form for ALL jobs. You can override this per job in the post editor.', 'hiretalent'); ?>
         </p>
         <?php
     }

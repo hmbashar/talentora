@@ -85,9 +85,61 @@ class Manager
      *
      * @since 1.0.0
      */
+    /**
+     * Perform daily maintenance tasks.
+     *
+     * @since 1.0.0
+     */
     public function daily_maintenance()
     {
         $notification_manager = new NotificationManager();
         $notification_manager->prune_logs(15);
+        $this->auto_close_jobs();
+    }
+
+    /**
+     * Automatically close jobs that have passed their deadline.
+     *
+     * @since 1.0.0
+     */
+    public function auto_close_jobs()
+    {
+        $today = date('Y-m-d');
+
+        $args = array(
+            'post_type' => 'hiretalent_job',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'meta_query' => array(
+                'relation' => 'AND',
+                array(
+                    'key' => 'hiretalent_deadline',
+                    'value' => $today,
+                    'compare' => '<',
+                    'type' => 'DATE',
+                ),
+                array(
+                    'key' => 'hiretalent_deadline',
+                    'value' => '',
+                    'compare' => '!=',
+                ),
+            ),
+        );
+
+        $query = new \WP_Query($args);
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $job_id = get_the_ID();
+                $status = get_post_meta($job_id, 'hiretalent_job_status', true);
+
+                // Only close if not already closed or filled
+                if ($status !== 'closed' && $status !== 'filled') {
+                    update_post_meta($job_id, 'hiretalent_job_status', 'closed');
+                }
+            }
+            wp_reset_postdata();
+        }
     }
 }

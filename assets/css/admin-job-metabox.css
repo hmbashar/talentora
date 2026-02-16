@@ -1,0 +1,38 @@
+/* Job Metabox Styles */
+.hiretalent-metabox .field-group {
+    margin-bottom: 20px;
+}
+
+.hiretalent-metabox label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.hiretalent-metabox input[type="text"],
+.hiretalent-metabox input[type="url"],
+.hiretalent-metabox input[type="number"],
+.hiretalent-metabox input[type="date"] {
+    width: 100%;
+    max-width: 400px;
+}
+
+.hiretalent-metabox .salary-fields {
+    display: flex;
+    gap: 15px;
+}
+
+.hiretalent-metabox .salary-fields>div {
+    flex: 1;
+}
+
+.hiretalent-metabox .company-logo-preview {
+    margin-top: 10px;
+}
+
+.hiretalent-metabox .company-logo-preview img {
+    max-width: 150px;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+}

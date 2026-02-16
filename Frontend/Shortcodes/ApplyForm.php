@@ -44,6 +44,19 @@ class ApplyForm
 
         $job_id = get_the_ID();
 
+        // Check Job Status
+        $status = get_post_meta($job_id, 'hiretalent_job_status', true);
+        $deadline = get_post_meta($job_id, 'hiretalent_deadline', true);
+        $today = current_time('Y-m-d');
+
+        if ($status === 'closed' || $status === 'filled') {
+            return '<div class="hiretalent-alert hiretalent-alert-warning">' . esc_html__('This position is currently closed and no longer accepting applications.', 'hiretalent') . '</div>';
+        }
+
+        if (!empty($deadline) && $deadline < $today) {
+            return '<div class="hiretalent-alert hiretalent-alert-warning">' . esc_html__('The application deadline for this position has passed.', 'hiretalent') . '</div>';
+        }
+
         // Get application type for this job
         $application_type = get_post_meta($job_id, 'hiretalent_application_type', true);
 

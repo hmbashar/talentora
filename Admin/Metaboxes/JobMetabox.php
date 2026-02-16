@@ -63,6 +63,7 @@ class JobMetabox
         $salary_min = get_post_meta($post->ID, 'hiretalent_salary_min', true);
         $salary_max = get_post_meta($post->ID, 'hiretalent_salary_max', true);
         $deadline = get_post_meta($post->ID, 'hiretalent_deadline', true);
+        $joining_date = get_post_meta($post->ID, 'hiretalent_joining_date', true);
         $company_name = get_post_meta($post->ID, 'hiretalent_company_name', true);
         $company_website = get_post_meta($post->ID, 'hiretalent_company_website', true);
         $company_logo_id = get_post_meta($post->ID, 'hiretalent_company_logo_id', true);
@@ -71,46 +72,6 @@ class JobMetabox
 
         ?>
         <div class="hiretalent-metabox">
-            <style>
-                .hiretalent-metabox .field-group {
-                    margin-bottom: 20px;
-                }
-
-                .hiretalent-metabox label {
-                    display: block;
-                    font-weight: 600;
-                    margin-bottom: 5px;
-                }
-
-                .hiretalent-metabox input[type="text"],
-                .hiretalent-metabox input[type="url"],
-                .hiretalent-metabox input[type="number"],
-                .hiretalent-metabox input[type="date"] {
-                    width: 100%;
-                    max-width: 400px;
-                }
-
-                .hiretalent-metabox .salary-fields {
-                    display: flex;
-                    gap: 15px;
-                }
-
-                .hiretalent-metabox .salary-fields>div {
-                    flex: 1;
-                }
-
-                .hiretalent-metabox .company-logo-preview {
-                    margin-top: 10px;
-                }
-
-                .hiretalent-metabox .company-logo-preview img {
-                    max-width: 150px;
-                    height: auto;
-                    border: 1px solid #ddd;
-                    padding: 5px;
-                }
-            </style>
-
             <div class="field-group">
                 <label for="hiretalent_location">
                     <?php esc_html_e('Location', 'hiretalent'); ?>
@@ -150,6 +111,14 @@ class JobMetabox
                 </label>
                 <input type="date" id="hiretalent_deadline" name="hiretalent_deadline"
                     value="<?php echo esc_attr($deadline); ?>">
+            </div>
+
+            <div class="field-group">
+                <label for="hiretalent_joining_date">
+                    <?php esc_html_e('Expected Joining Date', 'hiretalent'); ?>
+                </label>
+                <input type="date" id="hiretalent_joining_date" name="hiretalent_joining_date"
+                    value="<?php echo esc_attr($joining_date); ?>">
             </div>
 
             <div class="field-group">
@@ -211,7 +180,28 @@ class JobMetabox
                 $application_type = 'third_party'; // Default
             }
             $third_party_shortcode = get_post_meta($post->ID, 'hiretalent_third_party_shortcode', true);
+            $status = get_post_meta($post->ID, 'hiretalent_job_status', true);
+            if (empty($status)) {
+                $status = 'open'; // Default
+            }
             ?>
+
+            <div class="field-group">
+                <label for="hiretalent_job_status">
+                    <?php esc_html_e('Job Status', 'hiretalent'); ?>
+                </label>
+                <select id="hiretalent_job_status" name="hiretalent_job_status" style="max-width: 400px;">
+                    <option value="open" <?php selected($status, 'open'); ?>>
+                        <?php esc_html_e('Open', 'hiretalent'); ?>
+                    </option>
+                    <option value="closed" <?php selected($status, 'closed'); ?>>
+                        <?php esc_html_e('Closed', 'hiretalent'); ?>
+                    </option>
+                    <option value="filled" <?php selected($status, 'filled'); ?>>
+                        <?php esc_html_e('Filled', 'hiretalent'); ?>
+                    </option>
+                </select>
+            </div>
 
             <div class="field-group">
                 <label for="hiretalent_application_type">
@@ -249,55 +239,6 @@ class JobMetabox
                     <?php esc_html_e('Mark this job as filled', 'hiretalent'); ?>
                 </label>
             </div>
-
-            <script>
-                jQuery(document).ready(function ($) {
-                    var mediaUploader;
-
-                    // Media uploader for company logo
-                    $('#hiretalent_upload_logo_button').on('click', function (e) {
-                        e.preventDefault();
-
-                        if (mediaUploader) {
-                            mediaUploader.open();
-                            return;
-                        }
-
-                        mediaUploader = wp.media({
-                            title: '<?php esc_html_e('Choose Company Logo', 'hiretalent'); ?>',
-                            button: {
-                                text: '<?php esc_html_e('Use this logo', 'hiretalent'); ?>'
-                            },
-                            multiple: false
-                        });
-
-                        mediaUploader.on('select', function () {
-                            var attachment = mediaUploader.state().get('selection').first().toJSON();
-                            $('#hiretalent_company_logo_id').val(attachment.id);
-                            $('#hiretalent_logo_preview').html('<img src="' + attachment.url + '" style="max-width:150px;">');
-                            $('#hiretalent_remove_logo_button').show();
-                        });
-
-                        mediaUploader.open();
-                    });
-
-                    $('#hiretalent_remove_logo_button').on('click', function (e) {
-                        e.preventDefault();
-                        $('#hiretalent_company_logo_id').val('');
-                        $('#hiretalent_logo_preview').html('');
-                        $(this).hide();
-                    });
-
-                    // Toggle third party shortcode field based on application type
-                    $('#hiretalent_application_type').on('change', function () {
-                        if ($(this).val() === 'builtin') {
-                            $('#hiretalent_third_party_field').hide();
-                        } else {
-                            $('#hiretalent_third_party_field').show();
-                        }
-                    });
-                });
-            </script>
         </div>
         <?php
     }
@@ -346,6 +287,11 @@ class JobMetabox
             update_post_meta($post_id, 'hiretalent_deadline', sanitize_text_field($_POST['hiretalent_deadline']));
         }
 
+        // Save joining date
+        if (isset($_POST['hiretalent_joining_date'])) {
+            update_post_meta($post_id, 'hiretalent_joining_date', sanitize_text_field($_POST['hiretalent_joining_date']));
+        }
+
         // Save company name
         if (isset($_POST['hiretalent_company_name'])) {
             update_post_meta($post_id, 'hiretalent_company_name', sanitize_text_field($_POST['hiretalent_company_name']));
@@ -374,6 +320,11 @@ class JobMetabox
         // Save third party shortcode
         if (isset($_POST['hiretalent_third_party_shortcode'])) {
             update_post_meta($post_id, 'hiretalent_third_party_shortcode', sanitize_text_field($_POST['hiretalent_third_party_shortcode']));
+        }
+
+        // Save job status
+        if (isset($_POST['hiretalent_job_status'])) {
+            update_post_meta($post_id, 'hiretalent_job_status', sanitize_text_field($_POST['hiretalent_job_status']));
         }
 
         // Save is_filled
