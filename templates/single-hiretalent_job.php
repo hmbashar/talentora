@@ -80,6 +80,18 @@ while (have_posts()):
                                 <span><?php echo esc_html($job_types[0]->name); ?></span>
                             </div>
                         <?php endif; ?>
+
+                        <div class="hero-meta-item">
+                            <span class="dashicons dashicons-clock"></span>
+                            <span>
+                                <?php
+                                printf(
+                                    esc_html__('Posted %s ago', 'hiretalent'),
+                                    human_time_diff(get_the_time('U'), current_time('timestamp'))
+                                );
+                                ?>
+                            </span>
+                        </div>
                     </div>
 
                     <?php if ($company_website): ?>
@@ -388,11 +400,30 @@ while (have_posts()):
                                         <span class="dashicons dashicons-calendar"></span>
                                     </div>
                                     <div class="summary-content">
-                                        <span class="summary-label"><?php esc_html_e('Last Date of Submission', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($deadline))); ?></span>
+                                        <span
+                                            class="summary-label"><?php esc_html_e('Last Date of Submission', 'hiretalent'); ?></span>
+                                        <span
+                                            class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($deadline))); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
+
+                                <div class="summary-item">
+                                    <div class="summary-icon">
+                                        <span class="dashicons dashicons-clock"></span>
+                                    </div>
+                                    <div class="summary-content">
+                                        <span class="summary-label"><?php esc_html_e('Published', 'hiretalent'); ?></span>
+                                        <span class="summary-value">
+                                            <?php
+                                            printf(
+                                                esc_html__('%s ago', 'hiretalent'),
+                                                human_time_diff(get_the_time('U'), current_time('timestamp'))
+                                            );
+                                            ?>
+                                        </span>
+                                    </div>
+                                </div>
 
                             <?php if ($joining_date): ?>
                                 <div class="summary-item">
@@ -401,7 +432,8 @@ while (have_posts()):
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Joining Date', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($joining_date))); ?></span>
+                                        <span
+                                            class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($joining_date))); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
