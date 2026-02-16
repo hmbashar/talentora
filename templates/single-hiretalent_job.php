@@ -415,12 +415,7 @@ while (have_posts()):
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Published', 'hiretalent'); ?></span>
                                         <span class="summary-value">
-                                            <?php
-                                            printf(
-                                                esc_html__('%s ago', 'hiretalent'),
-                                                human_time_diff(get_the_time('U'), current_time('timestamp'))
-                                            );
-                                            ?>
+                                            <?php echo esc_html(get_the_date() . ' ' . get_the_time()); ?>
                                         </span>
                                     </div>
                                 </div>
