@@ -75,5 +75,19 @@ class Manager
         // Initialize admin and frontend managers
         $this->admin_manager = new AdminManager();
         $this->frontend_manager = new FrontendManager();
+
+        // Register daily maintenance hook
+        add_action('hiretalent_daily_event', array($this, 'daily_maintenance'));
+    }
+
+    /**
+     * Perform daily maintenance tasks.
+     *
+     * @since 1.0.0
+     */
+    public function daily_maintenance()
+    {
+        $notification_manager = new NotificationManager();
+        $notification_manager->prune_logs(15);
     }
 }

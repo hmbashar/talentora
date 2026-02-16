@@ -31,6 +31,11 @@ class Activate
 
         // Flush rewrite rules to ensure permalinks work
         flush_rewrite_rules();
+
+        // Schedule daily maintenance event
+        if (!wp_next_scheduled('hiretalent_daily_event')) {
+            wp_schedule_event(time(), 'daily', 'hiretalent_daily_event');
+        }
     }
 
     /**

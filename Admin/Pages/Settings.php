@@ -172,16 +172,18 @@ class Settings
                 <?php $this->render_email_log_tab(); ?>
             <?php else: ?>
                 <form action="options.php" method="post">
-                    <?php
-                    if ($active_tab == 'general') {
-                        settings_fields('hiretalent_general_settings');
-                        do_settings_sections('hiretalent_general_settings');
-                    } else if ($active_tab == 'email_templates') {
-                        settings_fields('hiretalent_email_settings');
-                        do_settings_sections('hiretalent_email_settings');
-                    }
-                    submit_button();
-                    ?>
+                    <div class="hiretalent-card">
+                        <?php
+                        if ($active_tab == 'general') {
+                            settings_fields('hiretalent_general_settings');
+                            do_settings_sections('hiretalent_general_settings');
+                        } else if ($active_tab == 'email_templates') {
+                            settings_fields('hiretalent_email_settings');
+                            do_settings_sections('hiretalent_email_settings');
+                        }
+                        ?>
+                    </div>
+                    <?php submit_button(); ?>
                 </form>
             <?php endif; ?>
         </div>
@@ -195,19 +197,23 @@ class Settings
     {
         $log_file = wp_upload_dir()['basedir'] . '/hiretalent-logs/email.log';
 
+        echo '<div class="hiretalent-card">';
         echo '<h3>' . esc_html__('Application Emails Log', 'hiretalent') . '</h3>';
 
         if (file_exists($log_file)) {
             $content = file_get_contents($log_file);
             echo '<div class="hiretalent-log-viewer">' . esc_html($content) . '</div>';
-            echo '<p class="description">' . esc_html__('This log file is located at: ', 'hiretalent') . esc_html($log_file) . '</p>';
+            echo '<p class="description details">' . esc_html__('This log file is located at: ', 'hiretalent') . esc_html($log_file) . '</p>';
 
             // Clear log button
-            echo '<button type="button" id="hiretalent-clear-log" class="button button-secondary">' . esc_html__('Clear Log', 'hiretalent') . '</button>';
-            echo '<p class="description" style="margin-top: 10px;">' . esc_html__('Note: Clearing the log is permanent.', 'hiretalent') . '</p>';
+            echo '<div class="hiretalent-actions">';
+            echo '<button type="button" id="hiretalent-clear-log" class="button button-danger">' . esc_html__('Clear Log', 'hiretalent') . '</button>';
+            echo '</div>';
+            echo '<p class="description warning" style="margin-top: 10px;">' . esc_html__('Note: Clearing the log is permanent.', 'hiretalent') . '</p>';
         } else {
             echo '<p>' . esc_html__('No log file found.', 'hiretalent') . '</p>';
         }
+        echo '</div>';
     }
 
     /**

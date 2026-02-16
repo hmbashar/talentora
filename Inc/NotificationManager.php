@@ -180,4 +180,51 @@ class NotificationManager
 
         error_log($log_entry, 3, $log_file);
     }
+
+    /**
+     * Prune email logs older than X days.
+     *
+     * @param int $days Number of days to keep logs.
+     * @return int Number of lines removed.
+     * @since 1.0.0
+     */
+    public function prune_logs($days = 15)
+    {
+        $log_dir = wp_upload_dir()['basedir'] . '/hiretalent-logs';
+        $log_file = $log_dir . '/email.log';
+
+        if (!file_exists($log_file)) {
+            return 0;
+        }
+
+        $lines = file($log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if (empty($lines)) {
+            return 0;
+        }
+
+        $cutoff_date = strtotime("-{$days} days");
+        $new_lines = array();
+        $removed_count = 0;
+
+        foreach ($lines as $line) {
+            // Extract timestamp from [Y-m-d H:i:s]
+            if (preg_match('/^\[(.*?)\]/', $line, $matches)) {
+                $timestamp = strtotime($matches[1]);
+                if ($timestamp >= $cutoff_date) {
+                    $new_lines[] = $line;
+                } else {
+                    $removed_count++;
+                }
+            } else {
+                // If format doesn't match, keep it to be safe
+                $new_lines[] = $line;
+            }
+        }
+
+        if ($removed_count > 0) {
+            file_put_contents($log_file, implode(PHP_EOL, $new_lines) . PHP_EOL);
+        }
+
+        return $removed_count;
+    }
 }

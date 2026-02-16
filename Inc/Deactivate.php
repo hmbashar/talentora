@@ -28,5 +28,8 @@ class Deactivate
     {
         // Flush rewrite rules
         flush_rewrite_rules();
+
+        // Clear scheduled events
+        wp_clear_scheduled_hook('hiretalent_daily_event');
     }
 }
