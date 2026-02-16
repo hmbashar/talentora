@@ -18,6 +18,7 @@ use HireTalent\Frontend\Shortcodes\JobsList;
 use HireTalent\Frontend\Shortcodes\ApplyForm;
 use HireTalent\Frontend\Templates;
 use HireTalent\Frontend\Assets\Assets;
+use HireTalent\Frontend\Applications\ApplicationHandler;
 
 /**
  * Frontend Manager class.
@@ -28,6 +29,7 @@ class FrontendManager
     protected $apply_form;
     protected $templates;
     protected $assets;
+    protected $application_handler;
 
     /**
      * Constructor.
@@ -50,5 +52,6 @@ class FrontendManager
         $this->apply_form = new ApplyForm();
         $this->templates = new Templates();
         $this->assets = new Assets();
+        $this->application_handler = new ApplicationHandler();
     }
 }

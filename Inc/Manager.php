@@ -21,6 +21,8 @@ use HireTalent\Admin\Inc\AdminManager;
 use HireTalent\Frontend\Inc\FrontendManager;
 use HireTalent\Modules\Jobs\PostType;
 use HireTalent\Modules\Jobs\Taxonomies;
+use HireTalent\Modules\Applications\ApplicationPostType;
+use HireTalent\Modules\Applications\ApplicationMeta;
 
 /**
  * The manager class for HireTalent.
@@ -38,6 +40,8 @@ class Manager
     protected $frontend_manager;
     protected $post_type;
     protected $taxonomies;
+    protected $application_post_type;
+    protected $application_meta;
 
     /**
      * Constructor for the Manager class.
@@ -63,6 +67,10 @@ class Manager
         // Initialize post type and taxonomies first
         $this->post_type = new PostType();
         $this->taxonomies = new Taxonomies();
+
+        // Initialize application modules
+        $this->application_post_type = new ApplicationPostType();
+        $this->application_meta = new ApplicationMeta();
 
         // Initialize admin and frontend managers
         $this->admin_manager = new AdminManager();

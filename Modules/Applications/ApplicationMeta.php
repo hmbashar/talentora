@@ -27,8 +27,8 @@ class ApplicationMeta
     public function __construct()
     {
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
-        add_filter('manage_hiretalent_application_posts_columns', array($this, 'set_custom_columns'));
-        add_action('manage_hiretalent_application_posts_custom_column', array($this, 'custom_column_content'), 10, 2);
+        add_filter('manage_hiretalent_app_posts_columns', array($this, 'set_custom_columns'));
+        add_action('manage_hiretalent_app_posts_custom_column', array($this, 'custom_column_content'), 10, 2);
     }
 
     /**
@@ -39,22 +39,22 @@ class ApplicationMeta
     public function add_meta_boxes()
     {
         add_meta_box(
-            'hiretalent_application_details',
+            'hiretalent_app_details',
             __('Application Details', 'hiretalent'),
-            array($this, 'render_details_meta_box'),
-            'hiretalent_application',
+            array($this, 'render_details_metabox'),
+            'hiretalent_app',
             'normal',
             'high'
         );
     }
 
     /**
-     * Render application details meta box.
+     * Render application details metabox.
      *
      * @param \WP_Post $post The post object.
      * @since 1.0.0
      */
-    public function render_details_meta_box($post)
+    public function render_details_metabox($post)
     {
         $job_id = get_post_meta($post->ID, 'hiretalent_job_id', true);
         $name = get_post_meta($post->ID, 'hiretalent_applicant_name', true);
@@ -189,7 +189,7 @@ class ApplicationMeta
         $new_columns['job'] = __('Job', 'hiretalent');
         $new_columns['email'] = __('Email', 'hiretalent');
         $new_columns['phone'] = __('Phone', 'hiretalent');
-        $new_columns['taxonomy-hiretalent_application_status'] = __('Status', 'hiretalent');
+        $new_columns['taxonomy-hiretalent_app_status'] = __('Status', 'hiretalent');
         $new_columns['date'] = __('Date', 'hiretalent');
 
         return $new_columns;

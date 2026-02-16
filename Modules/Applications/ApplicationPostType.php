@@ -69,7 +69,7 @@ class ApplicationPostType
             'show_in_rest' => false,
         );
 
-        register_post_type('hiretalent_application', $args);
+        register_post_type('hiretalent_app', $args);
     }
 
     /**
@@ -101,7 +101,7 @@ class ApplicationPostType
             'show_in_rest' => false,
         );
 
-        register_taxonomy('hiretalent_application_status', array('hiretalent_application'), $args);
+        register_taxonomy('hiretalent_app_status', array('hiretalent_app'), $args);
 
         // Add default statuses
         $this->create_default_statuses();
@@ -122,8 +122,8 @@ class ApplicationPostType
         );
 
         foreach ($statuses as $slug => $name) {
-            if (!term_exists($slug, 'hiretalent_application_status')) {
-                wp_insert_term($name, 'hiretalent_application_status', array('slug' => $slug));
+            if (!term_exists($slug, 'hiretalent_app_status')) {
+                wp_insert_term($name, 'hiretalent_app_status', array('slug' => $slug));
             }
         }
     }
