@@ -49,6 +49,12 @@ class Settings
             'default' => 10,
         ));
 
+        register_setting('hiretalent_settings', 'hiretalent_application_statuses', array(
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'default' => "Pending\nReviewed\nShortlisted\nRejected\nHired",
+        ));
+
         // Add settings section
         add_settings_section(
             'hiretalent_general_section',
@@ -70,6 +76,14 @@ class Settings
             'hiretalent_jobs_per_page',
             __('Jobs Per Page', 'hiretalent'),
             array($this, 'jobs_per_page_callback'),
+            'hiretalent_settings',
+            'hiretalent_general_section'
+        );
+
+        add_settings_field(
+            'hiretalent_application_statuses',
+            __('Application Statuses', 'hiretalent'),
+            array($this, 'application_statuses_callback'),
             'hiretalent_settings',
             'hiretalent_general_section'
         );

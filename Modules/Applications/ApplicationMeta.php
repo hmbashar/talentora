@@ -27,6 +27,7 @@ class ApplicationMeta
     public function __construct()
     {
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
+        add_action('save_post', array($this, 'save_application_meta'));
         add_filter('manage_hiretalent_app_posts_columns', array($this, 'set_custom_columns'));
         add_action('manage_hiretalent_app_posts_custom_column', array($this, 'custom_column_content'), 10, 2);
     }
@@ -62,6 +63,19 @@ class ApplicationMeta
         $phone = get_post_meta($post->ID, 'hiretalent_applicant_phone', true);
         $cover_letter = get_post_meta($post->ID, 'hiretalent_cover_letter', true);
         $resume_id = get_post_meta($post->ID, 'hiretalent_resume_id', true);
+
+        // Get statuses
+        $default_statuses = "Pending\nReviewed\nShortlisted\nRejected\nHired";
+        $statuses_option = get_option('hiretalent_application_statuses', $default_statuses);
+        $statuses = array_map('trim', explode("\n", $statuses_option));
+        $statuses = array_filter($statuses);
+
+        // Get current status
+        $current_status = '';
+        $terms = get_the_terms($post->ID, 'hiretalent_app_status');
+        if ($terms && !is_wp_error($terms)) {
+            $current_status = $terms[0]->name;
+        }
 
         ?>
         <style>
@@ -170,6 +184,22 @@ class ApplicationMeta
                     <?php echo esc_html(get_the_date('', $post)); ?>
                 </span>
             </div>
+
+            <div class="detail-row">
+                <span class="detail-label">
+                    <?php esc_html_e('Status:', 'hiretalent'); ?>
+                </span>
+                <span class="detail-value">
+                    <?php wp_nonce_field('hiretalent_save_application_status', 'hiretalent_application_status_nonce'); ?>
+                    <select name="hiretalent_application_status">
+                        <?php foreach ($statuses as $status): ?>
+                            <option value="<?php echo esc_attr($status); ?>" <?php selected($current_status, $status); ?>>
+                                <?php echo esc_html($status); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </span>
+            </div>
         </div>
         <?php
     }
@@ -222,7 +252,30 @@ class ApplicationMeta
             case 'phone':
                 $phone = get_post_meta($post_id, 'hiretalent_applicant_phone', true);
                 echo esc_html($phone);
-                break;
+    }
+
+    /**
+     * Save application meta data.
+     *
+     * @param int $post_id Post ID.
+     * @since 1.0.0
+     */
+    public function save_application_meta($post_id)
+    {
+        // Check nonce
+        if (!isset($_POST['hiretalent_application_status_nonce']) || !wp_verify_nonce($_POST['hiretalent_application_status_nonce'], 'hiretalent_save_application_status')) {
+            return;
+        }
+
+        // Check permissions
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+
+        // Save status
+        if (isset($_POST['hiretalent_application_status'])) {
+            $status = sanitize_text_field($_POST['hiretalent_application_status']);
+            wp_set_object_terms($post_id, $status, 'hiretalent_app_status');
         }
     }
 }
