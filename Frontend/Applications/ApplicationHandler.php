@@ -200,7 +200,7 @@ class ApplicationHandler
             update_post_meta($application_id, 'hiretalent_resume_id', $resume_id);
 
             // Set default status to pending
-            wp_set_object_terms($application_id, 'pending', 'hiretalent_app_status');
+            update_post_meta($application_id, 'hiretalent_application_status', 'Pending');
 
             return $application_id;
         }

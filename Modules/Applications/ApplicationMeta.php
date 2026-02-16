@@ -71,10 +71,9 @@ class ApplicationMeta
         $statuses = array_filter($statuses);
 
         // Get current status
-        $current_status = '';
-        $terms = get_the_terms($post->ID, 'hiretalent_app_status');
-        if ($terms && !is_wp_error($terms)) {
-            $current_status = $terms[0]->name;
+        $current_status = get_post_meta($post->ID, 'hiretalent_application_status', true);
+        if (!$current_status) {
+            $current_status = 'Pending';
         }
 
         ?>
@@ -219,7 +218,7 @@ class ApplicationMeta
         $new_columns['job'] = __('Job', 'hiretalent');
         $new_columns['email'] = __('Email', 'hiretalent');
         $new_columns['phone'] = __('Phone', 'hiretalent');
-        $new_columns['taxonomy-hiretalent_app_status'] = __('Status', 'hiretalent');
+        $new_columns['status'] = __('Status', 'hiretalent');
         $new_columns['date'] = __('Date', 'hiretalent');
 
         return $new_columns;
@@ -252,6 +251,13 @@ class ApplicationMeta
             case 'phone':
                 $phone = get_post_meta($post_id, 'hiretalent_applicant_phone', true);
                 echo esc_html($phone);
+                break;
+
+            case 'status':
+                $status = get_post_meta($post_id, 'hiretalent_application_status', true);
+                echo esc_html($status ? $status : __('Pending', 'hiretalent'));
+                break;
+        }
     }
 
     /**
@@ -275,7 +281,7 @@ class ApplicationMeta
         // Save status
         if (isset($_POST['hiretalent_application_status'])) {
             $status = sanitize_text_field($_POST['hiretalent_application_status']);
-            wp_set_object_terms($post_id, $status, 'hiretalent_app_status');
+            update_post_meta($post_id, 'hiretalent_application_status', $status);
         }
     }
 }

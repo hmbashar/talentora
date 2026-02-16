@@ -27,7 +27,6 @@ class ApplicationPostType
     public function __construct()
     {
         add_action('init', array($this, 'register_post_type'));
-        add_action('init', array($this, 'register_status_taxonomy'));
     }
 
     /**
@@ -72,59 +71,5 @@ class ApplicationPostType
         register_post_type('hiretalent_app', $args);
     }
 
-    /**
-     * Register application status taxonomy.
-     *
-     * @since 1.0.0
-     */
-    public function register_status_taxonomy()
-    {
-        $labels = array(
-            'name' => _x('Application Status', 'taxonomy general name', 'hiretalent'),
-            'singular_name' => _x('Status', 'taxonomy singular name', 'hiretalent'),
-            'search_items' => __('Search Statuses', 'hiretalent'),
-            'all_items' => __('All Statuses', 'hiretalent'),
-            'edit_item' => __('Edit Status', 'hiretalent'),
-            'update_item' => __('Update Status', 'hiretalent'),
-            'add_new_item' => __('Add New Status', 'hiretalent'),
-            'new_item_name' => __('New Status Name', 'hiretalent'),
-            'menu_name' => __('Status', 'hiretalent'),
-        );
 
-        $args = array(
-            'hierarchical' => false,
-            'labels' => $labels,
-            'show_ui' => true,
-            'show_admin_column' => true,
-            'query_var' => false,
-            'rewrite' => false,
-            'show_in_rest' => false,
-        );
-
-        register_taxonomy('hiretalent_app_status', array('hiretalent_app'), $args);
-
-        // Add default statuses
-        $this->create_default_statuses();
-    }
-
-    /**
-     * Create default application statuses.
-     *
-     * @since 1.0.0
-     */
-    private function create_default_statuses()
-    {
-        $statuses = array(
-            'pending' => __('Pending', 'hiretalent'),
-            'reviewed' => __('Reviewed', 'hiretalent'),
-            'shortlist' => __('Shortlisted', 'hiretalent'),
-            'rejected' => __('Rejected', 'hiretalent'),
-        );
-
-        foreach ($statuses as $slug => $name) {
-            if (!term_exists($slug, 'hiretalent_app_status')) {
-                wp_insert_term($name, 'hiretalent_app_status', array('slug' => $slug));
-            }
-        }
-    }
 }
