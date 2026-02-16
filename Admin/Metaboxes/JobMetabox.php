@@ -201,6 +201,48 @@ class JobMetabox
                 </p>
             </div>
 
+            <!-- Application Settings Section -->
+            <hr style="margin: 30px 0; border: none; border-top: 2px solid #ddd;">
+            <h3><?php esc_html_e('Application Settings', 'hiretalent'); ?></h3>
+
+            <?php
+            $application_type = get_post_meta($post->ID, 'hiretalent_application_type', true);
+            if (empty($application_type)) {
+                $application_type = 'third_party'; // Default
+            }
+            $third_party_shortcode = get_post_meta($post->ID, 'hiretalent_third_party_shortcode', true);
+            ?>
+
+            <div class="field-group">
+                <label for="hiretalent_application_type">
+                    <?php esc_html_e('Application Type', 'hiretalent'); ?>
+                </label>
+                <select id="hiretalent_application_type" name="hiretalent_application_type" style="max-width: 400px;">
+                    <option value="third_party" <?php selected($application_type, 'third_party'); ?>>
+                        <?php esc_html_e('Third Party Form', 'hiretalent'); ?>
+                    </option>
+                    <option value="builtin" <?php selected($application_type, 'builtin'); ?>>
+                        <?php esc_html_e('Built-in Application System', 'hiretalent'); ?>
+                    </option>
+                </select>
+                <p class="description">
+                    <?php esc_html_e('Choose how applicants will apply for this job.', 'hiretalent'); ?>
+                </p>
+            </div>
+
+            <div class="field-group" id="hiretalent_third_party_field"
+                style="<?php echo ($application_type === 'builtin') ? 'display:none;' : ''; ?>">
+                <label for="hiretalent_third_party_shortcode">
+                    <?php esc_html_e('Third Party Form Shortcode', 'hiretalent'); ?>
+                </label>
+                <input type="text" id="hiretalent_third_party_shortcode" name="hiretalent_third_party_shortcode"
+                    value="<?php echo esc_attr($third_party_shortcode); ?>"
+                    placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>" style="max-width: 400px;">
+                <p class="description">
+                    <?php esc_html_e('Enter the shortcode for your contact form. Leave empty to use global setting.', 'hiretalent'); ?>
+                </p>
+            </div>
+
             <div class="field-group">
                 <label>
                     <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
@@ -212,6 +254,7 @@ class JobMetabox
                 jQuery(document).ready(function ($) {
                     var mediaUploader;
 
+                    // Media uploader for company logo
                     $('#hiretalent_upload_logo_button').on('click', function (e) {
                         e.preventDefault();
 
@@ -224,7 +267,7 @@ class JobMetabox
                             title: '<?php esc_html_e('Choose Company Logo', 'hiretalent'); ?>',
                             button: {
                                 text: '<?php esc_html_e('Use this logo', 'hiretalent'); ?>'
-                                },
+                            },
                             multiple: false
                         });
 
@@ -243,6 +286,15 @@ class JobMetabox
                         $('#hiretalent_company_logo_id').val('');
                         $('#hiretalent_logo_preview').html('');
                         $(this).hide();
+                    });
+
+                    // Toggle third party shortcode field based on application type
+                    $('#hiretalent_application_type').on('change', function () {
+                        if ($(this).val() === 'builtin') {
+                            $('#hiretalent_third_party_field').hide();
+                        } else {
+                            $('#hiretalent_third_party_field').show();
+                        }
                     });
                 });
             </script>
@@ -312,6 +364,16 @@ class JobMetabox
         // Save expiry date
         if (isset($_POST['hiretalent_expiry_date'])) {
             update_post_meta($post_id, 'hiretalent_expiry_date', sanitize_text_field($_POST['hiretalent_expiry_date']));
+        }
+
+        // Save application type
+        if (isset($_POST['hiretalent_application_type'])) {
+            update_post_meta($post_id, 'hiretalent_application_type', sanitize_text_field($_POST['hiretalent_application_type']));
+        }
+
+        // Save third party shortcode
+        if (isset($_POST['hiretalent_third_party_shortcode'])) {
+            update_post_meta($post_id, 'hiretalent_third_party_shortcode', sanitize_text_field($_POST['hiretalent_third_party_shortcode']));
         }
 
         // Save is_filled
