@@ -366,10 +366,10 @@
 /* Info Cards Row */
 .job-info-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* Enforce 2 columns for neatness */
+    gap: 1.5rem;
     margin-bottom: 2.5rem;
-    margin-top: 1rem; /* Adjust for overlap */
+    margin-top: 1rem;
 }
 
 .info-card {
