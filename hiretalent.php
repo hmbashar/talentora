@@ -36,14 +36,6 @@ final class HireTalent
     }
 
     /**
-     * Load plugin textdomain.
-     */
-    public function register_textdomain()
-    {
-        load_plugin_textdomain('hiretalent', false, dirname(plugin_basename(__FILE__)) . '/languages');
-    }
-
-    /**
      * Retrieves the singleton instance of the plugin.
      *
      * @return HireTalent The singleton instance of the plugin.
@@ -96,7 +88,6 @@ final class HireTalent
     private function init_hooks()
     {
         add_action('plugins_loaded', array($this, 'plugin_loaded'));
-        add_action('init', array($this, 'register_textdomain'));
         register_activation_hook(__FILE__, array($this, 'activate'));
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
     }

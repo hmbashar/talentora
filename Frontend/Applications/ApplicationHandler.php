@@ -24,8 +24,22 @@ class ApplicationHandler
      *
      * @since 1.0.0
      */
+    /**
+     * Notification Manager instance.
+     *
+     * @var \HireTalent\NotificationManager
+     */
+    private $notification_manager;
+
+    /**
+     * Constructor.
+     *
+     * @since 1.0.0
+     */
     public function __construct()
     {
+        $this->notification_manager = new \HireTalent\NotificationManager();
+
         add_action('init', array($this, 'handle_application_submission'));
         add_shortcode('hiretalent_application_form', array($this, 'render_application_form'));
     }
@@ -98,8 +112,8 @@ class ApplicationHandler
 
         if ($application_id) {
             // Send notifications
-            $this->send_admin_notification($application_id, $job_id, $name, $email);
-            $this->send_applicant_confirmation($email, $name, $job_id);
+            $this->notification_manager->send_admin_notification($application_id);
+            $this->notification_manager->send_applicant_confirmation($application_id);
 
             // Set success message
             set_transient('hiretalent_application_success_' . $job_id, true, 60);
@@ -208,56 +222,7 @@ class ApplicationHandler
         return 0;
     }
 
-    /**
-     * Send admin notification email.
-     *
-     * @param int    $application_id Application ID.
-     * @param int    $job_id         Job ID.
-     * @param string $name           Applicant name.
-     * @param string $email          Applicant email.
-     * @since 1.0.0
-     */
-    private function send_admin_notification($application_id, $job_id, $name, $email)
-    {
-        $admin_email = get_option('admin_email');
-        $job_title = get_the_title($job_id);
-        $application_url = admin_url('post.php?post=' . $application_id . '&action=edit');
 
-        $subject = sprintf(__('[%s] New Job Application: %s', 'hiretalent'), get_bloginfo('name'), $job_title);
-
-        $message = sprintf(
-            __("You have received a new job application.\n\nJob: %s\nApplicant: %s\nEmail: %s\n\nView application: %s", 'hiretalent'),
-            $job_title,
-            $name,
-            $email,
-            $application_url
-        );
-
-        wp_mail($admin_email, $subject, $message);
-    }
-
-    /**
-     * Send applicant confirmation email.
-     *
-     * @param string $email  Applicant email.
-     * @param string $name   Applicant name.
-     * @param int    $job_id Job ID.
-     * @since 1.0.0
-     */
-    private function send_applicant_confirmation($email, $name, $job_id)
-    {
-        $job_title = get_the_title($job_id);
-        $subject = sprintf(__('Application Received: %s', 'hiretalent'), $job_title);
-
-        $message = sprintf(
-            __("Dear %s,\n\nThank you for applying for the position of %s.\n\nWe have received your application and will review it shortly. If your qualifications match our requirements, we will contact you for the next steps.\n\nBest regards,\n%s", 'hiretalent'),
-            $name,
-            $job_title,
-            get_bloginfo('name')
-        );
-
-        wp_mail($email, $subject, $message);
-    }
 
     /**
      * Render application form.

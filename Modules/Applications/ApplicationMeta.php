@@ -20,12 +20,21 @@ if (!defined('ABSPATH')) {
 class ApplicationMeta
 {
     /**
+     * Notification Manager instance.
+     *
+     * @var \HireTalent\NotificationManager
+     */
+    private $notification_manager;
+
+    /**
      * Constructor.
      *
      * @since 1.0.0
      */
     public function __construct()
     {
+        $this->notification_manager = new \HireTalent\NotificationManager();
+
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
         add_action('save_post', array($this, 'save_application_meta'));
         add_filter('manage_hiretalent_app_posts_columns', array($this, 'set_custom_columns'));
@@ -65,14 +74,14 @@ class ApplicationMeta
         $resume_id = get_post_meta($post->ID, 'hiretalent_resume_id', true);
 
         // Get statuses
-        $default_statuses = "Pending\nReviewed\nShortlisted\nRejected\nHired";
+        $default_statuses = "Pending, Reviewed, Shortlisted, Rejected, Hired";
         $statuses_option = get_option('hiretalent_application_statuses', $default_statuses);
 
         if (empty(trim($statuses_option))) {
             $statuses_option = $default_statuses;
         }
 
-        $statuses = array_map('trim', explode("\n", $statuses_option));
+        $statuses = array_map('trim', explode(',', $statuses_option));
         $statuses = array_filter($statuses);
 
         // Get current status
@@ -285,8 +294,13 @@ class ApplicationMeta
 
         // Save status
         if (isset($_POST['hiretalent_application_status'])) {
-            $status = sanitize_text_field($_POST['hiretalent_application_status']);
-            update_post_meta($post_id, 'hiretalent_application_status', $status);
+            $new_status = sanitize_text_field($_POST['hiretalent_application_status']);
+            $old_status = get_post_meta($post_id, 'hiretalent_application_status', true);
+
+            if ($old_status !== $new_status) {
+                update_post_meta($post_id, 'hiretalent_application_status', $new_status);
+                $this->notification_manager->send_status_change_notification($post_id, $old_status, $new_status);
+            }
         }
     }
 }
