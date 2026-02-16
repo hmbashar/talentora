@@ -334,6 +334,25 @@ class Settings
     }
 
     /**
+     * Currency symbol field callback.
+     */
+    public function currency_symbol_callback()
+    {
+        $value = get_option('hiretalent_currency_symbol', '$');
+        ?>
+                <div class="hiretalent-field-wrapper">
+                    <input type="text" name="hiretalent_currency_symbol" value="<?php echo esc_attr($value); ?>" 
+                        class="small-text hiretalent-input" placeholder="$">
+                    <p class="description">
+                        <span class="dashicons dashicons-info"></span>
+                        <?php esc_html_e('The currency symbol to display before salary values (e.g., $, €, £).', 'hiretalent'); ?>
+                    </p>
+                </div>
+                <?php
+    }
+
+
+    /**
      * Email templates section callback.
      */
     public function email_templates_section_callback()
