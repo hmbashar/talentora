@@ -342,14 +342,21 @@ class JobMetabox
                 </div>
 
                 <div class="field-row">
-                    <div class="field-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
-                            <span class="checkbox-text">
-                                <span class="dashicons dashicons-yes"></span>
-                                <?php esc_html_e('Mark this job as filled', 'hiretalent'); ?>
-                            </span>
-                        </label>
+                    <div class="field-group full-width">
+                        <div class="hiretalent-status-toggle">
+                            <span class="status-label"><?php esc_html_e('Job Status:', 'hiretalent'); ?></span>
+                            <div class="toggle-container">
+                                <span class="status-badge badge-open"><?php esc_html_e('Open', 'hiretalent'); ?></span>
+                                <label class="switch">
+                                    <input type="checkbox" id="hiretalent_is_filled" name="hiretalent_is_filled" value="1" <?php checked($is_filled, '1'); ?>>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="status-badge badge-filled"><?php esc_html_e('Filled', 'hiretalent'); ?></span>
+                            </div>
+                            <p class="description">
+                                <?php esc_html_e('Enable this to mark the job as filled. Filled jobs are marked as closed on the frontend.', 'hiretalent'); ?>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
