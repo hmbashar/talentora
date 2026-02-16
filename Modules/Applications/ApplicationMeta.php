@@ -130,98 +130,136 @@ class ApplicationMeta
 
 
         <div class="hiretalent-application-details">
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Applied For:', 'hiretalent'); ?>
-                </span>
-                <span class="detail-value">
-                    <?php if ($job_id): ?>
-                        <a href="<?php echo esc_url(get_edit_post_link($job_id)); ?>">
-                            <?php echo esc_html(get_the_title($job_id)); ?>
-                        </a>
-                    <?php else: ?>
-                        <?php esc_html_e('N/A', 'hiretalent'); ?>
-                    <?php endif; ?>
-                </span>
-            </div>
 
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Name:', 'hiretalent'); ?>
-                </span>
-                <span class="detail-value">
-                    <?php echo esc_html($name); ?>
-                </span>
-            </div>
+            <!-- Applicant Information Section -->
+            <div class="hiretalent-section">
+                <div class="section-header">
+                    <h3><span class="dashicons dashicons-id"></span>
+                        <?php esc_html_e('Applicant Information', 'hiretalent'); ?></h3>
+                </div>
 
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Email:', 'hiretalent'); ?>
-                </span>
-                <span class="detail-value">
-                    <a href="mailto:<?php echo esc_attr($email); ?>">
-                        <?php echo esc_html($email); ?>
-                    </a>
-                </span>
-            </div>
-
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Phone:', 'hiretalent'); ?>
-                </span>
-                <span class="detail-value">
-                    <?php echo esc_html($phone); ?>
-                </span>
-            </div>
-
-            <?php if ($resume_id): ?>
-                <div class="detail-row">
-                    <span class="detail-label">
-                        <?php esc_html_e('Resume:', 'hiretalent'); ?>
-                    </span>
-                    <span class="detail-value">
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-admin-users"></span>
+                            <?php esc_html_e('Full Name', 'hiretalent'); ?>
+                        </span>
                         <span class="detail-value">
-                            <a href="<?php echo esc_url(add_query_arg(array('action' => 'hiretalent_download_resume', 'id' => $post->ID, 'nonce' => wp_create_nonce('hiretalent_download_resume_' . $post->ID)), admin_url('admin-post.php'))); ?>"
-                                class="button">
-                                <?php esc_html_e('Download Resume', 'hiretalent'); ?>
+                            <?php echo esc_html($name); ?>
+                        </span>
+                    </div>
+
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-email"></span>
+                            <?php esc_html_e('Email Address', 'hiretalent'); ?>
+                        </span>
+                        <span class="detail-value">
+                            <a href="mailto:<?php echo esc_attr($email); ?>">
+                                <?php echo esc_html($email); ?>
                             </a>
                         </span>
+                    </div>
                 </div>
-            <?php endif; ?>
 
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Cover Letter:', 'hiretalent'); ?>
-                </span>
-                <div class="cover-letter-box">
-                    <?php echo esc_html($cover_letter); ?>
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-phone"></span>
+                            <?php esc_html_e('Phone Number', 'hiretalent'); ?>
+                        </span>
+                        <span class="detail-value">
+                            <?php echo esc_html($phone); ?>
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Submitted:', 'hiretalent'); ?>
-                </span>
-                <span class="detail-value">
-                    <?php echo esc_html(get_the_date('', $post) . ' / ' . get_the_time('', $post)); ?>
-                </span>
+            <!-- Application Information Section -->
+            <div class="hiretalent-section">
+                <div class="section-header">
+                    <h3><span class="dashicons dashicons-portfolio"></span>
+                        <?php esc_html_e('Application Details', 'hiretalent'); ?></h3>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-awards"></span>
+                            <?php esc_html_e('Applied For', 'hiretalent'); ?>
+                        </span>
+                        <span class="detail-value">
+                            <?php if ($job_id): ?>
+                                <a href="<?php echo esc_url(get_edit_post_link($job_id)); ?>">
+                                    <?php echo esc_html(get_the_title($job_id)); ?>
+                                </a>
+                            <?php else: ?>
+                                <?php esc_html_e('N/A', 'hiretalent'); ?>
+                            <?php endif; ?>
+                        </span>
+                    </div>
+
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-calendar-alt"></span>
+                            <?php esc_html_e('Submission Date', 'hiretalent'); ?>
+                        </span>
+                        <span class="detail-value">
+                            <?php echo esc_html(get_the_date('', $post) . ' @ ' . get_the_time('', $post)); ?>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-media-document"></span>
+                            <?php esc_html_e('Resume / CV', 'hiretalent'); ?>
+                        </span>
+                        <span class="detail-value">
+                            <?php if ($resume_id): ?>
+                                <a href="<?php echo esc_url(add_query_arg(array('action' => 'hiretalent_download_resume', 'id' => $post->ID, 'nonce' => wp_create_nonce('hiretalent_download_resume_' . $post->ID)), admin_url('admin-post.php'))); ?>"
+                                    class="button button-primary">
+                                    <span class="dashicons dashicons-download"></span>
+                                    <?php esc_html_e('Download Resume', 'hiretalent'); ?>
+                                </a>
+                            <?php else: ?>
+                                <span class="description"><?php esc_html_e('No resume uploaded', 'hiretalent'); ?></span>
+                            <?php endif; ?>
+                        </span>
+                    </div>
+
+                    <div class="field-group half-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-flag"></span>
+                            <?php esc_html_e('Current Status', 'hiretalent'); ?>
+                        </span>
+                        <span class="detail-value">
+                            <?php wp_nonce_field('hiretalent_save_application_status', 'hiretalent_application_status_nonce'); ?>
+                            <select name="hiretalent_application_status" class="hiretalent-select-status">
+                                <?php foreach ($statuses as $status): ?>
+                                    <option value="<?php echo esc_attr($status); ?>" <?php selected($current_status, $status); ?>>
+                                        <?php echo esc_html($status); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group full-width">
+                        <span class="detail-label">
+                            <span class="dashicons dashicons-editor-quote"></span>
+                            <?php esc_html_e('Cover Letter', 'hiretalent'); ?>
+                        </span>
+                        <div class="cover-letter-box">
+                            <?php echo esc_html($cover_letter); ?>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="detail-row">
-                <span class="detail-label">
-                    <?php esc_html_e('Status:', 'hiretalent'); ?>
-                </span>
-                <span class="detail-value">
-                    <?php wp_nonce_field('hiretalent_save_application_status', 'hiretalent_application_status_nonce'); ?>
-                    <select name="hiretalent_application_status">
-                        <?php foreach ($statuses as $status): ?>
-                            <option value="<?php echo esc_attr($status); ?>" <?php selected($current_status, $status); ?>>
-                                <?php echo esc_html($status); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </span>
-            </div>
         </div>
         <?php
     }
@@ -409,15 +447,16 @@ class ApplicationMeta
 
         echo '<ul class="hiretalent-activity-log">';
         foreach ($logs as $log) {
-            $message = $log['message'];
             $timestamp = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log['timestamp']));
             $user = get_userdata($log['user_id']);
             $user_name = $user ? $user->display_name : __('System', 'hiretalent');
 
             echo '<li>';
-            echo '<strong>' . esc_html($timestamp) . '</strong> - ';
-            echo esc_html($message);
-            echo ' <span class="description">(' . esc_html($user_name) . ')</span>';
+            echo '<div class="activity-meta">';
+            echo '<span class="activity-time">' . esc_html($timestamp) . '</span>';
+            echo '<span class="activity-user">' . esc_html($user_name) . '</span>';
+            echo '</div>';
+            echo '<div class="activity-message">' . esc_html($log['message']) . '</div>';
             echo '</li>';
         }
         echo '</ul>';
