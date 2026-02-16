@@ -290,14 +290,14 @@ class JobsList
 
         ?>
         <div class="hiretalent-job-card <?php echo $is_filled ? 'job-filled' : ''; ?>">
-            
+
             <div class="job-card-header">
                 <?php if ($company_logo_id): ?>
                     <div class="company-logo-mini">
                         <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="job-card-title-area">
                     <h3 class="job-title">
                         <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
@@ -340,16 +340,18 @@ class JobsList
                         <span class="job-meta-item">
                             <span class="dashicons dashicons-money-alt"></span>
                             <?php
+                            $currency = get_option('hiretalent_currency_symbol', '$');
                             if ($salary_min && $salary_max) {
-                                echo esc_html('$' . number_format($salary_min) . ' - $' . number_format($salary_max));
+                                echo esc_html($currency . number_format($salary_min) . ' - ' . $currency . number_format($salary_max));
                             } elseif ($salary_min) {
-                                echo esc_html('$' . number_format($salary_min) . '+');
+                                echo esc_html($currency . number_format($salary_min) . '+');
                             } else {
-                                echo esc_html('$' . number_format($salary_max));
+                                echo esc_html($currency . number_format($salary_max));
                             }
                             ?>
                         </span>
                     <?php endif; ?>
+
 
                     <?php if ($deadline): ?>
                         <span class="job-meta-item">
@@ -363,7 +365,7 @@ class JobsList
                 <?php
                 $excerpt = get_the_excerpt($job_id);
                 if ($excerpt):
-                ?>
+                    ?>
                     <p class="job-excerpt"><?php echo esc_html(wp_trim_words($excerpt, 20)); ?></p>
                 <?php endif; ?>
             </div>

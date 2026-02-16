@@ -123,12 +123,13 @@ while (have_posts()):
                                     <div class="info-card-label"><?php esc_html_e('Salary Range', 'hiretalent'); ?></div>
                                     <div class="info-card-value">
                                         <?php
+                                        $currency = get_option('hiretalent_currency_symbol', '$');
                                         if ($salary_min && $salary_max) {
-                                            echo esc_html('$' . number_format($salary_min) . ' - $' . number_format($salary_max));
+                                            echo esc_html($currency . number_format($salary_min) . ' - ' . $currency . number_format($salary_max));
                                         } elseif ($salary_min) {
-                                            echo esc_html('$' . number_format($salary_min) . '+');
+                                            echo esc_html($currency . number_format($salary_min) . '+');
                                         } else {
-                                            echo esc_html('$' . number_format($salary_max));
+                                            echo esc_html($currency . number_format($salary_max));
                                         }
                                         ?>
                                     </div>
@@ -321,12 +322,13 @@ while (have_posts()):
                                         <span class="summary-label"><?php esc_html_e('Salary', 'hiretalent'); ?></span>
                                         <span class="summary-value">
                                             <?php
+                                            $currency = get_option('hiretalent_currency_symbol', '$');
                                             if ($salary_min && $salary_max) {
-                                                echo esc_html('$' . number_format($salary_min) . ' - $' . number_format($salary_max));
+                                                echo esc_html($currency . number_format($salary_min) . ' - ' . $currency . number_format($salary_max));
                                             } elseif ($salary_min) {
-                                                echo esc_html('From $' . number_format($salary_min));
+                                                echo esc_html('From ' . $currency . number_format($salary_min));
                                             } else {
-                                                echo esc_html('Up to $' . number_format($salary_max));
+                                                echo esc_html('Up to ' . $currency . number_format($salary_max));
                                             }
                                             ?>
                                         </span>
@@ -408,17 +410,17 @@ while (have_posts()):
                                 </div>
                             <?php endif; ?>
 
-                                <div class="summary-item">
-                                    <div class="summary-icon">
-                                        <span class="dashicons dashicons-clock"></span>
-                                    </div>
-                                    <div class="summary-content">
-                                        <span class="summary-label"><?php esc_html_e('Published', 'hiretalent'); ?></span>
-                                        <span class="summary-value">
-                                            <?php echo esc_html(get_the_date() . ' ' . get_the_time()); ?>
-                                        </span>
-                                    </div>
+                            <div class="summary-item">
+                                <div class="summary-icon">
+                                    <span class="dashicons dashicons-clock"></span>
                                 </div>
+                                <div class="summary-content">
+                                    <span class="summary-label"><?php esc_html_e('Published', 'hiretalent'); ?></span>
+                                    <span class="summary-value">
+                                        <?php echo esc_html(get_the_date() . ' ' . get_the_time()); ?>
+                                    </span>
+                                </div>
+                            </div>
 
                             <?php if ($joining_date): ?>
                                 <div class="summary-item">

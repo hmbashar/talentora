@@ -41,6 +41,8 @@ class Settings
         register_setting('hiretalent_general_settings', 'hiretalent_apply_form_shortcode', 'sanitize_text_field');
         register_setting('hiretalent_general_settings', 'hiretalent_jobs_per_page', 'absint');
         register_setting('hiretalent_general_settings', 'hiretalent_application_statuses', 'sanitize_textarea_field');
+        register_setting('hiretalent_general_settings', 'hiretalent_currency_symbol', 'sanitize_text_field');
+
 
         add_settings_section(
             'hiretalent_general_section',
@@ -72,6 +74,15 @@ class Settings
             'hiretalent_general_settings',
             'hiretalent_general_section'
         );
+
+        add_settings_field(
+            'hiretalent_currency_symbol',
+            __('Currency Symbol', 'hiretalent'),
+            array($this, 'currency_symbol_callback'),
+            'hiretalent_general_settings',
+            'hiretalent_general_section'
+        );
+
 
         // Email Template Settings
         register_setting('hiretalent_email_settings', 'hiretalent_admin_notification_subject', 'sanitize_text_field');
@@ -226,7 +237,7 @@ class Settings
 
         if (file_exists($log_file)) {
             $content = file_get_contents($log_file);
-            
+
             echo '<div class="hiretalent-log-container">';
             if (empty(trim($content))) {
                 echo '<div class="hiretalent-empty-state">';
@@ -237,7 +248,7 @@ class Settings
                 echo '<div class="hiretalent-log-viewer">' . esc_html($content) . '</div>';
             }
             echo '</div>';
-            
+
             echo '<div class="hiretalent-log-info">';
             echo '<p class="description"><span class="dashicons dashicons-info"></span> ' . esc_html__('Log file location: ', 'hiretalent') . esc_html($log_file) . '</p>';
             echo '</div>';
@@ -268,7 +279,7 @@ class Settings
         $value = get_option('hiretalent_apply_form_shortcode', '');
         ?>
         <div class="hiretalent-field-wrapper">
-            <input type="text" name="hiretalent_apply_form_shortcode" value="<?php echo esc_attr($value); ?>" 
+            <input type="text" name="hiretalent_apply_form_shortcode" value="<?php echo esc_attr($value); ?>"
                 class="regular-text hiretalent-input"
                 placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>">
             <p class="description">
@@ -287,7 +298,7 @@ class Settings
         $value = get_option('hiretalent_jobs_per_page', 10);
         ?>
         <div class="hiretalent-field-wrapper">
-            <input type="number" name="hiretalent_jobs_per_page" value="<?php echo esc_attr($value); ?>" 
+            <input type="number" name="hiretalent_jobs_per_page" value="<?php echo esc_attr($value); ?>"
                 class="small-text hiretalent-input" min="1" max="100" step="1">
             <p class="description">
                 <span class="dashicons dashicons-info"></span>
@@ -355,7 +366,7 @@ class Settings
         $value = get_option('hiretalent_admin_notification_subject', __('[%site_name] New Job Application: {job_title}', 'hiretalent'));
         ?>
         <div class="hiretalent-field-wrapper">
-            <input type="text" name="hiretalent_admin_notification_subject" value="<?php echo esc_attr($value); ?>" 
+            <input type="text" name="hiretalent_admin_notification_subject" value="<?php echo esc_attr($value); ?>"
                 class="large-text hiretalent-input">
         </div>
         <?php
@@ -369,7 +380,7 @@ class Settings
         $value = get_option('hiretalent_admin_notification_message', __("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent'));
         ?>
         <div class="hiretalent-field-wrapper">
-            <textarea name="hiretalent_admin_notification_message" rows="10" cols="50" 
+            <textarea name="hiretalent_admin_notification_message" rows="10" cols="50"
                 class="large-text hiretalent-textarea code-editor"><?php echo esc_textarea($value); ?></textarea>
         </div>
         <?php
@@ -383,7 +394,7 @@ class Settings
         $value = get_option('hiretalent_applicant_confirmation_subject', __('Application Received: {job_title}', 'hiretalent'));
         ?>
         <div class="hiretalent-field-wrapper">
-            <input type="text" name="hiretalent_applicant_confirmation_subject" value="<?php echo esc_attr($value); ?>" 
+            <input type="text" name="hiretalent_applicant_confirmation_subject" value="<?php echo esc_attr($value); ?>"
                 class="large-text hiretalent-input">
         </div>
         <?php
@@ -397,7 +408,7 @@ class Settings
         $value = get_option('hiretalent_applicant_confirmation_message', __("Dear {applicant_name},\n\nThank you for applying for the position of {job_title}.\n\nWe have received your application and will review it shortly.\n\nBest regards,\n{site_name}", 'hiretalent'));
         ?>
         <div class="hiretalent-field-wrapper">
-            <textarea name="hiretalent_applicant_confirmation_message" rows="10" cols="50" 
+            <textarea name="hiretalent_applicant_confirmation_message" rows="10" cols="50"
                 class="large-text hiretalent-textarea code-editor"><?php echo esc_textarea($value); ?></textarea>
         </div>
         <?php
@@ -411,7 +422,7 @@ class Settings
         $value = get_option('hiretalent_status_change_subject', __('Application Update: {job_title}', 'hiretalent'));
         ?>
         <div class="hiretalent-field-wrapper">
-            <input type="text" name="hiretalent_status_change_subject" value="<?php echo esc_attr($value); ?>" 
+            <input type="text" name="hiretalent_status_change_subject" value="<?php echo esc_attr($value); ?>"
                 class="large-text hiretalent-input">
         </div>
         <?php
@@ -425,7 +436,7 @@ class Settings
         $value = get_option('hiretalent_status_change_message', __("Dear {applicant_name},\n\nYour application status for {job_title} has been updated to: {status}.\n\nBest regards,\n{site_name}", 'hiretalent'));
         ?>
         <div class="hiretalent-field-wrapper">
-            <textarea name="hiretalent_status_change_message" rows="10" cols="50" 
+            <textarea name="hiretalent_status_change_message" rows="10" cols="50"
                 class="large-text hiretalent-textarea code-editor"><?php echo esc_textarea($value); ?></textarea>
         </div>
         <?php
