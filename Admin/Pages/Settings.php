@@ -95,7 +95,8 @@ class Settings
         $value = get_option('hiretalent_apply_form_shortcode', '');
         ?>
         <input type="text" id="hiretalent_apply_form_shortcode" name="hiretalent_apply_form_shortcode"
-            value="<?php echo esc_attr($value); ?>" class="regular-text" placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>">
+            value="<?php echo esc_attr($value); ?>" class="regular-text"
+            placeholder="<?php esc_attr_e('[contact-form-7 id="123"]', 'hiretalent'); ?>">
         <p class="description">
             <?php esc_html_e('Enter the shortcode of your contact/application form plugin. This will be displayed on single job pages. Leave empty to hide the apply section.', 'hiretalent'); ?>
         </p>
@@ -135,32 +136,15 @@ class Settings
         settings_errors('hiretalent_messages');
         ?>
         <div class="wrap">
-            <h1>
-                <?php echo esc_html(get_admin_page_title()); ?>
-            </h1>
+            <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
-            <div id="hiretalent-settings-root"></div>
-
-            <!-- Fallback form if React doesn't load -->
-            <noscript>
-                <form action="options.php" method="post">
-                    <?php
-                    settings_fields('hiretalent_settings');
-                    do_settings_sections('hiretalent_settings');
-                    submit_button(__('Save Settings', 'hiretalent'));
-                    ?>
-                </form>
-            </noscript>
-
-            <div class="hiretalent-settings-fallback" style="display:none;">
-                <form action="options.php" method="post">
-                    <?php
-                    settings_fields('hiretalent_settings');
-                    do_settings_sections('hiretalent_settings');
-                    submit_button(__('Save Settings', 'hiretalent'));
-                    ?>
-                </form>
-            </div>
+            <form action="options.php" method="post">
+                <?php
+                settings_fields('hiretalent_settings');
+                do_settings_sections('hiretalent_settings');
+                submit_button(__('Save Settings', 'hiretalent'));
+                ?>
+            </form>
         </div>
         <?php
     }

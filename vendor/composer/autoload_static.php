@@ -19,19 +19,19 @@ class ComposerStaticInitb62457c9982ca69551af49147d1c16b9
     public static $prefixDirsPsr4 = array (
         'HireTalent\\Modules\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/src/Modules',
+            0 => __DIR__ . '/../..' . '/Modules',
         ),
         'HireTalent\\Frontend\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/src/Frontend',
+            0 => __DIR__ . '/../..' . '/Frontend',
         ),
         'HireTalent\\Admin\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/src/Admin',
+            0 => __DIR__ . '/../..' . '/Admin',
         ),
         'HireTalent\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/src/Inc',
+            0 => __DIR__ . '/../..' . '/Inc',
         ),
     );
 

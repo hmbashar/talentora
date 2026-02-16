@@ -6,8 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'HireTalent\\Modules\\' => array($baseDir . '/src/Modules'),
-    'HireTalent\\Frontend\\' => array($baseDir . '/src/Frontend'),
-    'HireTalent\\Admin\\' => array($baseDir . '/src/Admin'),
-    'HireTalent\\' => array($baseDir . '/src/Inc'),
+    'HireTalent\\Modules\\' => array($baseDir . '/Modules'),
+    'HireTalent\\Frontend\\' => array($baseDir . '/Frontend'),
+    'HireTalent\\Admin\\' => array($baseDir . '/Admin'),
+    'HireTalent\\' => array($baseDir . '/Inc'),
 );

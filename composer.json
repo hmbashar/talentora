@@ -12,10 +12,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "HireTalent\\": "src/Inc/",
-            "HireTalent\\Admin\\": "src/Admin/",
-            "HireTalent\\Frontend\\": "src/Frontend/",
-            "HireTalent\\Modules\\": "src/Modules/"
+            "HireTalent\\": "Inc/",
+            "HireTalent\\Admin\\": "Admin/",
+            "HireTalent\\Frontend\\": "Frontend/",
+            "HireTalent\\Modules\\": "Modules/"
         }
     },
     "require": {

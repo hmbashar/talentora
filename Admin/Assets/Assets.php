@@ -53,30 +53,10 @@ class Assets
 
         // Enqueue on settings page
         if ('hiretalent_job_page_hiretalent-settings' === $hook) {
-            // Enqueue WordPress React (wp-element)
-            wp_enqueue_script('wp-element');
-            wp_enqueue_script('wp-components');
-            wp_enqueue_script('wp-api-fetch');
-
-            wp_enqueue_script(
-                'hiretalent-admin-settings',
-                HIRETALENT_URL . 'assets/js/admin-settings.js',
-                array('wp-element', 'wp-components', 'wp-api-fetch'),
-                HIRETALENT_VERSION,
-                true
-            );
-
-            wp_localize_script('hiretalent-admin-settings', 'hireTalentSettings', array(
-                'applyFormShortcode' => get_option('hiretalent_apply_form_shortcode', ''),
-                'jobsPerPage' => get_option('hiretalent_jobs_per_page', 10),
-                'nonce' => wp_create_nonce('wp_rest'),
-                'restUrl' => rest_url(),
-            ));
-
             wp_enqueue_style(
                 'hiretalent-admin',
                 HIRETALENT_URL . 'assets/css/admin.css',
-                array('wp-components'),
+                array(),
                 HIRETALENT_VERSION
             );
         }
