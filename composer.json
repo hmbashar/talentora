@@ -1,0 +1,32 @@
+{
+    "name": "hmbashar/hiretalent",
+    "description": "Simple & Powerful Job Board Plugin for WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Md Abul Bashar",
+            "email": "hmbashar@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "HireTalent\\": "src/Inc/",
+            "HireTalent\\Admin\\": "src/Admin/",
+            "HireTalent\\Frontend\\": "src/Frontend/",
+            "HireTalent\\Modules\\": "src/Modules/"
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

@@ -1,0 +1,61 @@
+/**
+ * Admin Styles for HireTalent
+ *
+ * @package HireTalent
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Settings Page
+   ========================================================================== */
+
+.hiretalent-settings-wrapper {
+    max-width: 800px;
+    margin: 20px 0;
+}
+
+.hiretalent-settings-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.hiretalent-settings-card h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.hiretalent-setting-field {
+    margin-bottom: 20px;
+}
+
+.hiretalent-setting-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.hiretalent-setting-field input[type="text"],
+.hiretalent-setting-field input[type="number"] {
+    width: 100%;
+    max-width: 500px;
+}
+
+.hiretalent-setting-field .description {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #646970;
+}
+
+/* ==========================================================================
+   Metabox Styles
+   ========================================================================== */
+
+.hiretalent-metabox {
+    padding: 10px 0;
+}
+
+/* Additional admin styles can be added here */

@@ -1,0 +1,318 @@
+/**
+ * Frontend Styles for HireTalent
+ *
+ * @package HireTalent
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Job List & Filter Bar
+   ========================================================================== */
+
+.hiretalent-jobs-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hiretalent-filter-bar {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.hiretalent-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.filter-field input[type="text"],
+.filter-field select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.filter-field input[type="text"]:focus,
+.filter-field select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+.hiretalent-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.hiretalent-btn:hover {
+    background: #005a87;
+    color: #fff;
+}
+
+/* ==========================================================================
+   Job Cards
+   ========================================================================== */
+
+.hiretalent-jobs-list {
+    display: grid;
+    gap: 20px;
+}
+
+.hiretalent-job-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hiretalent-job-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.hiretalent-job-card.job-filled {
+    opacity: 0.7;
+    background: #f5f5f5;
+}
+
+.job-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.job-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.job-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.job-title a:hover {
+    color: #0073aa;
+}
+
+.job-filled-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #dc3545;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.job-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.job-card-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.job-card-meta .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.job-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.hiretalent-pagination {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.hiretalent-pagination .page-numbers {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.hiretalent-pagination .page-numbers:hover,
+.hiretalent-pagination .page-numbers.current {
+    background: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+.hiretalent-no-jobs {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* ==========================================================================
+   Single Job Page
+   ========================================================================== */
+
+.hiretalent-single-job {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hiretalent-job-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+}
+
+.job-header {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.job-header .job-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.job-meta-info {
+    display: grid;
+    gap: 15px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.meta-item .dashicons {
+    color: #0073aa;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.company-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.company-logo img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.company-details a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.company-details a:hover {
+    text-decoration: underline;
+}
+
+.job-description {
+    margin-bottom: 40px;
+}
+
+.job-description h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.job-apply-section {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.hiretalent-apply-form h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.hiretalent-apply-form-notice {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.job-filled-notice {
+    background: #f8d7da;
+    border: 1px solid #dc3545;
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .hiretalent-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .job-card-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hiretalent-job-container {
+        padding: 20px;
+    }
+
+    .job-header .job-title {
+        font-size: 24px;
+    }
+
+    .company-info {
+        flex-direction: column;
+        text-align: center;
+    }
+}
