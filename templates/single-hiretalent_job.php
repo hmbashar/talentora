@@ -85,10 +85,16 @@ while (have_posts()):
                             <span class="dashicons dashicons-clock"></span>
                             <span>
                                 <?php
-                                printf(
-                                    esc_html__('Posted %s ago', 'hiretalent'),
-                                    human_time_diff(get_the_time('U'), current_time('timestamp'))
-                                );
+									printf(
+										/* translators: %s: Human-readable time difference (e.g., "5 minutes"). */
+										esc_html__( 'Posted %1$s ago', 'hiretalent' ),
+										esc_html(
+											human_time_diff(
+												get_the_time( 'U' ),
+												current_time( 'timestamp' )
+											)
+										)
+									);
                                 ?>
                             </span>
                         </div>

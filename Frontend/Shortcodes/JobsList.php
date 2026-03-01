@@ -56,12 +56,18 @@ class JobsList
             // Pagination
             $paged = isset($params['paged']) ? absint($params['paged']) : 1;
             echo '<div class="hiretalent-pagination">';
-            echo paginate_links(array(
-                'total' => $query->max_num_pages,
-                'current' => $paged,
-                'prev_text' => __('&laquo; Previous', 'hiretalent'),
-                'next_text' => __('Next &raquo;', 'hiretalent'),
-            ));
+			echo wp_kses_post(
+				paginate_links(
+					array(
+						'total'   => $query->max_num_pages,
+						'current' => $paged,
+						/* translators: Pagination previous text. */
+						'prev_text' => esc_html__( '&laquo; Previous', 'hiretalent' ),
+						/* translators: Pagination next text. */
+						'next_text' => esc_html__( 'Next &raquo;', 'hiretalent' ),
+					)
+				)
+			);
             echo '</div>';
         } else {
             echo '<p class="hiretalent-no-jobs">' . esc_html__('No jobs found.', 'hiretalent') . '</p>';
@@ -241,12 +247,18 @@ class JobsList
                     <!-- Pagination -->
                     <div class="hiretalent-pagination">
                         <?php
-                        echo paginate_links(array(
-                            'total' => $jobs_query->max_num_pages,
-                            'current' => $params['paged'],
-                            'prev_text' => __('&laquo; Previous', 'hiretalent'),
-                            'next_text' => __('Next &raquo;', 'hiretalent'),
-                        ));
+							echo wp_kses_post(
+								paginate_links(
+									array(
+										'total'   => $jobs_query->max_num_pages,
+										'current' => $params['paged'],
+										/* translators: Pagination previous text. */
+										'prev_text' => esc_html__( '&laquo; Previous', 'hiretalent' ),
+										/* translators: Pagination next text. */
+										'next_text' => esc_html__( 'Next &raquo;', 'hiretalent' ),
+									)
+								)
+							);
                         ?>
                     </div>
                 <?php else: ?>

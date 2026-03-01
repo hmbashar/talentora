@@ -382,7 +382,11 @@ class Settings
      */
     public function admin_notification_subject_callback()
     {
-        $value = get_option('hiretalent_admin_notification_subject', __('[%site_name] New Job Application: {job_title}', 'hiretalent'));
+        $value = get_option(
+			'hiretalent_admin_notification_subject',
+			/* translators: {site_name}: Site name, {job_title}: Job title. */
+			__('[%site_name] New Job Application: {job_title}', 'hiretalent')
+		);
         ?>
         <div class="hiretalent-field-wrapper">
             <input type="text" name="hiretalent_admin_notification_subject" value="<?php echo esc_attr($value); ?>"

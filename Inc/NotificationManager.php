@@ -45,8 +45,18 @@ class NotificationManager
     public function send_admin_notification($application_id)
     {
         $admin_email = get_option('admin_email');
-        $subject = get_option('hiretalent_admin_notification_subject', __('[%site_name] New Job Application: {job_title}', 'hiretalent'));
-        $message = get_option('hiretalent_admin_notification_message', __("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent'));
+		
+		$subject = get_option(
+			'hiretalent_admin_notification_subject',
+			/* translators: {site_name}: Site name, {job_title}: Job title. */
+			esc_html__('[%site_name] New Job Application: {job_title}', 'hiretalent')
+		);
+
+		/* translators: {job_title}: Job title, {applicant_name}: Applicant full name, {application_url}: URL to the application details page. */
+		$message = get_option(			
+			'hiretalent_admin_notification_message',
+			esc_html__("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent')
+		);
 
         $subject = $this->replace_placeholders($subject, $application_id);
         $message = $this->replace_placeholders($message, $application_id);
@@ -120,11 +130,27 @@ class NotificationManager
         $result = wp_mail($email, $subject, $message);
         $this->log_email($email, $subject, $message, $result);
 
-        if ($result) {
-            $this->activity_logger->log($application_id, sprintf(__('Status change email sent for status: %s', 'hiretalent'), $new_status), 'info');
-        } else {
-            $this->activity_logger->log($application_id, sprintf(__('Failed to send status change email for status: %s', 'hiretalent'), $new_status), 'error');
-        }
+		if ($result) {
+			$this->activity_logger->log(
+				$application_id,
+				sprintf(
+					/* translators: %s: New application status label. */
+					__('Status change email sent for status: %s', 'hiretalent'),
+					$new_status
+				),
+				'info'
+			);
+		} else {
+			$this->activity_logger->log(
+				$application_id,
+				sprintf(
+					/* translators: %s: New application status label. */
+					__('Failed to send status change email for status: %s', 'hiretalent'),
+					$new_status
+				),
+				'error'
+			);
+		}
 
         return $result;
     }

@@ -333,7 +333,11 @@ class ApplicationMeta
         $statuses = $this->get_statuses();
 
         foreach ($statuses as $status) {
-            $bulk_actions['mark_status_' . sanitize_key($status)] = sprintf(__('Change status to %s', 'hiretalent'), $status);
+            $bulk_actions['mark_status_' . sanitize_key($status)] = sprintf(
+                /* translators: %s: Application status label. */
+                esc_html__('Change status to %1$s', 'hiretalent'),
+                $status
+            );
         }
 
         return $bulk_actions;
@@ -384,7 +388,12 @@ class ApplicationMeta
                 // Log activity
                 $this->activity_logger->log(
                     $post_id,
-                    sprintf(__('Status changed from %s to %s via bulk action', 'hiretalent'), $old_status, $new_status),
+                    sprintf(
+                        /* translators: 1: Old application status, 2: New application status. */
+                        esc_html__('Status changed from %1$s to %2$s via bulk action', 'hiretalent'),
+                        $old_status,
+                        $new_status
+                    ),
                     'info'
                 );
             }
@@ -423,7 +432,12 @@ class ApplicationMeta
                 // Log activity
                 $this->activity_logger->log(
                     $post_id,
-                    sprintf(__('Status changed from %s to %s', 'hiretalent'), $old_status, $new_status),
+                    sprintf(
+                        /* translators: 1: Old application status, 2: New application status. */
+                        esc_html__('Status changed from %1$s to %2$s', 'hiretalent'),
+                        $old_status,
+                        $new_status
+                    ),
                     'info'
                 );
             }
@@ -469,40 +483,55 @@ class ApplicationMeta
      */
     public function handle_resume_download()
     {
-        if (!isset($_GET['nonce']) || !isset($_GET['id'])) {
-            wp_die(__('Invalid request.', 'hiretalent'));
+        if (!isset($_GET['nonce'], $_GET['id'])) {
+            wp_die(esc_html__('Invalid request.', 'hiretalent'));
         }
 
-        $post_id = absint($_GET['id']);
+        $post_id = absint(wp_unslash($_GET['id']));
 
-        if (!wp_verify_nonce($_GET['nonce'], 'hiretalent_download_resume_' . $post_id)) {
-            wp_die(__('Security check failed.', 'hiretalent'));
+        $nonce = sanitize_text_field(wp_unslash($_GET['nonce']));
+
+        if (!wp_verify_nonce($nonce, 'hiretalent_download_resume_' . $post_id)) {
+            wp_die(esc_html__('Security check failed.', 'hiretalent'));
         }
 
         if (!current_user_can('edit_post', $post_id)) {
-            wp_die(__('You do not have permission to access this file.', 'hiretalent'));
+            wp_die(esc_html__('You do not have permission to access this file.', 'hiretalent'));
         }
 
-        $resume_id = get_post_meta($post_id, 'hiretalent_resume_id', true);
+        $resume_id = absint(get_post_meta($post_id, 'hiretalent_resume_id', true));
 
         if (!$resume_id) {
-            wp_die(__('Resume not found.', 'hiretalent'));
+            wp_die(esc_html__('Resume not found.', 'hiretalent'));
         }
 
         $file_path = get_attached_file($resume_id);
 
-        if (!file_exists($file_path)) {
-            wp_die(__('File not found.', 'hiretalent'));
+        if (empty($file_path) || !file_exists($file_path)) {
+            wp_die(esc_html__('File not found.', 'hiretalent'));
         }
 
-        // Serve file
+        // Serve file using WP_Filesystem (avoids direct PHP filesystem calls).
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
         $mime_type = get_post_mime_type($resume_id);
         $filename = basename($file_path);
+        $file_content = $wp_filesystem->get_contents($file_path);
+
+        if (false === $file_content) {
+            wp_die(esc_html__('Could not read the file.', 'hiretalent'));
+        }
 
         header('Content-Type: ' . $mime_type);
         header('Content-Disposition: attachment; filename="' . $filename . '"');
-        header('Content-Length: ' . filesize($file_path));
-        readfile($file_path);
+        header('Content-Length: ' . strlen($file_content));
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- binary file content must not be escaped.
+        echo $file_content;
         exit;
     }
 
@@ -537,12 +566,18 @@ class ApplicationMeta
      */
     public function handle_csv_export()
     {
-        if (!isset($_GET['nonce']) || !wp_verify_nonce($_GET['nonce'], 'hiretalent_export_applications')) {
-            wp_die(__('Security check failed.', 'hiretalent'));
+        if (
+            !isset($_GET['nonce']) ||
+            !wp_verify_nonce(
+                sanitize_text_field(wp_unslash($_GET['nonce'])),
+                'hiretalent_export_applications'
+            )
+        ) {
+            wp_die(esc_html__('Security check failed.', 'hiretalent'));
         }
 
         if (!current_user_can('edit_others_posts')) {
-            wp_die(__('You do not have permission to export applications.', 'hiretalent'));
+            wp_die(esc_html__('You do not have permission to export applications.', 'hiretalent'));
         }
 
         $args = array(
@@ -554,13 +589,17 @@ class ApplicationMeta
         $query = new \WP_Query($args);
 
         if (!$query->have_posts()) {
-            wp_die(__('No applications found.', 'hiretalent'));
+            wp_die(esc_html__('No applications found.', 'hiretalent'));
         }
 
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="applications-' . date('Y-m-d') . '.csv"');
-        header('Pragma: no-cache');
-        header('Expires: 0');
+		header( 'Content-Type: text/csv' );
+		header(
+			'Content-Disposition: attachment; filename="applications-' .
+			current_time( 'Y-m-d' ) .
+			'.csv"'
+		);
+		header( 'Pragma: no-cache' );
+		header( 'Expires: 0' );
 
         $output = fopen('php://output', 'w');
 

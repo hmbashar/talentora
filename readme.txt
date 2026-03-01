@@ -1,4 +1,4 @@
-=== HireTalent – Simple & Powerful Job Board Plugin ===
+=== HireTalent – Simple & Powerful Job Board ===
 
 Contributors: hmbashar
 Tags: job board, jobs, job listing, recruitment, employment, careers

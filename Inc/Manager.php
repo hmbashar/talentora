@@ -104,7 +104,7 @@ class Manager
      */
     public function auto_close_jobs()
     {
-        $today = date('Y-m-d');
+        $today = current_time( 'Y-m-d' );
 
         $args = array(
             'post_type' => 'hiretalent_job',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: HireTalent – Simple & Powerful Job Board Plugin
+ * Plugin Name: HireTalent – Simple & Powerful Job Board
  * Plugin URI: https://github.com/hmbashar/hiretalent
  * Description: A simple yet powerful job board plugin for WordPress. Post jobs, manage applications, and help employers find the right talent.
  * Version: 1.0.0

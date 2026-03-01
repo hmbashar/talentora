@@ -66,10 +66,10 @@ class ApplicationHandler
             return;
         }
 
-        // Verify nonce
-        if (!wp_verify_nonce($_POST['hiretalent_application_nonce'], 'hiretalent_submit_application')) {
-            wp_die(__('Security check failed.', 'hiretalent'));
-        }
+		// Verify nonce
+		if ( ! wp_verify_nonce( $_POST['hiretalent_application_nonce'], 'hiretalent_submit_application' ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'hiretalent' ) );
+		}
 
         $result = $this->process_application_submission($_POST, $_FILES);
         $job_id = isset($_POST['job_id']) ? absint($_POST['job_id']) : 0;
@@ -272,11 +272,16 @@ class ApplicationHandler
      */
     private function create_application($job_id, $name, $email, $phone, $cover_letter, $resume_id)
     {
-        $application_data = array(
-            'post_title' => sprintf(__('Application from %s for %s', 'hiretalent'), $name, get_the_title($job_id)),
-            'post_type' => 'hiretalent_app',
-            'post_status' => 'publish',
-        );
+		$application_data = array(
+			'post_title' => sprintf(
+				/* translators: 1: Applicant name, 2: Job title. */
+				__('Application from %1$s for %2$s', 'hiretalent'),
+				$name,
+				get_the_title($job_id)
+			),
+			'post_type'   => 'hiretalent_app',
+			'post_status' => 'publish',
+		);
 
         $application_id = wp_insert_post($application_data);
 

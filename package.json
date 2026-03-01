@@ -1,13 +1,14 @@
 {
   "name": "hiretalent",
   "version": "1.0.0",
-  "description": "HireTalent – Simple & Powerful Job Board Plugin for WordPress",
+  "description": "HireTalent – Simple & Powerful Job Board",
   "author": "Md Abul Bashar",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "bundle": "npm run bundle:build && npm run bundle:zip",
-    "bundle:build": "composer install --no-dev --optimize-autoloader",
-    "bundle:zip": "zip -r hiretalent.zip . --exclude='*.git*' --exclude='node_modules/*' --exclude='docs/*' --exclude='*.distignore' --exclude='*.gitignore' --exclude='*.gitattributes' --exclude='package.json' --exclude='package-lock.json' --exclude='composer.json' --exclude='composer.lock' --exclude='webpack.config.js' --exclude='postcss.config.js' --exclude='tests/*' --exclude='*.sql' --exclude='*.tar.gz' --exclude='*.zip'"
+    "clean": "find . -name '.DS_Store' -type f -delete",
+    "make-pot": "composer run-script make-pot",
+    "install-prod": "composer install --no-dev",
+    "bundle": "npm run clean && npm run make-pot && npm run install-prod && dir-archiver --src . --dest ../hiretalent.zip --exclude '**/.DS_Store' --exclude='docs/*' .git .distignore .gitattributes .github .gitignore .wordpress-org README.md composer.lock node_modules package-lock.json package.json phpcs.xml.dist"
   },
   "devDependencies": {}
 }
