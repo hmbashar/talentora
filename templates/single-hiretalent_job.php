@@ -17,35 +17,35 @@ get_header();
 
 while (have_posts()):
     the_post();
-    $job_id = get_the_ID();
+    $hiretalent_job_id = get_the_ID();
 
     // Get job meta
-    $location = get_post_meta($job_id, 'hiretalent_location', true);
-    $salary_min = get_post_meta($job_id, 'hiretalent_salary_min', true);
-    $salary_max = get_post_meta($job_id, 'hiretalent_salary_max', true);
-    $deadline = get_post_meta($job_id, 'hiretalent_deadline', true);
-    $experience = get_post_meta($job_id, 'hiretalent_experience', true);
-    $vacancy = get_post_meta($job_id, 'hiretalent_vacancy', true);
-    $working_hours = get_post_meta($job_id, 'hiretalent_working_hours', true);
-    $working_days = get_post_meta($job_id, 'hiretalent_working_days', true);
-    $joining_date = get_post_meta($job_id, 'hiretalent_joining_date', true);
-    $company_name = get_post_meta($job_id, 'hiretalent_company_name', true);
-    $company_website = get_post_meta($job_id, 'hiretalent_company_website', true);
-    $company_logo_id = get_post_meta($job_id, 'hiretalent_company_logo_id', true);
-    $is_filled = get_post_meta($job_id, 'hiretalent_is_filled', true);
+    $hiretalent_location = get_post_meta($hiretalent_job_id, 'hiretalent_location', true);
+    $hiretalent_salary_min = get_post_meta($hiretalent_job_id, 'hiretalent_salary_min', true);
+    $hiretalent_salary_max = get_post_meta($hiretalent_job_id, 'hiretalent_salary_max', true);
+    $hiretalent_deadline = get_post_meta($hiretalent_job_id, 'hiretalent_deadline', true);
+    $hiretalent_experience = get_post_meta($hiretalent_job_id, 'hiretalent_experience', true);
+    $hiretalent_vacancy = get_post_meta($hiretalent_job_id, 'hiretalent_vacancy', true);
+    $hiretalent_working_hours = get_post_meta($hiretalent_job_id, 'hiretalent_working_hours', true);
+    $hiretalent_working_days = get_post_meta($hiretalent_job_id, 'hiretalent_working_days', true);
+    $hiretalent_joining_date = get_post_meta($hiretalent_job_id, 'hiretalent_joining_date', true);
+    $hiretalent_company_name = get_post_meta($hiretalent_job_id, 'hiretalent_company_name', true);
+    $hiretalent_company_website = get_post_meta($hiretalent_job_id, 'hiretalent_company_website', true);
+    $hiretalent_company_logo_id = get_post_meta($hiretalent_job_id, 'hiretalent_company_logo_id', true);
+    $hiretalent_is_filled = get_post_meta($hiretalent_job_id, 'hiretalent_is_filled', true);
 
     // Get taxonomies
-    $job_categories = get_the_terms($job_id, 'hiretalent_job_category');
-    $job_types = get_the_terms($job_id, 'hiretalent_job_type');
+    $hiretalent_job_categories = get_the_terms($hiretalent_job_id, 'hiretalent_job_category');
+    $hiretalent_job_types = get_the_terms($hiretalent_job_id, 'hiretalent_job_type');
     ?>
 
-    <article id="job-<?php echo esc_attr($job_id); ?>" <?php post_class('hiretalent-single-job'); ?>>
+    <article id="job-<?php echo esc_attr($hiretalent_job_id); ?>" <?php post_class('hiretalent-single-job'); ?>>
 
         <!-- Job Hero Header -->
         <div class="job-hero-header">
             <div class="job-hero-container">
                 <div class="job-hero-content">
-                    <?php if ($is_filled): ?>
+                    <?php if ($hiretalent_is_filled): ?>
                         <span class="job-status-badge filled">
                             <span class="dashicons dashicons-saved"></span>
                             <?php esc_html_e('Position Filled', 'hiretalent'); ?>
@@ -60,24 +60,24 @@ while (have_posts()):
                     <h1 class="job-hero-title"><?php the_title(); ?></h1>
 
                     <div class="job-hero-meta">
-                        <?php if ($company_name): ?>
+                        <?php if ($hiretalent_company_name): ?>
                             <div class="hero-meta-item primary">
                                 <span class="dashicons dashicons-building"></span>
-                                <span><?php echo esc_html($company_name); ?></span>
+                                <span><?php echo esc_html($hiretalent_company_name); ?></span>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($location): ?>
+                        <?php if ($hiretalent_location): ?>
                             <div class="hero-meta-item">
                                 <span class="dashicons dashicons-location"></span>
-                                <span><?php echo esc_html($location); ?></span>
+                                <span><?php echo esc_html($hiretalent_location); ?></span>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($job_types && !is_wp_error($job_types)): ?>
+                        <?php if ($hiretalent_job_types && !is_wp_error($hiretalent_job_types)): ?>
                             <div class="hero-meta-item">
                                 <span class="dashicons dashicons-tag"></span>
-                                <span><?php echo esc_html($job_types[0]->name); ?></span>
+                                <span><?php echo esc_html($hiretalent_job_types[0]->name); ?></span>
                             </div>
                         <?php endif; ?>
 
@@ -85,23 +85,23 @@ while (have_posts()):
                             <span class="dashicons dashicons-clock"></span>
                             <span>
                                 <?php
-									printf(
-										/* translators: %s: Human-readable time difference (e.g., "5 minutes"). */
-										esc_html__( 'Posted %1$s ago', 'hiretalent' ),
-										esc_html(
-											human_time_diff(
-												get_the_time( 'U' ),
-												current_time( 'timestamp' )
-											)
-										)
-									);
+                                printf(
+                                    /* translators: %s: Human-readable time difference (e.g., "5 minutes"). */
+                                    esc_html__('Posted %1$hiretalent_s ago', 'hiretalent'),
+                                    esc_html(
+                                        human_time_diff(
+                                            get_the_time('U'),
+                                            current_time('timestamp')
+                                        )
+                                    )
+                                );
                                 ?>
                             </span>
                         </div>
                     </div>
 
-                    <?php if ($company_website): ?>
-                        <a href="<?php echo esc_url($company_website); ?>" target="_blank" rel="noopener noreferrer"
+                    <?php if ($hiretalent_company_website): ?>
+                        <a href="<?php echo esc_url($hiretalent_company_website); ?>" target="_blank" rel="noopener noreferrer"
                             class="company-website-link">
                             <span class="dashicons dashicons-admin-links"></span>
                             <?php esc_html_e('Visit Company Website', 'hiretalent'); ?>
@@ -120,7 +120,7 @@ while (have_posts()):
 
                     <!-- Key Information Cards -->
                     <div class="job-info-cards">
-                        <?php if ($salary_min || $salary_max): ?>
+                        <?php if ($hiretalent_salary_min || $hiretalent_salary_max): ?>
                             <div class="info-card salary-card">
                                 <div class="info-card-icon">
                                     <span class="dashicons dashicons-money-alt"></span>
@@ -129,13 +129,13 @@ while (have_posts()):
                                     <div class="info-card-label"><?php esc_html_e('Salary Range', 'hiretalent'); ?></div>
                                     <div class="info-card-value">
                                         <?php
-                                        $currency = get_option('hiretalent_currency_symbol', '$');
-                                        if ($salary_min && $salary_max) {
-                                            echo esc_html($currency . number_format($salary_min) . ' - ' . $currency . number_format($salary_max));
-                                        } elseif ($salary_min) {
-                                            echo esc_html($currency . number_format($salary_min) . '+');
+                                        $hiretalent_currency = get_option('hiretalent_currency_symbol', '$');
+                                        if ($hiretalent_salary_min && $hiretalent_salary_max) {
+                                            echo esc_html($hiretalent_currency . number_format($hiretalent_salary_min) . ' - ' . $hiretalent_currency . number_format($hiretalent_salary_max));
+                                        } elseif ($hiretalent_salary_min) {
+                                            echo esc_html($hiretalent_currency . number_format($hiretalent_salary_min) . '+');
                                         } else {
-                                            echo esc_html($currency . number_format($salary_max));
+                                            echo esc_html($hiretalent_currency . number_format($hiretalent_salary_max));
                                         }
                                         ?>
                                     </div>
@@ -143,7 +143,7 @@ while (have_posts()):
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($deadline): ?>
+                        <?php if ($hiretalent_deadline): ?>
                             <div class="info-card deadline-card">
                                 <div class="info-card-icon">
                                     <span class="dashicons dashicons-calendar-alt"></span>
@@ -152,13 +152,13 @@ while (have_posts()):
                                     <div class="info-card-label"><?php esc_html_e('Application Deadline', 'hiretalent'); ?>
                                     </div>
                                     <div class="info-card-value">
-                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($deadline))); ?>
+                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($hiretalent_deadline))); ?>
                                     </div>
                                 </div>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($job_types && !is_wp_error($job_types)): ?>
+                        <?php if ($hiretalent_job_types && !is_wp_error($hiretalent_job_types)): ?>
                             <div class="info-card type-card">
                                 <div class="info-card-icon">
                                     <span class="dashicons dashicons-businessman"></span>
@@ -167,11 +167,11 @@ while (have_posts()):
                                     <div class="info-card-label"><?php esc_html_e('Employment Type', 'hiretalent'); ?></div>
                                     <div class="info-card-value">
                                         <?php
-                                        $type_names = array();
-                                        foreach ($job_types as $type) {
-                                            $type_names[] = $type->name;
+                                        $hiretalent_type_names = array();
+                                        foreach ($hiretalent_job_types as $hiretalent_type) {
+                                            $hiretalent_type_names[] = $hiretalent_type->name;
                                         }
-                                        echo esc_html(implode(', ', $type_names));
+                                        echo esc_html(implode(', ', $hiretalent_type_names));
                                         ?>
                                     </div>
                                 </div>
@@ -180,7 +180,7 @@ while (have_posts()):
 
 
 
-                        <?php if ($joining_date): ?>
+                        <?php if ($hiretalent_joining_date): ?>
                             <div class="info-card joining-date-card">
                                 <div class="info-card-icon">
                                     <span class="dashicons dashicons-calendar"></span>
@@ -188,13 +188,13 @@ while (have_posts()):
                                 <div class="info-card-content">
                                     <div class="info-card-label"><?php esc_html_e('Joining Date', 'hiretalent'); ?></div>
                                     <div class="info-card-value">
-                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($joining_date))); ?>
+                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($hiretalent_joining_date))); ?>
                                     </div>
                                 </div>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($job_categories && !is_wp_error($job_categories)): ?>
+                        <?php if ($hiretalent_job_categories && !is_wp_error($hiretalent_job_categories)): ?>
                             <div class="info-card category-card">
                                 <div class="info-card-icon">
                                     <span class="dashicons dashicons-category"></span>
@@ -203,11 +203,11 @@ while (have_posts()):
                                     <div class="info-card-label"><?php esc_html_e('Category', 'hiretalent'); ?></div>
                                     <div class="info-card-value">
                                         <?php
-                                        $cat_names = array();
-                                        foreach ($job_categories as $cat) {
-                                            $cat_names[] = $cat->name;
+                                        $hiretalent_cat_names = array();
+                                        foreach ($hiretalent_job_categories as $hiretalent_cat) {
+                                            $hiretalent_cat_names[] = $hiretalent_cat->name;
                                         }
-                                        echo esc_html(implode(', ', $cat_names));
+                                        echo esc_html(implode(', ', $hiretalent_cat_names));
                                         ?>
                                     </div>
                                 </div>
@@ -227,7 +227,7 @@ while (have_posts()):
                     </div>
 
                     <!-- Application Section -->
-                    <?php if (!$is_filled): ?>
+                    <?php if (!$hiretalent_is_filled): ?>
                         <div class="job-apply-section" id="apply-section">
                             <h2 class="content-section-title">
                                 <span class="dashicons dashicons-admin-users"></span>
@@ -258,17 +258,17 @@ while (have_posts()):
                 <aside class="job-sidebar">
 
                     <!-- Company Logo/QR Code Card -->
-                    <?php if ($company_logo_id): ?>
+                    <?php if ($hiretalent_company_logo_id): ?>
                         <div class="sidebar-card company-card">
                             <div class="company-logo-wrapper">
-                                <?php echo wp_get_attachment_image($company_logo_id, 'medium', false, array('class' => 'company-logo-large')); ?>
+                                <?php echo wp_get_attachment_image($hiretalent_company_logo_id, 'medium', false, array('class' => 'company-logo-large')); ?>
                             </div>
-                            <?php if ($company_name): ?>
-                                <h3 class="company-name"><?php echo esc_html($company_name); ?></h3>
+                            <?php if ($hiretalent_company_name): ?>
+                                <h3 class="company-name"><?php echo esc_html($hiretalent_company_name); ?></h3>
                             <?php endif; ?>
-                            <?php if ($company_website): ?>
-                                <a href="<?php echo esc_url($company_website); ?>" target="_blank" rel="noopener noreferrer"
-                                    class="company-website-btn">
+                            <?php if ($hiretalent_company_website): ?>
+                                <a href="<?php echo esc_url($hiretalent_company_website); ?>" target="_blank"
+                                    rel="noopener noreferrer" class="company-website-btn">
                                     <span class="dashicons dashicons-external"></span>
                                     <?php esc_html_e('Company Website', 'hiretalent'); ?>
                                 </a>
@@ -283,7 +283,7 @@ while (have_posts()):
                             <?php esc_html_e('Quick Actions', 'hiretalent'); ?>
                         </h3>
                         <div class="quick-actions">
-                            <?php if (!$is_filled): ?>
+                            <?php if (!$hiretalent_is_filled): ?>
                                 <a href="#apply-section" class="action-btn primary">
                                     <span class="dashicons dashicons-yes-alt"></span>
                                     <?php esc_html_e('Apply Now', 'hiretalent'); ?>
@@ -307,19 +307,19 @@ while (have_posts()):
                             <?php esc_html_e('Job Summary:', 'hiretalent'); ?>
                         </h3>
                         <div class="summary-items">
-                            <?php if ($location): ?>
+                            <?php if ($hiretalent_location): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-location"></span>
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Location', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html($location); ?></span>
+                                        <span class="summary-value"><?php echo esc_html($hiretalent_location); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($salary_min || $salary_max): ?>
+                            <?php if ($hiretalent_salary_min || $hiretalent_salary_max): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-money-alt"></span>
@@ -328,13 +328,13 @@ while (have_posts()):
                                         <span class="summary-label"><?php esc_html_e('Salary', 'hiretalent'); ?></span>
                                         <span class="summary-value">
                                             <?php
-                                            $currency = get_option('hiretalent_currency_symbol', '$');
-                                            if ($salary_min && $salary_max) {
-                                                echo esc_html($currency . number_format($salary_min) . ' - ' . $currency . number_format($salary_max));
-                                            } elseif ($salary_min) {
-                                                echo esc_html('From ' . $currency . number_format($salary_min));
+                                            $hiretalent_currency = get_option('hiretalent_currency_symbol', '$');
+                                            if ($hiretalent_salary_min && $hiretalent_salary_max) {
+                                                echo esc_html($hiretalent_currency . number_format($hiretalent_salary_min) . ' - ' . $hiretalent_currency . number_format($hiretalent_salary_max));
+                                            } elseif ($hiretalent_salary_min) {
+                                                echo esc_html('From ' . $hiretalent_currency . number_format($hiretalent_salary_min));
                                             } else {
-                                                echo esc_html('Up to ' . $currency . number_format($salary_max));
+                                                echo esc_html('Up to ' . $hiretalent_currency . number_format($hiretalent_salary_max));
                                             }
                                             ?>
                                         </span>
@@ -342,67 +342,68 @@ while (have_posts()):
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($job_types && !is_wp_error($job_types)): ?>
+                            <?php if ($hiretalent_job_types && !is_wp_error($hiretalent_job_types)): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-portfolio"></span>
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Job Type', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html($job_types[0]->name); ?></span>
+                                        <span
+                                            class="summary-value"><?php echo esc_html($hiretalent_job_types[0]->name); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($experience): ?>
+                            <?php if ($hiretalent_experience): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-welcome-learn-more"></span>
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Experience', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html($experience); ?></span>
+                                        <span class="summary-value"><?php echo esc_html($hiretalent_experience); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($working_hours): ?>
+                            <?php if ($hiretalent_working_hours): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-clock"></span>
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Working Hours', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html($working_hours); ?></span>
+                                        <span class="summary-value"><?php echo esc_html($hiretalent_working_hours); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($working_days): ?>
+                            <?php if ($hiretalent_working_days): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-calendar-alt"></span>
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Working Days', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html($working_days); ?></span>
+                                        <span class="summary-value"><?php echo esc_html($hiretalent_working_days); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($vacancy): ?>
+                            <?php if ($hiretalent_vacancy): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-groups"></span>
                                     </div>
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Vacancy', 'hiretalent'); ?></span>
-                                        <span class="summary-value"><?php echo esc_html($vacancy); ?></span>
+                                        <span class="summary-value"><?php echo esc_html($hiretalent_vacancy); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <?php if ($deadline): ?>
+                            <?php if ($hiretalent_deadline): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-calendar"></span>
@@ -411,7 +412,7 @@ while (have_posts()):
                                         <span
                                             class="summary-label"><?php esc_html_e('Last Date of Submission', 'hiretalent'); ?></span>
                                         <span
-                                            class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($deadline))); ?></span>
+                                            class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($hiretalent_deadline))); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -428,7 +429,7 @@ while (have_posts()):
                                 </div>
                             </div>
 
-                            <?php if ($joining_date): ?>
+                            <?php if ($hiretalent_joining_date): ?>
                                 <div class="summary-item">
                                     <div class="summary-icon">
                                         <span class="dashicons dashicons-calendar"></span>
@@ -436,7 +437,7 @@ while (have_posts()):
                                     <div class="summary-content">
                                         <span class="summary-label"><?php esc_html_e('Joining Date', 'hiretalent'); ?></span>
                                         <span
-                                            class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($joining_date))); ?></span>
+                                            class="summary-value"><?php echo esc_html(date_i18n('Y-m-d', strtotime($hiretalent_joining_date))); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>

@@ -9,7 +9,7 @@
  * @since 1.0.0
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
@@ -21,21 +21,22 @@ get_header();
         <div class="page-header-content">
             <h1 class="page-title">
                 <span class="dashicons dashicons-portfolio"></span>
-                <?php esc_html_e('Job Opportunities', 'hiretalent'); ?>
+                <?php esc_html_e( 'Job Opportunities', 'hiretalent' ); ?>
             </h1>
             <?php
-            $description = get_the_archive_description();
-            if ($description) {
-                echo '<div class="archive-description">' . wp_kses_post($description) . '</div>';
+            $hiretalent_description = get_the_archive_description();
+
+            if ( $hiretalent_description ) {
+                echo '<div class="archive-description">' . wp_kses_post( $hiretalent_description ) . '</div>';
             } else {
-                echo '<p class="archive-subtitle">' . esc_html__('Explore exciting career opportunities and find your next role', 'hiretalent') . '</p>';
+                echo '<p class="archive-subtitle">' . esc_html__( 'Explore exciting career opportunities and find your next role', 'hiretalent' ) . '</p>';
             }
             ?>
         </div>
     </header>
 
     <div class="hiretalent-archive-content">
-        <?php echo do_shortcode('[hiretalent_jobs]'); ?>
+        <?php echo wp_kses_post( do_shortcode( '[hiretalent_jobs]' ) ); ?>
     </div>
 </div>
 

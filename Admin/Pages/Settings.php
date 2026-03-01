@@ -158,7 +158,8 @@ class Settings
         if (!current_user_can('manage_options')) {
             return;
         }
-
+		
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Admin page tab navigation (read-only). No state change; value is sanitized.
         $active_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'general';
         ?>
         <div class="wrap hiretalent-settings-wrapper">

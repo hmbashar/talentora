@@ -65,9 +65,14 @@ class ApplicationHandler
         if (!isset($_POST['hiretalent_submit_application']) || !isset($_POST['hiretalent_application_nonce'])) {
             return;
         }
+		
+		// Unsplash + sanitize first.
+		$nonce = sanitize_text_field(
+			wp_unslash( $_POST['hiretalent_application_nonce'] )
+		);
 
-		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['hiretalent_application_nonce'], 'hiretalent_submit_application' ) ) {
+		// Verify nonce.
+		if ( ! wp_verify_nonce( $nonce, 'hiretalent_submit_application' ) ) {
 			wp_die( esc_html__( 'Security check failed.', 'hiretalent' ) );
 		}
 

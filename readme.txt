@@ -1,9 +1,9 @@
 === HireTalent – Simple & Powerful Job Board ===
 
 Contributors: hmbashar
-Tags: job board, jobs, job listing, recruitment, employment, careers
+Tags: job board, job listing, recruitment, employment, careers
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 6.9
 Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later

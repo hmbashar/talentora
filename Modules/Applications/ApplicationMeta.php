@@ -403,46 +403,73 @@ class ApplicationMeta
         return $redirect_to;
     }
 
-    /**
-     * Save application meta data.
-     *
-     * @param int $post_id Post ID.
-     * @since 1.0.0
-     */
-    public function save_application_meta($post_id)
-    {
-        // Check nonce
-        if (!isset($_POST['hiretalent_application_status_nonce']) || !wp_verify_nonce($_POST['hiretalent_application_status_nonce'], 'hiretalent_save_application_status')) {
-            return;
-        }
+	/**
+	 * Save application meta data.
+	 *
+	 * @param int $post_id Post ID.
+	 * @since 1.0.0
+	 */
+	public function save_application_meta( $post_id ) {
 
-        // Check permissions
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
+		// Check nonce.
+		if ( ! isset( $_POST['hiretalent_application_status_nonce'] ) ) {
+			return;
+		}
 
-        // Save status
-        if (isset($_POST['hiretalent_application_status'])) {
-            $new_status = sanitize_text_field($_POST['hiretalent_application_status']);
-            $old_status = get_post_meta($post_id, 'hiretalent_application_status', true);
+		$nonce = sanitize_text_field(
+			wp_unslash( $_POST['hiretalent_application_status_nonce'] )
+		);
 
-            if ($old_status !== $new_status) {
-                $this->notification_manager->send_status_change_notification($post_id, $old_status, $new_status);
+		if ( ! wp_verify_nonce( $nonce, 'hiretalent_save_application_status' ) ) {
+			return;
+		}
 
-                // Log activity
-                $this->activity_logger->log(
-                    $post_id,
-                    sprintf(
-                        /* translators: 1: Old application status, 2: New application status. */
-                        esc_html__('Status changed from %1$s to %2$s', 'hiretalent'),
-                        $old_status,
-                        $new_status
-                    ),
-                    'info'
-                );
-            }
-        }
-    }
+		// Check permissions.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Save status.
+		if ( isset( $_POST['hiretalent_application_status'] ) ) {
+
+			$new_status = sanitize_text_field(
+				wp_unslash( $_POST['hiretalent_application_status'] )
+			);
+
+			$old_status = get_post_meta(
+				$post_id,
+				'hiretalent_application_status',
+				true
+			);
+
+			if ( $old_status !== $new_status ) {
+
+				$this->notification_manager->send_status_change_notification(
+					$post_id,
+					$old_status,
+					$new_status
+				);
+
+				// Log activity.
+				$this->activity_logger->log(
+					$post_id,
+					sprintf(
+						/* translators: 1: Old application status, 2: New application status. */
+						esc_html__( 'Status changed from %1$s to %2$s', 'hiretalent' ),
+						esc_html( $old_status ),
+						esc_html( $new_status )
+					),
+					'info'
+				);
+
+				update_post_meta(
+					$post_id,
+					'hiretalent_application_status',
+					$new_status
+				);
+			}
+		}
+	}
 
     /**
      * Render activity log metabox.

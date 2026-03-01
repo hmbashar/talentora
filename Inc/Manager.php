@@ -104,12 +104,13 @@ class Manager
      */
     public function auto_close_jobs()
     {
-        $today = current_time( 'Y-m-d' );
+        $today = current_time('Y-m-d');
 
         $args = array(
             'post_type' => 'hiretalent_job',
             'posts_per_page' => -1,
             'post_status' => 'publish',
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- meta_query is unavoidable: no WP API alternative exists to filter published posts by a date-type meta field (deadline) during a scheduled cron event.
             'meta_query' => array(
                 'relation' => 'AND',
                 array(

@@ -39,8 +39,14 @@ class JobsList
     public function handle_ajax_filter()
     {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hiretalent_filter_nonce')) {
-            wp_send_json_error('Invalid nonce');
+        if (!isset($_POST['nonce'])) {
+            wp_send_json_error(esc_html__('Invalid nonce', 'hiretalent'));
+        }
+
+        $nonce = sanitize_text_field(wp_unslash($_POST['nonce']));
+
+        if (!wp_verify_nonce($nonce, 'hiretalent_filter_nonce')) {
+            wp_send_json_error(esc_html__('Invalid nonce', 'hiretalent'));
         }
 
         $params = $_POST;
@@ -56,18 +62,18 @@ class JobsList
             // Pagination
             $paged = isset($params['paged']) ? absint($params['paged']) : 1;
             echo '<div class="hiretalent-pagination">';
-			echo wp_kses_post(
-				paginate_links(
-					array(
-						'total'   => $query->max_num_pages,
-						'current' => $paged,
-						/* translators: Pagination previous text. */
-						'prev_text' => esc_html__( '&laquo; Previous', 'hiretalent' ),
-						/* translators: Pagination next text. */
-						'next_text' => esc_html__( 'Next &raquo;', 'hiretalent' ),
-					)
-				)
-			);
+            echo wp_kses_post(
+                paginate_links(
+                    array(
+                        'total' => $query->max_num_pages,
+                        'current' => $paged,
+                        /* translators: Pagination previous text. */
+                        'prev_text' => esc_html__('&laquo; Previous', 'hiretalent'),
+                        /* translators: Pagination next text. */
+                        'next_text' => esc_html__('Next &raquo;', 'hiretalent'),
+                    )
+                ) ?? ''
+            );
             echo '</div>';
         } else {
             echo '<p class="hiretalent-no-jobs">' . esc_html__('No jobs found.', 'hiretalent') . '</p>';
@@ -122,12 +128,15 @@ class JobsList
                 'terms' => $type,
             );
         }
+        
         if (!empty($tax_query)) {
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- tax_query is unavoidable: it is the only WP API to filter posts by taxonomy terms (category/type).
             $args['tax_query'] = $tax_query;
         }
 
         // Location meta query
         if (!empty($location)) {
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- meta_query is unavoidable: no WP API alternative exists to filter posts by a meta field (location) with a LIKE comparison.
             $args['meta_query'] = array(
                 array(
                     'key' => 'hiretalent_location',
@@ -155,20 +164,36 @@ class JobsList
         $atts = shortcode_atts(array(
             'posts_per_page' => get_option('hiretalent_jobs_per_page', 10),
         ), $atts);
+        // Build params from a whitelist of GET keys (read-only filtering).
+        $params = $atts;
 
-        // Merge shortcode atts with GET parameters for initial load
-        $params = array_merge($atts, $_GET);
-        $params['paged'] = get_query_var('paged') ? get_query_var('paged') : 1;
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
+		$keyword = isset( $_GET['job_keyword'] ) ? sanitize_text_field( wp_unslash( $_GET['job_keyword'] ) ) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
+		$category = isset( $_GET['job_category'] ) ? absint( wp_unslash( $_GET['job_category'] ) ) : 0;
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
+		$type = isset( $_GET['job_type'] ) ? absint( wp_unslash( $_GET['job_type'] ) ) : 0;
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
+		$location = isset( $_GET['job_location'] ) ? sanitize_text_field( wp_unslash( $_GET['job_location'] ) ) : '';
 
-        $jobs_query = $this->get_jobs_query($params);
+		if ( '' !== $keyword ) {
+            $params['job_keyword'] = $keyword;
+        }
+		if ( $category > 0 ) {
+            $params['job_category'] = $category;
+        }
+		if ( $type > 0 ) {
+            $params['job_type'] = $type;
+        }
+		if ( '' !== $location ) {
+            $params['job_location'] = $location;
+        }
+
+		$params['paged'] = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+
+		$jobs_query = $this->get_jobs_query( $params );
 
         ob_start();
-
-        // Get filter values for form population
-        $keyword = isset($_GET['job_keyword']) ? sanitize_text_field($_GET['job_keyword']) : '';
-        $category = isset($_GET['job_category']) ? absint($_GET['job_category']) : 0;
-        $type = isset($_GET['job_type']) ? absint($_GET['job_type']) : 0;
-        $location = isset($_GET['job_location']) ? sanitize_text_field($_GET['job_location']) : '';
         ?>
         <div class="hiretalent-jobs-wrapper">
             <?php do_action('hiretalent_before_job_list'); ?>
@@ -247,18 +272,18 @@ class JobsList
                     <!-- Pagination -->
                     <div class="hiretalent-pagination">
                         <?php
-							echo wp_kses_post(
-								paginate_links(
-									array(
-										'total'   => $jobs_query->max_num_pages,
-										'current' => $params['paged'],
-										/* translators: Pagination previous text. */
-										'prev_text' => esc_html__( '&laquo; Previous', 'hiretalent' ),
-										/* translators: Pagination next text. */
-										'next_text' => esc_html__( 'Next &raquo;', 'hiretalent' ),
-									)
-								)
-							);
+                        echo wp_kses_post(
+                            paginate_links(
+                                array(
+                                    'total' => $jobs_query->max_num_pages,
+                                    'current' => $params['paged'],
+                                    /* translators: Pagination previous text. */
+                                    'prev_text' => esc_html__('&laquo; Previous', 'hiretalent'),
+                                    /* translators: Pagination next text. */
+                                    'next_text' => esc_html__('Next &raquo;', 'hiretalent'),
+                                )
+                            ) ?? ''
+                        );
                         ?>
                     </div>
                 <?php else: ?>

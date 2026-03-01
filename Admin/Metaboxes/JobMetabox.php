@@ -364,113 +364,181 @@ class JobMetabox
         </div>
         <?php
     }
+	/**
+	 * Save meta box data.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
+	 * @since 1.0.0
+	 */
+	public function save_meta_box( $post_id, $post ) {
+		// Check nonce.
+		if ( ! isset( $_POST['hiretalent_job_meta_nonce'] ) ) {
+			return;
+		}
 
-    /**
-     * Save meta box data.
-     *
-     * @param int      $post_id Post ID.
-     * @param \WP_Post $post    Post object.
-     * @since 1.0.0
-     */
-    public function save_meta_box($post_id, $post)
-    {
-        // Check nonce
-        if (!isset($_POST['hiretalent_job_meta_nonce']) || !wp_verify_nonce($_POST['hiretalent_job_meta_nonce'], 'hiretalent_save_job_meta')) {
-            return;
-        }
+		$nonce = sanitize_text_field( wp_unslash( $_POST['hiretalent_job_meta_nonce'] ) );
 
-        // Check autosave
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-            return;
-        }
+		if ( ! wp_verify_nonce( $nonce, 'hiretalent_save_job_meta' ) ) {
+			return;
+		}
 
-        // Check permissions
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
+		// Check autosave.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
 
-        // Save location
-        if (isset($_POST['hiretalent_location'])) {
-            update_post_meta($post_id, 'hiretalent_location', sanitize_text_field($_POST['hiretalent_location']));
-        }
+		// Check permissions.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
 
-        // Save salary min
-        if (isset($_POST['hiretalent_salary_min'])) {
-            update_post_meta($post_id, 'hiretalent_salary_min', absint($_POST['hiretalent_salary_min']));
-        }
+		// Save location.
+		if ( isset( $_POST['hiretalent_location'] ) ) {
+			update_post_meta(
+				$post_id,
+				'hiretalent_location',
+				sanitize_text_field( wp_unslash( $_POST['hiretalent_location'] ) )
+			);
+		}
 
-        // Save salary max
-        if (isset($_POST['hiretalent_salary_max'])) {
-            update_post_meta($post_id, 'hiretalent_salary_max', absint($_POST['hiretalent_salary_max']));
-        }
+		// Save salary min.
+		if ( isset( $_POST['hiretalent_salary_min'] ) ) {
+			update_post_meta(
+				$post_id,
+				'hiretalent_salary_min',
+				absint( wp_unslash( $_POST['hiretalent_salary_min'] ) )
+			);
+		}
 
-        // Save deadline
-        if (isset($_POST['hiretalent_deadline'])) {
-            update_post_meta($post_id, 'hiretalent_deadline', sanitize_text_field($_POST['hiretalent_deadline']));
-        }
+		// Save salary max.
+		if ( isset( $_POST['hiretalent_salary_max'] ) ) {
+			update_post_meta(
+				$post_id,
+				'hiretalent_salary_max',
+				absint( wp_unslash( $_POST['hiretalent_salary_max'] ) )
+			);
+		}
 
-        // Save joining date
-        if (isset($_POST['hiretalent_joining_date'])) {
-            update_post_meta($post_id, 'hiretalent_joining_date', sanitize_text_field($_POST['hiretalent_joining_date']));
-        }
-
-        // Save experience
-        if (isset($_POST['hiretalent_experience'])) {
-            update_post_meta($post_id, 'hiretalent_experience', sanitize_text_field($_POST['hiretalent_experience']));
-        }
-
-        // Save vacancy
-        if (isset($_POST['hiretalent_vacancy'])) {
-            update_post_meta($post_id, 'hiretalent_vacancy', absint($_POST['hiretalent_vacancy']));
-        }
-
-        // Save working hours
-        if (isset($_POST['hiretalent_working_hours'])) {
-            update_post_meta($post_id, 'hiretalent_working_hours', sanitize_text_field($_POST['hiretalent_working_hours']));
-        }
-
-        // Save working days
-        if (isset($_POST['hiretalent_working_days'])) {
-            update_post_meta($post_id, 'hiretalent_working_days', sanitize_text_field($_POST['hiretalent_working_days']));
-        }
-
-        // Save company name
-        if (isset($_POST['hiretalent_company_name'])) {
-            update_post_meta($post_id, 'hiretalent_company_name', sanitize_text_field($_POST['hiretalent_company_name']));
-        }
-
-        // Save company website
-        if (isset($_POST['hiretalent_company_website'])) {
-            update_post_meta($post_id, 'hiretalent_company_website', esc_url_raw($_POST['hiretalent_company_website']));
-        }
-
-        // Save company logo ID
-        if (isset($_POST['hiretalent_company_logo_id'])) {
-            update_post_meta($post_id, 'hiretalent_company_logo_id', absint($_POST['hiretalent_company_logo_id']));
-        }
-
-        // Save expiry date
-        if (isset($_POST['hiretalent_expiry_date'])) {
-            update_post_meta($post_id, 'hiretalent_expiry_date', sanitize_text_field($_POST['hiretalent_expiry_date']));
-        }
-
-        // Save application type
-        if (isset($_POST['hiretalent_application_type'])) {
-            update_post_meta($post_id, 'hiretalent_application_type', sanitize_text_field($_POST['hiretalent_application_type']));
-        }
-
-        // Save third party shortcode
-        if (isset($_POST['hiretalent_third_party_shortcode'])) {
-            update_post_meta($post_id, 'hiretalent_third_party_shortcode', sanitize_text_field($_POST['hiretalent_third_party_shortcode']));
-        }
-
-        // Save job status
-        if (isset($_POST['hiretalent_job_status'])) {
-            update_post_meta($post_id, 'hiretalent_job_status', sanitize_text_field($_POST['hiretalent_job_status']));
-        }
-
-        // Save is_filled
-        $is_filled = isset($_POST['hiretalent_is_filled']) ? '1' : '0';
-        update_post_meta($post_id, 'hiretalent_is_filled', $is_filled);
+    // Save deadline.
+    if ( isset( $_POST['hiretalent_deadline'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_deadline',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_deadline'] ) )
+        );
     }
+
+    // Save joining date.
+    if ( isset( $_POST['hiretalent_joining_date'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_joining_date',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_joining_date'] ) )
+        );
+    }
+
+    // Save experience.
+    if ( isset( $_POST['hiretalent_experience'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_experience',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_experience'] ) )
+        );
+    }
+
+    // Save vacancy.
+    if ( isset( $_POST['hiretalent_vacancy'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_vacancy',
+            absint( wp_unslash( $_POST['hiretalent_vacancy'] ) )
+        );
+    }
+
+    // Save working hours.
+    if ( isset( $_POST['hiretalent_working_hours'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_working_hours',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_working_hours'] ) )
+        );
+    }
+
+    // Save working days.
+    if ( isset( $_POST['hiretalent_working_days'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_working_days',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_working_days'] ) )
+        );
+    }
+
+    // Save company name.
+    if ( isset( $_POST['hiretalent_company_name'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_company_name',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_company_name'] ) )
+        );
+    }
+
+    // Save company website.
+    if ( isset( $_POST['hiretalent_company_website'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_company_website',
+            esc_url_raw( wp_unslash( $_POST['hiretalent_company_website'] ) )
+        );
+    }
+
+    // Save company logo ID.
+    if ( isset( $_POST['hiretalent_company_logo_id'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_company_logo_id',
+            absint( wp_unslash( $_POST['hiretalent_company_logo_id'] ) )
+        );
+    }
+
+    // Save expiry date.
+    if ( isset( $_POST['hiretalent_expiry_date'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_expiry_date',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_expiry_date'] ) )
+        );
+    }
+
+    // Save application type.
+    if ( isset( $_POST['hiretalent_application_type'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_application_type',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_application_type'] ) )
+        );
+    }
+
+    // Save third party shortcode.
+    if ( isset( $_POST['hiretalent_third_party_shortcode'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_third_party_shortcode',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_third_party_shortcode'] ) )
+        );
+    }
+
+    // Save job status.
+    if ( isset( $_POST['hiretalent_job_status'] ) ) {
+        update_post_meta(
+            $post_id,
+            'hiretalent_job_status',
+            sanitize_text_field( wp_unslash( $_POST['hiretalent_job_status'] ) )
+        );
+    }
+
+    // Save is_filled checkbox.
+    $is_filled = isset( $_POST['hiretalent_is_filled'] ) ? '1' : '0';
+    update_post_meta( $post_id, 'hiretalent_is_filled', $is_filled );
+}
 }
