@@ -560,77 +560,92 @@ class ApplicationMeta
     }
 
     /**
-     * Handle CSV export.
-     *
-     * @since 1.0.0
-     */
-    public function handle_csv_export()
-    {
-        if (
-            !isset($_GET['nonce']) ||
-            !wp_verify_nonce(
-                sanitize_text_field(wp_unslash($_GET['nonce'])),
-                'hiretalent_export_applications'
-            )
-        ) {
-            wp_die(esc_html__('Security check failed.', 'hiretalent'));
-        }
+	 * Handle CSV export.
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_csv_export() {
+		if (
+			! isset( $_GET['nonce'] ) ||
+			! wp_verify_nonce(
+				sanitize_text_field( wp_unslash( $_GET['nonce'] ) ),
+				'hiretalent_export_applications'
+			)
+		) {
+			wp_die( esc_html__( 'Security check failed.', 'hiretalent' ) );
+		}
 
-        if (!current_user_can('edit_others_posts')) {
-            wp_die(esc_html__('You do not have permission to export applications.', 'hiretalent'));
-        }
+		if ( ! current_user_can( 'edit_others_posts' ) ) {
+			wp_die( esc_html__( 'You do not have permission to export applications.', 'hiretalent' ) );
+		}
 
-        $args = array(
-            'post_type' => 'hiretalent_app',
-            'posts_per_page' => -1,
-            'post_status' => 'publish',
-        );
-
-        $query = new \WP_Query($args);
-
-        if (!$query->have_posts()) {
-            wp_die(esc_html__('No applications found.', 'hiretalent'));
-        }
-
-		header( 'Content-Type: text/csv' );
-		header(
-			'Content-Disposition: attachment; filename="applications-' .
-			current_time( 'Y-m-d' ) .
-			'.csv"'
+		$query = new \WP_Query(
+			array(
+				'post_type'      => 'hiretalent_app',
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+			)
 		);
-		header( 'Pragma: no-cache' );
-		header( 'Expires: 0' );
 
-        $output = fopen('php://output', 'w');
+		if ( ! $query->have_posts() ) {
+			wp_die( esc_html__( 'No applications found.', 'hiretalent' ) );
+		}
 
-        // Header row
-        fputcsv($output, array(
-            __('ID', 'hiretalent'),
-            __('Applicant Name', 'hiretalent'),
-            __('Email', 'hiretalent'),
-            __('Phone', 'hiretalent'),
-            __('Job Title', 'hiretalent'),
-            __('Status', 'hiretalent'),
-            __('Date Submitted', 'hiretalent'),
-        ));
+		$filename = sprintf( 'applications-%s.csv', current_time( 'Y-m-d' ) );
 
-        while ($query->have_posts()) {
-            $query->the_post();
-            $post_id = get_the_ID();
-            $job_id = get_post_meta($post_id, 'hiretalent_job_id', true);
+		nocache_headers();
+		header( 'Content-Type: text/csv; charset=' . get_option( 'blog_charset' ) );
+		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
 
-            fputcsv($output, array(
-                $post_id,
-                get_post_meta($post_id, 'hiretalent_applicant_name', true),
-                get_post_meta($post_id, 'hiretalent_applicant_email', true),
-                get_post_meta($post_id, 'hiretalent_applicant_phone', true),
-                $job_id ? get_the_title($job_id) : __('N/A', 'hiretalent'),
-                get_post_meta($post_id, 'hiretalent_application_status', true) ?: 'Pending',
-                get_the_date('Y-m-d H:i:s'),
-            ));
-        }
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Writing to php://output is not file system I/O.
+		$output = fopen( 'php://output', 'w' );
 
-        fclose($output);
-        exit;
-    }
+		// Header row (CSV values are data, so use esc_html__).
+		fputcsv(
+			$output,
+			array(
+				esc_html__( 'ID', 'hiretalent' ),
+				esc_html__( 'Applicant Name', 'hiretalent' ),
+				esc_html__( 'Email', 'hiretalent' ),
+				esc_html__( 'Phone', 'hiretalent' ),
+				esc_html__( 'Job Title', 'hiretalent' ),
+				esc_html__( 'Status', 'hiretalent' ),
+				esc_html__( 'Date Submitted', 'hiretalent' ),
+			)
+		);
+
+		while ( $query->have_posts() ) {
+			$query->the_post();
+
+			$post_id = get_the_ID();
+			$job_id  = absint( get_post_meta( $post_id, 'hiretalent_job_id', true ) );
+
+			$job_title = $job_id ? get_the_title( $job_id ) : esc_html__( 'N/A', 'hiretalent' );
+
+			$status = get_post_meta( $post_id, 'hiretalent_application_status', true );
+			if ( empty( $status ) ) {
+				$status = esc_html__( 'Pending', 'hiretalent' );
+			}
+
+			// Use WP datetime and WP formatting (site timezone).
+			$dt = get_post_datetime( $post_id );
+			$submitted = $dt ? wp_date( 'Y-m-d H:i:s', $dt->getTimestamp() ) : '';
+
+			fputcsv(
+				$output,
+				array(
+					$post_id,
+					(string) get_post_meta( $post_id, 'hiretalent_applicant_name', true ),
+					(string) get_post_meta( $post_id, 'hiretalent_applicant_email', true ),
+					(string) get_post_meta( $post_id, 'hiretalent_applicant_phone', true ),
+					(string) $job_title,
+					(string) $status,
+					(string) $submitted,
+				)
+			);
+		}
+
+		wp_reset_postdata();
+		exit;
+	}
 }

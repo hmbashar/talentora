@@ -45,18 +45,18 @@ class NotificationManager
     public function send_admin_notification($application_id)
     {
         $admin_email = get_option('admin_email');
-		
-		$subject = get_option(
-			'hiretalent_admin_notification_subject',
-			/* translators: {site_name}: Site name, {job_title}: Job title. */
-			esc_html__('[%site_name] New Job Application: {job_title}', 'hiretalent')
-		);
 
-		/* translators: {job_title}: Job title, {applicant_name}: Applicant full name, {application_url}: URL to the application details page. */
-		$message = get_option(			
-			'hiretalent_admin_notification_message',
-			esc_html__("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent')
-		);
+        $subject = get_option(
+            'hiretalent_admin_notification_subject',
+            /* translators: {site_name}: Site name, {job_title}: Job title. */
+            esc_html__('[%site_name] New Job Application: {job_title}', 'hiretalent')
+        );
+
+        /* translators: {job_title}: Job title, {applicant_name}: Applicant full name, {application_url}: URL to the application details page. */
+        $message = get_option(
+            'hiretalent_admin_notification_message',
+            esc_html__("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent')
+        );
 
         $subject = $this->replace_placeholders($subject, $application_id);
         $message = $this->replace_placeholders($message, $application_id);
@@ -130,27 +130,27 @@ class NotificationManager
         $result = wp_mail($email, $subject, $message);
         $this->log_email($email, $subject, $message, $result);
 
-		if ($result) {
-			$this->activity_logger->log(
-				$application_id,
-				sprintf(
-					/* translators: %s: New application status label. */
-					__('Status change email sent for status: %s', 'hiretalent'),
-					$new_status
-				),
-				'info'
-			);
-		} else {
-			$this->activity_logger->log(
-				$application_id,
-				sprintf(
-					/* translators: %s: New application status label. */
-					__('Failed to send status change email for status: %s', 'hiretalent'),
-					$new_status
-				),
-				'error'
-			);
-		}
+        if ($result) {
+            $this->activity_logger->log(
+                $application_id,
+                sprintf(
+                    /* translators: %s: New application status label. */
+                    __('Status change email sent for status: %s', 'hiretalent'),
+                    $new_status
+                ),
+                'info'
+            );
+        } else {
+            $this->activity_logger->log(
+                $application_id,
+                sprintf(
+                    /* translators: %s: New application status label. */
+                    __('Failed to send status change email for status: %s', 'hiretalent'),
+                    $new_status
+                ),
+                'error'
+            );
+        }
 
         return $result;
     }
@@ -194,8 +194,15 @@ class NotificationManager
      */
     private function log_email($to, $subject, $message, $success)
     {
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
         $log_dir = wp_upload_dir()['basedir'] . '/hiretalent-logs';
-        if (!file_exists($log_dir)) {
+        if (!$wp_filesystem->is_dir($log_dir)) {
             wp_mkdir_p($log_dir);
         }
 
@@ -204,7 +211,9 @@ class NotificationManager
         $status = $success ? 'SUCCESS' : 'FAILED';
         $log_entry = "[{$timestamp}] [{$status}] To: {$to} | Subject: {$subject}" . PHP_EOL;
 
-        error_log($log_entry, 3, $log_file);
+        // Read existing contents and append the new entry.
+        $existing = $wp_filesystem->exists($log_file) ? $wp_filesystem->get_contents($log_file) : '';
+        $wp_filesystem->put_contents($log_file, $existing . $log_entry, FS_CHMOD_FILE);
     }
 
     /**
@@ -216,14 +225,26 @@ class NotificationManager
      */
     public function prune_logs($days = 15)
     {
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
         $log_dir = wp_upload_dir()['basedir'] . '/hiretalent-logs';
         $log_file = $log_dir . '/email.log';
 
-        if (!file_exists($log_file)) {
+        if (!$wp_filesystem->exists($log_file)) {
             return 0;
         }
 
-        $lines = file($log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $contents = $wp_filesystem->get_contents($log_file);
+        if (empty($contents)) {
+            return 0;
+        }
+
+        $lines = array_filter(explode(PHP_EOL, $contents));
         if (empty($lines)) {
             return 0;
         }
@@ -233,7 +254,7 @@ class NotificationManager
         $removed_count = 0;
 
         foreach ($lines as $line) {
-            // Extract timestamp from [Y-m-d H:i:s]
+            // Extract timestamp from [Y-m-d H:i:s].
             if (preg_match('/^\[(.*?)\]/', $line, $matches)) {
                 $timestamp = strtotime($matches[1]);
                 if ($timestamp >= $cutoff_date) {
@@ -242,13 +263,13 @@ class NotificationManager
                     $removed_count++;
                 }
             } else {
-                // If format doesn't match, keep it to be safe
+                // If format doesn't match, keep it to be safe.
                 $new_lines[] = $line;
             }
         }
 
         if ($removed_count > 0) {
-            file_put_contents($log_file, implode(PHP_EOL, $new_lines) . PHP_EOL);
+            $wp_filesystem->put_contents($log_file, implode(PHP_EOL, $new_lines) . PHP_EOL, FS_CHMOD_FILE);
         }
 
         return $removed_count;
