@@ -8,7 +8,9 @@
     "clean": "find . -name '.DS_Store' -type f -delete",
     "make-pot": "composer run-script make-pot",
     "install-prod": "composer install --no-dev",
-    "bundle": "npm run clean && npm run make-pot && npm run install-prod && dir-archiver --src . --dest ../hiretalent.zip --exclude '**/.DS_Store' --exclude='docs/*' .git .distignore .gitattributes .github .gitignore .wordpress-org README.md composer.lock node_modules package-lock.json package.json phpcs.xml.dist"
+    "bundle": "npm run clean && npm run make-pot && npm run install-prod && dir-archiver --src . --dest ../hiretalent.zip --exclude '**/.DS_Store' .git .distignore .gitattributes .github .gitignore .wordpress-org README.md composer.lock node_modules package-lock.json package.json phpcs.xml.dist docs"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "dir-archiver": "^2.1.0"
+  }
 }

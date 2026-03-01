@@ -1,0 +1,1161 @@
+# Copyright (C) 2026 Md Abul Bashar
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: HireTalent – Simple & Powerful Job Board 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/hiretalent\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-03-01T18:04:27+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: hiretalent\n"
+
+#. Plugin Name of the plugin
+#: hiretalent.php
+msgid "HireTalent – Simple & Powerful Job Board"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: hiretalent.php
+msgid "https://github.com/hmbashar/hiretalent"
+msgstr ""
+
+#. Description of the plugin
+#: hiretalent.php
+msgid "A simple yet powerful job board plugin for WordPress. Post jobs, manage applications, and help employers find the right talent."
+msgstr ""
+
+#. Author of the plugin
+#: hiretalent.php
+msgid "Md Abul Bashar"
+msgstr ""
+
+#. Author URI of the plugin
+#: hiretalent.php
+msgid "https://github.com/hmbashar"
+msgstr ""
+
+#: Admin/Assets/Assets.php:105
+msgid "Are you sure you want to perform this action?"
+msgstr ""
+
+#: Admin/Assets/Assets.php:142
+msgid "Are you sure you want to clear the email log?"
+msgstr ""
+
+#: Admin/Assets/Assets.php:143
+msgid "Log cleared successfully."
+msgstr ""
+
+#: Admin/Assets/Assets.php:144
+msgid "Something went wrong."
+msgstr ""
+
+#: Admin/Inc/AdminManager.php:66
+#: Admin/Inc/AdminManager.php:67
+msgid "Settings"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:42
+msgid "Job Details"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:84
+msgid "Job Information"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:91
+#: Frontend/Shortcodes/JobsList.php:252
+#: templates/single-hiretalent_job.php:316
+msgid "Location"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:95
+msgid "e.g., New York, NY"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:101
+#: templates/single-hiretalent_job.php:129
+msgid "Salary Range"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:107
+msgid "Min"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:114
+msgid "Max"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:125
+#: templates/single-hiretalent_job.php:364
+msgid "Experience"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:129
+msgid "e.g., 2 Years+"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:135
+#: templates/single-hiretalent_job.php:400
+msgid "Vacancy"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:139
+msgid "e.g., 3"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:147
+#: templates/single-hiretalent_job.php:376
+msgid "Working Hours"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:151
+msgid "e.g., 9:00 AM - 5:00 PM"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:158
+#: templates/single-hiretalent_job.php:388
+msgid "Working Days"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:162
+msgid "e.g., Mon - Fri"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:170
+#: templates/single-hiretalent_job.php:152
+msgid "Application Deadline"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:179
+msgid "Expected Joining Date"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:190
+msgid "Expiry Date (Optional)"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:196
+msgid "Job will be automatically hidden after this date."
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:206
+msgid "Company Information"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:213
+msgid "Company Name"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:217
+msgid "e.g., Acme Corporation"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:223
+#: templates/single-hiretalent_job.php:273
+msgid "Company Website"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:227
+msgid "https://example.com"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:235
+msgid "Company Logo"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:247
+msgid "No logo uploaded"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:254
+msgid "Upload Logo"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:259
+msgid "Remove"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:272
+msgid "Application Settings"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:291
+msgid "Job Status"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:295
+msgid "✓ Open"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:298
+msgid "✕ Closed"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:301
+msgid "★ Filled"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:309
+msgid "Application Type"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:313
+msgid "Third Party Form"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:316
+msgid "Built-in Application System"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:321
+msgid "Choose how applicants will apply for this job."
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:331
+msgid "Third Party Form Shortcode"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:335
+#: Admin/Pages/Settings.php:285
+msgid "[contact-form-7 id=\"123\"]"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:339
+msgid "Enter the shortcode for your contact form. Leave empty to use global setting."
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:347
+msgid "Job Status:"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:349
+msgid "Open"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:354
+#: Frontend/Shortcodes/JobsList.php:355
+msgid "Filled"
+msgstr ""
+
+#: Admin/Metaboxes/JobMetabox.php:357
+msgid "Enable this to mark the job as filled. Filled jobs are marked as closed on the frontend."
+msgstr ""
+
+#: Admin/Pages/Settings.php:49
+msgid "General Configuration"
+msgstr ""
+
+#: Admin/Pages/Settings.php:56
+msgid "Third-Party Form Shortcode"
+msgstr ""
+
+#: Admin/Pages/Settings.php:64
+msgid "Jobs Per Page"
+msgstr ""
+
+#: Admin/Pages/Settings.php:72
+msgid "Application Statuses"
+msgstr ""
+
+#: Admin/Pages/Settings.php:80
+msgid "Currency Symbol"
+msgstr ""
+
+#: Admin/Pages/Settings.php:97
+msgid "Email Notification Templates"
+msgstr ""
+
+#: Admin/Pages/Settings.php:104
+msgid "Admin Notification Subject"
+msgstr ""
+
+#: Admin/Pages/Settings.php:112
+msgid "Admin Notification Message"
+msgstr ""
+
+#: Admin/Pages/Settings.php:120
+msgid "Applicant Confirmation Subject"
+msgstr ""
+
+#: Admin/Pages/Settings.php:128
+msgid "Applicant Confirmation Message"
+msgstr ""
+
+#: Admin/Pages/Settings.php:136
+msgid "Status Change Subject"
+msgstr ""
+
+#: Admin/Pages/Settings.php:144
+msgid "Status Change Message"
+msgstr ""
+
+#: Admin/Pages/Settings.php:174
+msgid "Manage your recruitment settings and preferences"
+msgstr ""
+
+#: Admin/Pages/Settings.php:184
+msgid "General Settings"
+msgstr ""
+
+#: Admin/Pages/Settings.php:189
+msgid "Email Templates"
+msgstr ""
+
+#: Admin/Pages/Settings.php:194
+msgid "Email Logs"
+msgstr ""
+
+#: Admin/Pages/Settings.php:217
+msgid "Save Changes"
+msgstr ""
+
+#: Admin/Pages/Settings.php:234
+msgid "Application Emails Log"
+msgstr ""
+
+#: Admin/Pages/Settings.php:235
+msgid "View all email notifications sent by the system"
+msgstr ""
+
+#: Admin/Pages/Settings.php:246
+msgid "No email logs yet. Logs will appear here when emails are sent."
+msgstr ""
+
+#: Admin/Pages/Settings.php:254
+msgid "Log file location: "
+msgstr ""
+
+#: Admin/Pages/Settings.php:261
+msgid "Clear Log"
+msgstr ""
+
+#: Admin/Pages/Settings.php:263
+msgid "Warning: This action cannot be undone."
+msgstr ""
+
+#: Admin/Pages/Settings.php:268
+msgid "No log file found. Logs will be created automatically when emails are sent."
+msgstr ""
+
+#: Admin/Pages/Settings.php:288
+msgid "Global fallback shortcode for all jobs. Can be overridden per job in the post editor."
+msgstr ""
+
+#: Admin/Pages/Settings.php:306
+msgid "Number of jobs to display per page in the job listings."
+msgstr ""
+
+#: Admin/Pages/Settings.php:327
+msgid "Comma-separated list of application statuses (e.g., Pending, Reviewed, Shortlisted)."
+msgstr ""
+
+#: Admin/Pages/Settings.php:331
+msgid "Changing these may affect existing application filtering."
+msgstr ""
+
+#: Admin/Pages/Settings.php:349
+msgid "The currency symbol to display before salary values (e.g., $, €, £)."
+msgstr ""
+
+#: Admin/Pages/Settings.php:365
+msgid "Customize email templates sent to applicants and administrators."
+msgstr ""
+
+#: Admin/Pages/Settings.php:368
+msgid "Available Placeholders:"
+msgstr ""
+
+#: Admin/Pages/Settings.php:370
+msgid "Name of the applicant"
+msgstr ""
+
+#: Admin/Pages/Settings.php:371
+msgid "Job position title"
+msgstr ""
+
+#: Admin/Pages/Settings.php:372
+msgid "Your website name"
+msgstr ""
+
+#: Admin/Pages/Settings.php:373
+msgid "Application status"
+msgstr ""
+
+#: Admin/Pages/Settings.php:374
+msgid "Link to view application"
+msgstr ""
+
+#. translators: {site_name}: Site name, {job_title}: Job title.
+#: Admin/Pages/Settings.php:389
+#: Inc/NotificationManager.php:52
+#, php-format
+msgid "[%site_name] New Job Application: {job_title}"
+msgstr ""
+
+#: Admin/Pages/Settings.php:404
+#: Inc/NotificationManager.php:58
+msgid ""
+"You have received a new job application.\n"
+"\n"
+"Job: {job_title}\n"
+"Applicant: {applicant_name}\n"
+"\n"
+"View application: {application_url}"
+msgstr ""
+
+#: Admin/Pages/Settings.php:418
+#: Inc/NotificationManager.php:90
+msgid "Application Received: {job_title}"
+msgstr ""
+
+#: Admin/Pages/Settings.php:432
+#: Inc/NotificationManager.php:91
+msgid ""
+"Dear {applicant_name},\n"
+"\n"
+"Thank you for applying for the position of {job_title}.\n"
+"\n"
+"We have received your application and will review it shortly.\n"
+"\n"
+"Best regards,\n"
+"{site_name}"
+msgstr ""
+
+#: Admin/Pages/Settings.php:446
+#: Inc/NotificationManager.php:124
+msgid "Application Update: {job_title}"
+msgstr ""
+
+#: Admin/Pages/Settings.php:460
+#: Inc/NotificationManager.php:125
+msgid ""
+"Dear {applicant_name},\n"
+"\n"
+"Your application status for {job_title} has been updated to: {status}.\n"
+"\n"
+"Best regards,\n"
+"{site_name}"
+msgstr ""
+
+#: Admin/Pages/Settings.php:479
+msgid "Permission denied."
+msgstr ""
+
+#: Admin/Pages/Settings.php:488
+msgid "Log file not found."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:76
+#: Modules/Applications/ApplicationMeta.php:522
+#: Modules/Applications/ApplicationMeta.php:602
+msgid "Security check failed."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:132
+#: Frontend/Applications/ApplicationHandler.php:133
+#: Frontend/Applications/ApplicationHandler.php:329
+msgid "Invalid job ID."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:141
+msgid "Application submitted successfully."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:155
+msgid "Name is required."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:159
+msgid "Valid email is required."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:163
+msgid "Phone is required."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:167
+msgid "Cover letter is required."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:175
+msgid "Resume is required."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:182
+msgid "Please fix the errors below."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:199
+#: Frontend/Applications/ApplicationHandler.php:355
+msgid "Thank you! Your application has been submitted successfully."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:205
+#: Frontend/Applications/ApplicationHandler.php:206
+msgid "Failed to submit application. Please try again."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:225
+msgid "Resume must be a PDF or DOC file."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:231
+msgid "Resume file size must not exceed 5MB."
+msgstr ""
+
+#. translators: 1: Applicant name, 2: Job title.
+#: Frontend/Applications/ApplicationHandler.php:283
+#, php-format
+msgid "Application from %1$s for %2$s"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:336
+msgid "Thank you! Your application has been submitted successfully. We will contact you soon."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:367
+msgid "Website"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:374
+#: Modules/Applications/ApplicationMeta.php:145
+msgid "Full Name"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:380
+msgid "John Doe"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:386
+#: Modules/Applications/ApplicationMeta.php:155
+msgid "Email Address"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:392
+msgid "john@example.com"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:400
+#: Modules/Applications/ApplicationMeta.php:169
+msgid "Phone Number"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:406
+msgid "+1 234 567 8900"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:412
+#: Modules/Applications/ApplicationMeta.php:217
+msgid "Resume / CV"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:418
+msgid "Choose a file..."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:420
+msgid "PDF or DOC, max 5MB"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:427
+#: Modules/Applications/ApplicationMeta.php:254
+msgid "Cover Letter"
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:430
+msgid "Tell us why you are a great fit for this role..."
+msgstr ""
+
+#: Frontend/Applications/ApplicationHandler.php:437
+msgid "Submit Application"
+msgstr ""
+
+#: Frontend/Shortcodes/ApplyForm.php:53
+msgid "This position is currently closed and no longer accepting applications."
+msgstr ""
+
+#: Frontend/Shortcodes/ApplyForm.php:57
+msgid "The application deadline for this position has passed."
+msgstr ""
+
+#: Frontend/Shortcodes/ApplyForm.php:75
+#: Frontend/Shortcodes/ApplyForm.php:96
+#: templates/single-hiretalent_job.php:234
+msgid "Apply for this Position"
+msgstr ""
+
+#: Frontend/Shortcodes/ApplyForm.php:106
+msgid "Admin Notice:"
+msgstr ""
+
+#. translators: %s: Settings page URL
+#: Frontend/Shortcodes/ApplyForm.php:111
+#, php-format
+msgid "No apply form shortcode is set. Please configure it in the %s or switch to the built-in application system."
+msgstr ""
+
+#: Frontend/Shortcodes/ApplyForm.php:112
+msgid "plugin settings"
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:43
+#: Frontend/Shortcodes/JobsList.php:49
+msgid "Invalid nonce"
+msgstr ""
+
+#. translators: Pagination previous text.
+#: Frontend/Shortcodes/JobsList.php:71
+#: Frontend/Shortcodes/JobsList.php:281
+msgid "&laquo; Previous"
+msgstr ""
+
+#. translators: Pagination next text.
+#: Frontend/Shortcodes/JobsList.php:73
+#: Frontend/Shortcodes/JobsList.php:283
+msgid "Next &raquo;"
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:79
+#: Frontend/Shortcodes/JobsList.php:291
+#: Modules/Jobs/PostType.php:52
+msgid "No jobs found."
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:205
+msgid "Search jobs..."
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:219
+msgid "All Categories"
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:240
+msgid "All Types"
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:258
+msgid "Search"
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:396
+msgid "Deadline:"
+msgstr ""
+
+#: Frontend/Shortcodes/JobsList.php:412
+msgid "View Details"
+msgstr ""
+
+#: Inc/NotificationManager.php:68
+msgid "Admin notification email sent."
+msgstr ""
+
+#: Inc/NotificationManager.php:70
+msgid "Failed to send admin notification email."
+msgstr ""
+
+#: Inc/NotificationManager.php:100
+msgid "Application confirmation email sent."
+msgstr ""
+
+#: Inc/NotificationManager.php:102
+msgid "Failed to send application confirmation email."
+msgstr ""
+
+#. translators: %s: New application status label.
+#: Inc/NotificationManager.php:138
+#, php-format
+msgid "Status change email sent for status: %s"
+msgstr ""
+
+#. translators: %s: New application status label.
+#: Inc/NotificationManager.php:148
+#, php-format
+msgid "Failed to send status change email for status: %s"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:88
+#: Modules/Applications/ApplicationMeta.php:182
+msgid "Application Details"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:97
+msgid "Activity Log"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:138
+msgid "Applicant Information"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:189
+msgid "Applied For"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:197
+#: Modules/Applications/ApplicationMeta.php:303
+#: Modules/Applications/ApplicationMeta.php:650
+msgid "N/A"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:205
+msgid "Submission Date"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:224
+msgid "Download Resume"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:227
+msgid "No resume uploaded"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:235
+msgid "Current Status"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:278
+msgid "Applicant"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:279
+msgid "Job"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:280
+#: Modules/Applications/ApplicationMeta.php:636
+msgid "Email"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:281
+#: Modules/Applications/ApplicationMeta.php:637
+msgid "Phone"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:282
+#: Modules/Applications/ApplicationMeta.php:639
+msgid "Status"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:283
+msgid "Date"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:319
+#: Modules/Applications/ApplicationMeta.php:654
+msgid "Pending"
+msgstr ""
+
+#. translators: %s: Application status label.
+#: Modules/Applications/ApplicationMeta.php:338
+#, php-format
+msgid "Change status to %1$s"
+msgstr ""
+
+#. translators: 1: Old application status, 2: New application status.
+#: Modules/Applications/ApplicationMeta.php:393
+#, php-format
+msgid "Status changed from %1$s to %2$s via bulk action"
+msgstr ""
+
+#. translators: 1: Old application status, 2: New application status.
+#: Modules/Applications/ApplicationMeta.php:458
+#, php-format
+msgid "Status changed from %1$s to %2$s"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:485
+msgid "No activity recorded yet."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:493
+msgid "System"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:514
+msgid "Invalid request."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:526
+msgid "You do not have permission to access this file."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:532
+msgid "Resume not found."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:538
+msgid "File not found."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:554
+msgid "Could not read the file."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:583
+msgid "Export CSV"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:606
+msgid "You do not have permission to export applications."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:618
+#: Modules/Applications/ApplicationPostType.php:51
+msgid "No applications found."
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:634
+msgid "ID"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:635
+msgid "Applicant Name"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:638
+msgid "Job Title"
+msgstr ""
+
+#: Modules/Applications/ApplicationMeta.php:640
+msgid "Date Submitted"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:40
+msgctxt "Post type general name"
+msgid "Applications"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:41
+msgctxt "Post type singular name"
+msgid "Application"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:42
+msgctxt "Admin Menu text"
+msgid "Applications"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:43
+msgctxt "Add New on Toolbar"
+msgid "Application"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:44
+#: Modules/Jobs/PostType.php:44
+msgid "Add New"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:45
+msgid "Add New Application"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:46
+msgid "New Application"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:47
+#: Modules/Applications/ApplicationPostType.php:48
+msgid "View Application"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:49
+msgid "Applications"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:50
+msgid "Search Applications"
+msgstr ""
+
+#: Modules/Applications/ApplicationPostType.php:52
+msgid "No applications found in Trash."
+msgstr ""
+
+#: Modules/Jobs/PostType.php:40
+msgctxt "Post type general name"
+msgid "Jobs"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:41
+msgctxt "Post type singular name"
+msgid "Job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:42
+msgctxt "Admin Menu text"
+msgid "HireTalent"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:43
+msgctxt "Add New on Toolbar"
+msgid "Job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:45
+msgid "Add New Job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:46
+msgid "New Job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:47
+msgid "Edit Job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:48
+msgid "View Job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:49
+msgid "All Jobs"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:50
+msgid "Search Jobs"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:51
+msgid "Parent Jobs:"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:53
+msgid "No jobs found in Trash."
+msgstr ""
+
+#: Modules/Jobs/PostType.php:54
+msgctxt "Overrides the \"Featured Image\" phrase"
+msgid "Job Featured Image"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:55
+msgctxt "Overrides the \"Set featured image\" phrase"
+msgid "Set featured image"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:56
+msgctxt "Overrides the \"Remove featured image\" phrase"
+msgid "Remove featured image"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:57
+msgctxt "Overrides the \"Use as featured image\" phrase"
+msgid "Use as featured image"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:58
+msgctxt "The post type archive label"
+msgid "Job archives"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:59
+msgctxt "Overrides the \"Insert into post\" phrase"
+msgid "Insert into job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:60
+msgctxt "Overrides the \"Uploaded to this post\" phrase"
+msgid "Uploaded to this job"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:61
+msgctxt "Screen reader text for the filter links"
+msgid "Filter jobs list"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:62
+msgctxt "Screen reader text for the pagination"
+msgid "Jobs list navigation"
+msgstr ""
+
+#: Modules/Jobs/PostType.php:63
+msgctxt "Screen reader text for the items list"
+msgid "Jobs list"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:51
+msgctxt "taxonomy general name"
+msgid "Job Categories"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:52
+msgctxt "taxonomy singular name"
+msgid "Job Category"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:53
+msgid "Search Job Categories"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:54
+msgid "All Job Categories"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:55
+msgid "Parent Job Category"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:56
+msgid "Parent Job Category:"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:57
+msgid "Edit Job Category"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:58
+msgid "Update Job Category"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:59
+msgid "Add New Job Category"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:60
+msgid "New Job Category Name"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:61
+msgid "Job Categories"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:85
+msgctxt "taxonomy general name"
+msgid "Job Types"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:86
+msgctxt "taxonomy singular name"
+msgid "Job Type"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:87
+msgid "Search Job Types"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:88
+msgid "All Job Types"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:89
+msgid "Parent Job Type"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:90
+msgid "Parent Job Type:"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:91
+msgid "Edit Job Type"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:92
+msgid "Update Job Type"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:93
+msgid "Add New Job Type"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:94
+msgid "New Job Type Name"
+msgstr ""
+
+#: Modules/Jobs/Taxonomies.php:95
+msgid "Job Types"
+msgstr ""
+
+#: templates/archive-hiretalent_job.php:24
+msgid "Job Opportunities"
+msgstr ""
+
+#: templates/archive-hiretalent_job.php:32
+msgid "Explore exciting career opportunities and find your next role"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:51
+#: templates/single-hiretalent_job.php:249
+msgid "Position Filled"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:56
+msgid "Now Hiring"
+msgstr ""
+
+#. translators: %s: Human-readable time difference (e.g., "5 minutes").
+#: templates/single-hiretalent_job.php:90
+msgid "Posted %1$hiretalent_s ago"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:107
+msgid "Visit Company Website"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:167
+msgid "Employment Type"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:189
+#: templates/single-hiretalent_job.php:438
+msgid "Joining Date"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:203
+msgid "Category"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:222
+msgid "Job Description"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:237
+msgid "Ready to take the next step? Submit your application below."
+msgstr ""
+
+#: templates/single-hiretalent_job.php:250
+msgid "This position has been filled. Thank you for your interest! Check out our other openings."
+msgstr ""
+
+#: templates/single-hiretalent_job.php:283
+msgid "Quick Actions"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:289
+msgid "Apply Now"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:294
+msgid "Print Job"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:297
+msgid "Copy this URL to share"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:299
+msgid "Share Job"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:307
+msgid "Job Summary:"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:328
+msgid "Salary"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:351
+msgid "Job Type"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:413
+msgid "Last Date of Submission"
+msgstr ""
+
+#: templates/single-hiretalent_job.php:425
+msgid "Published"
+msgstr ""
