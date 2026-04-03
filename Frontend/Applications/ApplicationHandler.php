@@ -4,11 +4,11 @@
  *
  * Handles frontend application form submission.
  *
- * @package HireTalent\Frontend\Applications
+ * @package Talentora\Frontend\Applications
  * @since 1.0.0
  */
 
-namespace HireTalent\Frontend\Applications;
+namespace Talentora\Frontend\Applications;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -27,7 +27,7 @@ class ApplicationHandler
     /**
      * Notification Manager instance.
      *
-     * @var \HireTalent\NotificationManager
+     * @var \Talentora\NotificationManager
      */
     private $notification_manager;
 
@@ -38,16 +38,16 @@ class ApplicationHandler
      */
     public function __construct()
     {
-        $this->notification_manager = new \HireTalent\NotificationManager();
+        $this->notification_manager = new \Talentora\NotificationManager();
 
-        add_action('admin_post_hiretalent_submit_application', array($this, 'handle_application_submission'));
-        add_action('admin_post_nopriv_hiretalent_submit_application', array($this, 'handle_application_submission'));
+        add_action('admin_post_talentora_submit_application', array($this, 'handle_application_submission'));
+        add_action('admin_post_nopriv_talentora_submit_application', array($this, 'handle_application_submission'));
 
         // AJAX handlers
-        add_action('wp_ajax_hiretalent_submit_application', array($this, 'handle_ajax_application_submission'));
-        add_action('wp_ajax_nopriv_hiretalent_submit_application', array($this, 'handle_ajax_application_submission'));
+        add_action('wp_ajax_talentora_submit_application', array($this, 'handle_ajax_application_submission'));
+        add_action('wp_ajax_nopriv_talentora_submit_application', array($this, 'handle_ajax_application_submission'));
 
-        add_shortcode('hiretalent_application_form', array($this, 'render_application_form'));
+        add_shortcode('talentora_application_form', array($this, 'render_application_form'));
     }
 
     /**
@@ -62,31 +62,31 @@ class ApplicationHandler
      */
     public function handle_application_submission()
     {
-        if (!isset($_POST['hiretalent_submit_application']) || !isset($_POST['hiretalent_application_nonce'])) {
+        if (!isset($_POST['talentora_submit_application']) || !isset($_POST['talentora_application_nonce'])) {
             return;
         }
 		
 		// Unsplash + sanitize first.
 		$nonce = sanitize_text_field(
-			wp_unslash( $_POST['hiretalent_application_nonce'] )
+			wp_unslash( $_POST['talentora_application_nonce'] )
 		);
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( $nonce, 'hiretalent_submit_application' ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'hiretalent' ) );
+		if ( ! wp_verify_nonce( $nonce, 'talentora_submit_application' ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'talentora' ) );
 		}
 
         $result = $this->process_application_submission($_POST, $_FILES);
         $job_id = isset($_POST['job_id']) ? absint($_POST['job_id']) : 0;
 
         if ($result['success']) {
-            set_transient('hiretalent_application_success_' . $job_id, true, 60);
+            set_transient('talentora_application_success_' . $job_id, true, 60);
             wp_safe_redirect(get_permalink($job_id) . '#application-success');
             exit;
         } else {
             if (!empty($result['errors'])) {
-                set_transient('hiretalent_application_errors_' . $job_id, $result['errors'], 60);
-                set_transient('hiretalent_application_data_' . $job_id, $_POST, 60);
+                set_transient('talentora_application_errors_' . $job_id, $result['errors'], 60);
+                set_transient('talentora_application_data_' . $job_id, $_POST, 60);
             }
             wp_safe_redirect(get_permalink($job_id) . '#application-form');
             exit;
@@ -100,7 +100,7 @@ class ApplicationHandler
      */
     public function handle_ajax_application_submission()
     {
-        check_ajax_referer('hiretalent_submit_application', 'hiretalent_application_nonce');
+        check_ajax_referer('talentora_submit_application', 'talentora_application_nonce');
 
         $result = $this->process_application_submission($_POST, $_FILES);
 
@@ -126,19 +126,19 @@ class ApplicationHandler
     {
         // Get and validate job ID
         $job_id = isset($post_data['job_id']) ? absint($post_data['job_id']) : 0;
-        if (!$job_id || get_post_type($job_id) !== 'hiretalent_job') {
+        if (!$job_id || get_post_type($job_id) !== 'talentora_job') {
             return array(
                 'success' => false,
-                'message' => __('Invalid job ID.', 'hiretalent'),
-                'errors' => array(__('Invalid job ID.', 'hiretalent'))
+                'message' => __('Invalid job ID.', 'talentora'),
+                'errors' => array(__('Invalid job ID.', 'talentora'))
             );
         }
 
         // Honeypot check
-        if (!empty($post_data['hiretalent_website'])) {
+        if (!empty($post_data['talentora_website'])) {
             return array(
                 'success' => true, // Silently succeed for bots
-                'message' => __('Application submitted successfully.', 'hiretalent')
+                'message' => __('Application submitted successfully.', 'talentora')
             );
         }
 
@@ -152,19 +152,19 @@ class ApplicationHandler
         $errors = array();
 
         if (empty($name)) {
-            $errors[] = __('Name is required.', 'hiretalent');
+            $errors[] = __('Name is required.', 'talentora');
         }
 
         if (empty($email) || !is_email($email)) {
-            $errors[] = __('Valid email is required.', 'hiretalent');
+            $errors[] = __('Valid email is required.', 'talentora');
         }
 
         if (empty($phone)) {
-            $errors[] = __('Phone is required.', 'hiretalent');
+            $errors[] = __('Phone is required.', 'talentora');
         }
 
         if (empty($cover_letter)) {
-            $errors[] = __('Cover letter is required.', 'hiretalent');
+            $errors[] = __('Cover letter is required.', 'talentora');
         }
 
         // Handle resume upload
@@ -172,14 +172,14 @@ class ApplicationHandler
         if (isset($files['resume']) && $files['resume']['error'] === UPLOAD_ERR_OK) {
             $resume_id = $this->handle_resume_upload($files['resume'], $errors);
         } else {
-            $errors[] = __('Resume is required.', 'hiretalent');
+            $errors[] = __('Resume is required.', 'talentora');
         }
 
         // Return error if any
         if (!empty($errors)) {
             return array(
                 'success' => false,
-                'message' => __('Please fix the errors below.', 'hiretalent'),
+                'message' => __('Please fix the errors below.', 'talentora'),
                 'errors' => $errors
             );
         }
@@ -196,14 +196,14 @@ class ApplicationHandler
 
             return array(
                 'success' => true,
-                'message' => __('Thank you! Your application has been submitted successfully.', 'hiretalent')
+                'message' => __('Thank you! Your application has been submitted successfully.', 'talentora')
             );
         }
 
         return array(
             'success' => false,
-            'message' => __('Failed to submit application. Please try again.', 'hiretalent'),
-            'errors' => array(__('Failed to submit application. Please try again.', 'hiretalent'))
+            'message' => __('Failed to submit application. Please try again.', 'talentora'),
+            'errors' => array(__('Failed to submit application. Please try again.', 'talentora'))
         );
     }
 
@@ -222,13 +222,13 @@ class ApplicationHandler
         $file_type = wp_check_filetype($file['name']);
 
         if (!in_array($file['type'], $allowed_types)) {
-            $errors[] = __('Resume must be a PDF or DOC file.', 'hiretalent');
+            $errors[] = __('Resume must be a PDF or DOC file.', 'talentora');
             return 0;
         }
 
         // Validate file size (5MB max)
         if ($file['size'] > 5 * 1024 * 1024) {
-            $errors[] = __('Resume file size must not exceed 5MB.', 'hiretalent');
+            $errors[] = __('Resume file size must not exceed 5MB.', 'talentora');
             return 0;
         }
 
@@ -280,11 +280,11 @@ class ApplicationHandler
 		$application_data = array(
 			'post_title' => sprintf(
 				/* translators: 1: Applicant name, 2: Job title. */
-				__('Application from %1$s for %2$s', 'hiretalent'),
+				__('Application from %1$s for %2$s', 'talentora'),
 				$name,
 				get_the_title($job_id)
 			),
-			'post_type'   => 'hiretalent_app',
+			'post_type'   => 'talentora_app',
 			'post_status' => 'publish',
 		);
 
@@ -292,15 +292,15 @@ class ApplicationHandler
 
         if ($application_id) {
             // Save meta data
-            update_post_meta($application_id, 'hiretalent_job_id', $job_id);
-            update_post_meta($application_id, 'hiretalent_applicant_name', $name);
-            update_post_meta($application_id, 'hiretalent_applicant_email', $email);
-            update_post_meta($application_id, 'hiretalent_applicant_phone', $phone);
-            update_post_meta($application_id, 'hiretalent_cover_letter', $cover_letter);
-            update_post_meta($application_id, 'hiretalent_resume_id', $resume_id);
+            update_post_meta($application_id, 'talentora_job_id', $job_id);
+            update_post_meta($application_id, 'talentora_applicant_name', $name);
+            update_post_meta($application_id, 'talentora_applicant_email', $email);
+            update_post_meta($application_id, 'talentora_applicant_phone', $phone);
+            update_post_meta($application_id, 'talentora_cover_letter', $cover_letter);
+            update_post_meta($application_id, 'talentora_resume_id', $resume_id);
 
             // Set default status to pending
-            update_post_meta($application_id, 'hiretalent_application_status', 'Pending');
+            update_post_meta($application_id, 'talentora_application_status', 'Pending');
 
             return $application_id;
         }
@@ -325,116 +325,116 @@ class ApplicationHandler
 
         $job_id = absint($atts['job_id']);
 
-        if (!$job_id || get_post_type($job_id) !== 'hiretalent_job') {
-            return '<p>' . esc_html__('Invalid job ID.', 'hiretalent') . '</p>';
+        if (!$job_id || get_post_type($job_id) !== 'talentora_job') {
+            return '<p>' . esc_html__('Invalid job ID.', 'talentora') . '</p>';
         }
 
         // Check for success message
-        $success = get_transient('hiretalent_application_success_' . $job_id);
+        $success = get_transient('talentora_application_success_' . $job_id);
         if ($success) {
-            delete_transient('hiretalent_application_success_' . $job_id);
-            return '<div id="application-success" class="hiretalent-message hiretalent-success"><p>' . esc_html__('Thank you! Your application has been submitted successfully. We will contact you soon.', 'hiretalent') . '</p></div>';
+            delete_transient('talentora_application_success_' . $job_id);
+            return '<div id="application-success" class="talentora-message talentora-success"><p>' . esc_html__('Thank you! Your application has been submitted successfully. We will contact you soon.', 'talentora') . '</p></div>';
         }
 
         // Get errors and previous data
-        $errors = get_transient('hiretalent_application_errors_' . $job_id);
-        $data = get_transient('hiretalent_application_data_' . $job_id);
+        $errors = get_transient('talentora_application_errors_' . $job_id);
+        $data = get_transient('talentora_application_data_' . $job_id);
 
         if ($errors) {
-            delete_transient('hiretalent_application_errors_' . $job_id);
+            delete_transient('talentora_application_errors_' . $job_id);
         }
         if ($data) {
-            delete_transient('hiretalent_application_data_' . $job_id);
+            delete_transient('talentora_application_data_' . $job_id);
         }
 
         ob_start();
         ?>
-        <div id="application-form" class="hiretalent-application-form">
-            <div id="hiretalent-form-state" class="hiretalent-form-state" data-state="<?php
+        <div id="application-form" class="talentora-application-form">
+            <div id="talentora-form-state" class="talentora-form-state" data-state="<?php
             if ($success) {
-                echo esc_attr(json_encode(array('status' => 'success', 'message' => __('Thank you! Your application has been submitted successfully.', 'hiretalent'))));
+                echo esc_attr(json_encode(array('status' => 'success', 'message' => __('Thank you! Your application has been submitted successfully.', 'talentora'))));
             } elseif ($errors) {
                 echo esc_attr(json_encode(array('status' => 'error', 'messages' => $errors)));
             }
             ?>"></div>
 
-            <form method="post" enctype="multipart/form-data" class="hiretalent-form">
-                <?php wp_nonce_field('hiretalent_submit_application', 'hiretalent_application_nonce'); ?>
+            <form method="post" enctype="multipart/form-data" class="talentora-form">
+                <?php wp_nonce_field('talentora_submit_application', 'talentora_application_nonce'); ?>
                 <input type="hidden" name="job_id" value="<?php echo esc_attr($job_id); ?>">
 
                 <!-- Honeypot Field -->
                 <div style="display:none;">
-                    <label for="hiretalent_website"><?php esc_html_e('Website', 'hiretalent'); ?></label>
-                    <input type="text" id="hiretalent_website" name="hiretalent_website" value="">
+                    <label for="talentora_website"><?php esc_html_e('Website', 'talentora'); ?></label>
+                    <input type="text" id="talentora_website" name="talentora_website" value="">
                 </div>
 
                 <div class="form-grid-row">
-                    <div class="hiretalent-form-field">
+                    <div class="talentora-form-field">
                         <label for="applicant_name">
-                            <?php esc_html_e('Full Name', 'hiretalent'); ?> <span class="required">*</span>
+                            <?php esc_html_e('Full Name', 'talentora'); ?> <span class="required">*</span>
                         </label>
                         <div class="input-with-icon">
                             <span class="dashicons dashicons-admin-users"></span>
                             <input type="text" id="applicant_name" name="applicant_name"
                                 value="<?php echo isset($data['applicant_name']) ? esc_attr($data['applicant_name']) : ''; ?>"
-                                placeholder="<?php esc_attr_e('John Doe', 'hiretalent'); ?>" required>
+                                placeholder="<?php esc_attr_e('John Doe', 'talentora'); ?>" required>
                         </div>
                     </div>
 
-                    <div class="hiretalent-form-field">
+                    <div class="talentora-form-field">
                         <label for="applicant_email">
-                            <?php esc_html_e('Email Address', 'hiretalent'); ?> <span class="required">*</span>
+                            <?php esc_html_e('Email Address', 'talentora'); ?> <span class="required">*</span>
                         </label>
                         <div class="input-with-icon">
                             <span class="dashicons dashicons-email"></span>
                             <input type="email" id="applicant_email" name="applicant_email"
                                 value="<?php echo isset($data['applicant_email']) ? esc_attr($data['applicant_email']) : ''; ?>"
-                                placeholder="<?php esc_attr_e('john@example.com', 'hiretalent'); ?>" required>
+                                placeholder="<?php esc_attr_e('john@example.com', 'talentora'); ?>" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-grid-row">
-                    <div class="hiretalent-form-field">
+                    <div class="talentora-form-field">
                         <label for="applicant_phone">
-                            <?php esc_html_e('Phone Number', 'hiretalent'); ?> <span class="required">*</span>
+                            <?php esc_html_e('Phone Number', 'talentora'); ?> <span class="required">*</span>
                         </label>
                         <div class="input-with-icon">
                             <span class="dashicons dashicons-smartphone"></span>
                             <input type="tel" id="applicant_phone" name="applicant_phone"
                                 value="<?php echo isset($data['applicant_phone']) ? esc_attr($data['applicant_phone']) : ''; ?>"
-                                placeholder="<?php esc_attr_e('+1 234 567 8900', 'hiretalent'); ?>" required>
+                                placeholder="<?php esc_attr_e('+1 234 567 8900', 'talentora'); ?>" required>
                         </div>
                     </div>
 
-                    <div class="hiretalent-form-field">
+                    <div class="talentora-form-field">
                         <label for="resume">
-                            <?php esc_html_e('Resume / CV', 'hiretalent'); ?> <span class="required">*</span>
+                            <?php esc_html_e('Resume / CV', 'talentora'); ?> <span class="required">*</span>
                         </label>
                         <div class="file-input-wrapper">
                             <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="inputfile" required>
                             <label for="resume" class="file-input-label">
                                 <span class="dashicons dashicons-upload"></span>
-                                <span class="file-label-text"><?php esc_html_e('Choose a file...', 'hiretalent'); ?></span>
+                                <span class="file-label-text"><?php esc_html_e('Choose a file...', 'talentora'); ?></span>
                             </label>
-                            <span class="file-help-text"><?php esc_html_e('PDF or DOC, max 5MB', 'hiretalent'); ?></span>
+                            <span class="file-help-text"><?php esc_html_e('PDF or DOC, max 5MB', 'talentora'); ?></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="hiretalent-form-field full-width">
+                <div class="talentora-form-field full-width">
                     <label for="cover_letter">
-                        <?php esc_html_e('Cover Letter', 'hiretalent'); ?> <span class="required">*</span>
+                        <?php esc_html_e('Cover Letter', 'talentora'); ?> <span class="required">*</span>
                     </label>
                     <textarea id="cover_letter" name="cover_letter" rows="6"
-                        placeholder="<?php esc_attr_e('Tell us why you are a great fit for this role...', 'hiretalent'); ?>"
+                        placeholder="<?php esc_attr_e('Tell us why you are a great fit for this role...', 'talentora'); ?>"
                         required><?php echo isset($data['cover_letter']) ? esc_textarea($data['cover_letter']) : ''; ?></textarea>
                 </div>
 
-                <div class="hiretalent-form-submit">
-                    <button type="submit" name="hiretalent_submit_application" class="hiretalent-button primary large">
+                <div class="talentora-form-submit">
+                    <button type="submit" name="talentora_submit_application" class="talentora-button primary large">
                         <span class="dashicons dashicons-paperplane"></span>
-                        <?php esc_html_e('Submit Application', 'hiretalent'); ?>
+                        <?php esc_html_e('Submit Application', 'talentora'); ?>
                     </button>
                 </div>
             </form>

@@ -1,7 +1,7 @@
 {
-  "name": "hiretalent",
+  "name": "talentora",
   "version": "1.0.0",
-  "description": "HireTalent – Simple & Powerful Job Board",
+  "description": "Talentora – Simple & Powerful Job Board",
   "author": "Md Abul Bashar",
   "license": "GPL-2.0-or-later",
   "scripts": {

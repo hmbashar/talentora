@@ -4,11 +4,11 @@
  *
  * Handles frontend asset enqueuing.
  *
- * @package HireTalent\Frontend\Assets
+ * @package Talentora\Frontend\Assets
  * @since 1.0.0
  */
 
-namespace HireTalent\Frontend\Assets;
+namespace Talentora\Frontend\Assets;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -41,12 +41,12 @@ class Assets
         // Check if we're on a job-related page or if shortcode is present
         $should_enqueue = false;
 
-        if (is_singular('hiretalent_job') || is_post_type_archive('hiretalent_job')) {
+        if (is_singular('talentora_job') || is_post_type_archive('talentora_job')) {
             $should_enqueue = true;
         }
 
         // Check for shortcode in post content
-        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'hiretalent_jobs')) {
+        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'talentora_jobs')) {
             $should_enqueue = true;
         }
 
@@ -54,29 +54,29 @@ class Assets
             wp_enqueue_style('dashicons');
 
             wp_enqueue_style(
-                'hiretalent-frontend',
-                HIRETALENT_URL . 'assets/css/frontend.css',
+                'talentora-frontend',
+                TALENTORA_URL . 'assets/css/frontend.css',
                 array(),
-                HIRETALENT_VERSION
+                TALENTORA_VERSION
             );
 
             wp_enqueue_script(
-                'hiretalent-frontend',
-                HIRETALENT_URL . 'assets/js/frontend.js',
+                'talentora-frontend',
+                TALENTORA_URL . 'assets/js/frontend.js',
                 array('jquery'),
-                HIRETALENT_VERSION,
+                TALENTORA_VERSION,
                 true
             );
 
-            wp_localize_script('hiretalent-frontend', 'hiretalent_ajax', array(
+            wp_localize_script('talentora-frontend', 'talentora_ajax', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('hiretalent_filter_nonce'),
+                'nonce' => wp_create_nonce('talentora_filter_nonce'),
             ));
 
             // Enqueue SweetAlert2
             wp_enqueue_script(
                 'sweetalert2',
-                HIRETALENT_URL . 'assets/js/sweetalert2.all.min.js',
+                TALENTORA_URL . 'assets/js/sweetalert2.all.min.js',
                 array(),
                 '11.0.18',
                 true
@@ -84,16 +84,16 @@ class Assets
 
             // Enqueue Application Form Redesign JS
             wp_enqueue_script(
-                'hiretalent-application-form',
-                HIRETALENT_URL . 'assets/js/application-form.js',
+                'talentora-application-form',
+                TALENTORA_URL . 'assets/js/application-form.js',
                 array('jquery', 'sweetalert2'),
-                HIRETALENT_VERSION,
+                TALENTORA_VERSION,
                 true
             );
 
-            wp_localize_script('hiretalent-application-form', 'hiretalent_form_ajax', array(
+            wp_localize_script('talentora-application-form', 'talentora_form_ajax', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('hiretalent_application_nonce'),
+                'nonce' => wp_create_nonce('talentora_application_nonce'),
             ));
         }
     }

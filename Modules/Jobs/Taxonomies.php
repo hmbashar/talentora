@@ -4,11 +4,11 @@
  *
  * Registers job taxonomies (category and type).
  *
- * @package HireTalent\Modules\Jobs
+ * @package Talentora\Modules\Jobs
  * @since 1.0.0
  */
 
-namespace HireTalent\Modules\Jobs;
+namespace Talentora\Modules\Jobs;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -48,17 +48,17 @@ class Taxonomies
     private function register_job_category()
     {
         $labels = array(
-            'name' => _x('Job Categories', 'taxonomy general name', 'hiretalent'),
-            'singular_name' => _x('Job Category', 'taxonomy singular name', 'hiretalent'),
-            'search_items' => __('Search Job Categories', 'hiretalent'),
-            'all_items' => __('All Job Categories', 'hiretalent'),
-            'parent_item' => __('Parent Job Category', 'hiretalent'),
-            'parent_item_colon' => __('Parent Job Category:', 'hiretalent'),
-            'edit_item' => __('Edit Job Category', 'hiretalent'),
-            'update_item' => __('Update Job Category', 'hiretalent'),
-            'add_new_item' => __('Add New Job Category', 'hiretalent'),
-            'new_item_name' => __('New Job Category Name', 'hiretalent'),
-            'menu_name' => __('Job Categories', 'hiretalent'),
+            'name' => _x('Job Categories', 'taxonomy general name', 'talentora'),
+            'singular_name' => _x('Job Category', 'taxonomy singular name', 'talentora'),
+            'search_items' => __('Search Job Categories', 'talentora'),
+            'all_items' => __('All Job Categories', 'talentora'),
+            'parent_item' => __('Parent Job Category', 'talentora'),
+            'parent_item_colon' => __('Parent Job Category:', 'talentora'),
+            'edit_item' => __('Edit Job Category', 'talentora'),
+            'update_item' => __('Update Job Category', 'talentora'),
+            'add_new_item' => __('Add New Job Category', 'talentora'),
+            'new_item_name' => __('New Job Category Name', 'talentora'),
+            'menu_name' => __('Job Categories', 'talentora'),
         );
 
         $args = array(
@@ -71,7 +71,7 @@ class Taxonomies
             'show_in_rest' => true,
         );
 
-        register_taxonomy('hiretalent_job_category', array('hiretalent_job'), $args);
+        register_taxonomy('talentora_job_category', array('talentora_job'), $args);
     }
 
     /**
@@ -82,17 +82,17 @@ class Taxonomies
     private function register_job_type()
     {
         $labels = array(
-            'name' => _x('Job Types', 'taxonomy general name', 'hiretalent'),
-            'singular_name' => _x('Job Type', 'taxonomy singular name', 'hiretalent'),
-            'search_items' => __('Search Job Types', 'hiretalent'),
-            'all_items' => __('All Job Types', 'hiretalent'),
-            'parent_item' => __('Parent Job Type', 'hiretalent'),
-            'parent_item_colon' => __('Parent Job Type:', 'hiretalent'),
-            'edit_item' => __('Edit Job Type', 'hiretalent'),
-            'update_item' => __('Update Job Type', 'hiretalent'),
-            'add_new_item' => __('Add New Job Type', 'hiretalent'),
-            'new_item_name' => __('New Job Type Name', 'hiretalent'),
-            'menu_name' => __('Job Types', 'hiretalent'),
+            'name' => _x('Job Types', 'taxonomy general name', 'talentora'),
+            'singular_name' => _x('Job Type', 'taxonomy singular name', 'talentora'),
+            'search_items' => __('Search Job Types', 'talentora'),
+            'all_items' => __('All Job Types', 'talentora'),
+            'parent_item' => __('Parent Job Type', 'talentora'),
+            'parent_item_colon' => __('Parent Job Type:', 'talentora'),
+            'edit_item' => __('Edit Job Type', 'talentora'),
+            'update_item' => __('Update Job Type', 'talentora'),
+            'add_new_item' => __('Add New Job Type', 'talentora'),
+            'new_item_name' => __('New Job Type Name', 'talentora'),
+            'menu_name' => __('Job Types', 'talentora'),
         );
 
         $args = array(
@@ -105,6 +105,6 @@ class Taxonomies
             'show_in_rest' => true,
         );
 
-        register_taxonomy('hiretalent_job_type', array('hiretalent_job'), $args);
+        register_taxonomy('talentora_job_type', array('talentora_job'), $args);
     }
 }

@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name: HireTalent – Simple & Powerful Job Board
- * Plugin URI: https://github.com/hmbashar/hiretalent
+ * Plugin Name: Talentora – Simple & Powerful Job Board
+ * Plugin URI: https://github.com/hmbashar/talentora
  * Description: A simple yet powerful job board plugin for WordPress. Post jobs, manage applications, and help employers find the right talent.
  * Version: 1.0.0
  * Author: Md Abul Bashar
  * Author URI: https://github.com/hmbashar
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: hiretalent
+ * Text Domain: talentora
  * Domain Path: /languages
- * Namespace: HireTalent
+ * Namespace: Talentora
  * Requires at least: 5.8
  * Requires PHP: 7.4
  */
@@ -20,13 +20,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class HireTalent
+final class Talentora
 {
     // Singleton instance.
     private static $instance = null;
 
     /**
-     * Initializes the HireTalent class by defining constants, including necessary files, and initializing hooks.
+     * Initializes the Talentora class by defining constants, including necessary files, and initializing hooks.
      */
     private function __construct()
     {
@@ -38,7 +38,7 @@ final class HireTalent
     /**
      * Retrieves the singleton instance of the plugin.
      *
-     * @return HireTalent The singleton instance of the plugin.
+     * @return Talentora The singleton instance of the plugin.
      */
     public static function get_instance()
     {
@@ -54,22 +54,22 @@ final class HireTalent
     private function define_constants()
     {
         // Define Plugin Version.
-        define('HIRETALENT_VERSION', '1.0.0');
+        define('TALENTORA_VERSION', '1.0.0');
 
         // Define Plugin Path.
-        define('HIRETALENT_PATH', plugin_dir_path(__FILE__));
+        define('TALENTORA_PATH', plugin_dir_path(__FILE__));
 
         // Define Plugin URL.
-        define('HIRETALENT_URL', plugin_dir_url(__FILE__));
+        define('TALENTORA_URL', plugin_dir_url(__FILE__));
 
         // Define Plugin Basename.
-        define('HIRETALENT_BASENAME', plugin_basename(__FILE__));
+        define('TALENTORA_BASENAME', plugin_basename(__FILE__));
 
         // Define Plugin File.
-        define('HIRETALENT_FILE', __FILE__);
+        define('TALENTORA_FILE', __FILE__);
 
         // Define Plugin Name.
-        define('HIRETALENT_NAME', 'HireTalent');
+        define('TALENTORA_NAME', 'Talentora');
     }
 
     /**
@@ -77,8 +77,8 @@ final class HireTalent
      */
     private function include_files()
     {
-        if (file_exists(HIRETALENT_PATH . 'vendor/autoload.php')) {
-            require_once HIRETALENT_PATH . 'vendor/autoload.php';
+        if (file_exists(TALENTORA_PATH . 'vendor/autoload.php')) {
+            require_once TALENTORA_PATH . 'vendor/autoload.php';
         }
     }
 
@@ -97,8 +97,8 @@ final class HireTalent
      */
     public function plugin_loaded()
     {
-        if (class_exists('HireTalent\\Manager')) {
-            new \HireTalent\Manager();
+        if (class_exists('Talentora\\Manager')) {
+            new \Talentora\Manager();
         }
     }
 
@@ -107,7 +107,7 @@ final class HireTalent
      */
     public function activate()
     {
-        HireTalent\Activate::activate();
+        Talentora\Activate::activate();
     }
 
     /**
@@ -115,18 +115,18 @@ final class HireTalent
      */
     public function deactivate()
     {
-        HireTalent\Deactivate::deactivate();
+        Talentora\Deactivate::deactivate();
     }
 }
 
 /**
- * Initializes the HireTalent plugin.
+ * Initializes the Talentora plugin.
  */
-if (!function_exists('hiretalent_initialize')) {
-    function hiretalent_initialize()
+if (!function_exists('talentora_initialize')) {
+    function talentora_initialize()
     {
-        return HireTalent::get_instance();
+        return Talentora::get_instance();
     }
 
-    hiretalent_initialize();
+    talentora_initialize();
 }

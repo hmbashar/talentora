@@ -4,11 +4,11 @@
  *
  * Handles activity logging for applications.
  *
- * @package HireTalent\Inc
+ * @package Talentora\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent;
+namespace Talentora;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -34,7 +34,7 @@ class ActivityLogger
             return false;
         }
 
-        $logs = get_post_meta($application_id, 'hiretalent_activity_log', true);
+        $logs = get_post_meta($application_id, 'talentora_activity_log', true);
 
         if (!is_array($logs)) {
             $logs = array();
@@ -49,7 +49,7 @@ class ActivityLogger
 
         $logs[] = $log_entry;
 
-        return update_post_meta($application_id, 'hiretalent_activity_log', $logs);
+        return update_post_meta($application_id, 'talentora_activity_log', $logs);
     }
 
     /**
@@ -61,7 +61,7 @@ class ActivityLogger
      */
     public function get_logs($application_id)
     {
-        $logs = get_post_meta($application_id, 'hiretalent_activity_log', true);
+        $logs = get_post_meta($application_id, 'talentora_activity_log', true);
 
         if (!is_array($logs)) {
             return array();

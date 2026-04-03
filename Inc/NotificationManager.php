@@ -2,13 +2,13 @@
 /**
  * NotificationManager.php
  *
- * Handles email notifications for the HireTalent plugin.
+ * Handles email notifications for the Talentora plugin.
  *
- * @package HireTalent\Inc
+ * @package Talentora\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent;
+namespace Talentora;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -22,7 +22,7 @@ class NotificationManager
     /**
      * Activity Logger instance.
      *
-     * @var \HireTalent\Inc\ActivityLogger
+     * @var \Talentora\Inc\ActivityLogger
      */
     private $activity_logger;
 
@@ -33,7 +33,7 @@ class NotificationManager
      */
     public function __construct()
     {
-        $this->activity_logger = new \HireTalent\ActivityLogger();
+        $this->activity_logger = new \Talentora\ActivityLogger();
     }
     /**
      * Send admin notification email.
@@ -47,15 +47,15 @@ class NotificationManager
         $admin_email = get_option('admin_email');
 
         $subject = get_option(
-            'hiretalent_admin_notification_subject',
+            'talentora_admin_notification_subject',
             /* translators: {site_name}: Site name, {job_title}: Job title. */
-            esc_html__('[%site_name] New Job Application: {job_title}', 'hiretalent')
+            esc_html__('[%site_name] New Job Application: {job_title}', 'talentora')
         );
 
         /* translators: {job_title}: Job title, {applicant_name}: Applicant full name, {application_url}: URL to the application details page. */
         $message = get_option(
-            'hiretalent_admin_notification_message',
-            esc_html__("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'hiretalent')
+            'talentora_admin_notification_message',
+            esc_html__("You have received a new job application.\n\nJob: {job_title}\nApplicant: {applicant_name}\n\nView application: {application_url}", 'talentora')
         );
 
         $subject = $this->replace_placeholders($subject, $application_id);
@@ -65,9 +65,9 @@ class NotificationManager
         $this->log_email($admin_email, $subject, $message, $result);
 
         if ($result) {
-            $this->activity_logger->log($application_id, __('Admin notification email sent.', 'hiretalent'), 'info');
+            $this->activity_logger->log($application_id, __('Admin notification email sent.', 'talentora'), 'info');
         } else {
-            $this->activity_logger->log($application_id, __('Failed to send admin notification email.', 'hiretalent'), 'error');
+            $this->activity_logger->log($application_id, __('Failed to send admin notification email.', 'talentora'), 'error');
         }
 
         return $result;
@@ -82,13 +82,13 @@ class NotificationManager
      */
     public function send_applicant_confirmation($application_id)
     {
-        $email = get_post_meta($application_id, 'hiretalent_applicant_email', true);
+        $email = get_post_meta($application_id, 'talentora_applicant_email', true);
         if (!$email) {
             return false;
         }
 
-        $subject = get_option('hiretalent_applicant_confirmation_subject', __('Application Received: {job_title}', 'hiretalent'));
-        $message = get_option('hiretalent_applicant_confirmation_message', __("Dear {applicant_name},\n\nThank you for applying for the position of {job_title}.\n\nWe have received your application and will review it shortly.\n\nBest regards,\n{site_name}", 'hiretalent'));
+        $subject = get_option('talentora_applicant_confirmation_subject', __('Application Received: {job_title}', 'talentora'));
+        $message = get_option('talentora_applicant_confirmation_message', __("Dear {applicant_name},\n\nThank you for applying for the position of {job_title}.\n\nWe have received your application and will review it shortly.\n\nBest regards,\n{site_name}", 'talentora'));
 
         $subject = $this->replace_placeholders($subject, $application_id);
         $message = $this->replace_placeholders($message, $application_id);
@@ -97,9 +97,9 @@ class NotificationManager
         $this->log_email($email, $subject, $message, $result);
 
         if ($result) {
-            $this->activity_logger->log($application_id, __('Application confirmation email sent.', 'hiretalent'), 'info');
+            $this->activity_logger->log($application_id, __('Application confirmation email sent.', 'talentora'), 'info');
         } else {
-            $this->activity_logger->log($application_id, __('Failed to send application confirmation email.', 'hiretalent'), 'error');
+            $this->activity_logger->log($application_id, __('Failed to send application confirmation email.', 'talentora'), 'error');
         }
 
         return $result;
@@ -116,13 +116,13 @@ class NotificationManager
      */
     public function send_status_change_notification($application_id, $old_status, $new_status)
     {
-        $email = get_post_meta($application_id, 'hiretalent_applicant_email', true);
+        $email = get_post_meta($application_id, 'talentora_applicant_email', true);
         if (!$email) {
             return false;
         }
 
-        $subject = get_option('hiretalent_status_change_subject', __('Application Update: {job_title}', 'hiretalent'));
-        $message = get_option('hiretalent_status_change_message', __("Dear {applicant_name},\n\nYour application status for {job_title} has been updated to: {status}.\n\nBest regards,\n{site_name}", 'hiretalent'));
+        $subject = get_option('talentora_status_change_subject', __('Application Update: {job_title}', 'talentora'));
+        $message = get_option('talentora_status_change_message', __("Dear {applicant_name},\n\nYour application status for {job_title} has been updated to: {status}.\n\nBest regards,\n{site_name}", 'talentora'));
 
         $subject = $this->replace_placeholders($subject, $application_id, $new_status);
         $message = $this->replace_placeholders($message, $application_id, $new_status);
@@ -135,7 +135,7 @@ class NotificationManager
                 $application_id,
                 sprintf(
                     /* translators: %s: New application status label. */
-                    __('Status change email sent for status: %s', 'hiretalent'),
+                    __('Status change email sent for status: %s', 'talentora'),
                     $new_status
                 ),
                 'info'
@@ -145,7 +145,7 @@ class NotificationManager
                 $application_id,
                 sprintf(
                     /* translators: %s: New application status label. */
-                    __('Failed to send status change email for status: %s', 'hiretalent'),
+                    __('Failed to send status change email for status: %s', 'talentora'),
                     $new_status
                 ),
                 'error'
@@ -166,8 +166,8 @@ class NotificationManager
      */
     private function replace_placeholders($text, $application_id, $status = '')
     {
-        $job_id = get_post_meta($application_id, 'hiretalent_job_id', true);
-        $applicant_name = get_post_meta($application_id, 'hiretalent_applicant_name', true);
+        $job_id = get_post_meta($application_id, 'talentora_job_id', true);
+        $applicant_name = get_post_meta($application_id, 'talentora_applicant_name', true);
         $job_title = get_the_title($job_id);
         $site_name = get_bloginfo('name');
         $application_url = admin_url('post.php?post=' . $application_id . '&action=edit');
@@ -201,7 +201,7 @@ class NotificationManager
             WP_Filesystem();
         }
 
-        $log_dir = wp_upload_dir()['basedir'] . '/hiretalent-logs';
+        $log_dir = wp_upload_dir()['basedir'] . '/talentora-logs';
         if (!$wp_filesystem->is_dir($log_dir)) {
             wp_mkdir_p($log_dir);
         }
@@ -232,7 +232,7 @@ class NotificationManager
             WP_Filesystem();
         }
 
-        $log_dir = wp_upload_dir()['basedir'] . '/hiretalent-logs';
+        $log_dir = wp_upload_dir()['basedir'] . '/talentora-logs';
         $log_file = $log_dir . '/email.log';
 
         if (!$wp_filesystem->exists($log_file)) {

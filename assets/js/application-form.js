@@ -1,6 +1,6 @@
 jQuery(function ($) {
   // AJAX Form Submission
-  $('.hiretalent-form').on('submit', function (e) {
+  $('.talentora-form').on('submit', function (e) {
     e.preventDefault();
     const $form = $(this);
     const $submitBtn = $form.find('button[type="submit"]');
@@ -10,10 +10,10 @@ jQuery(function ($) {
     $submitBtn.prop('disabled', true).html('<span class="dashicons dashicons-update spin"></span> ' + originalBtnHtml);
 
     const formData = new FormData(this);
-    formData.append('action', 'hiretalent_submit_application');
+    formData.append('action', 'talentora_submit_application');
 
     $.ajax({
-      url: hiretalent_form_ajax.ajax_url,
+      url: talentora_form_ajax.ajax_url,
       type: 'POST',
       data: formData,
       processData: false,
@@ -58,7 +58,7 @@ jQuery(function ($) {
   });
 
   // Handle existing state in DOM (for fallback non-AJAX submissions)
-  $('.hiretalent-form-state').each(function () {
+  $('.talentora-form-state').each(function () {
     const raw = $(this).attr('data-state');
     if (!raw) return;
     let state = null;
@@ -76,7 +76,7 @@ jQuery(function ($) {
         text: state.message,
         confirmButtonColor: '#2563eb'
       });
-      const form = $(this).closest('.hiretalent-application-form').find('form')[0];
+      const form = $(this).closest('.talentora-application-form').find('form')[0];
       if (form) form.reset();
     } else if (state.status === 'error') {
       let errorHtml = '<ul style="text-align:left;">';

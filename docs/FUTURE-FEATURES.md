@@ -1,6 +1,6 @@
 # Future Features & Roadmap
 
-This document outlines planned features for future versions of HireTalent. These features are not currently implemented but are on the development roadmap.
+This document outlines planned features for future versions of Talentora. These features are not currently implemented but are on the development roadmap.
 
 ## 🚀 Planned Features
 

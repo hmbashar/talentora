@@ -2,40 +2,40 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: HireTalent – Simple & Powerful Job Board 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/hiretalent\n"
+"Project-Id-Version: Talentora – Simple & Powerful Job Board 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/talentora\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-01T18:04:27+00:00\n"
+"POT-Creation-Date: 2026-03-01T18:08:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: hiretalent\n"
+"X-Domain: talentora\n"
 
 #. Plugin Name of the plugin
-#: hiretalent.php
-msgid "HireTalent – Simple & Powerful Job Board"
+#: talentora.php
+msgid "Talentora – Simple & Powerful Job Board"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: hiretalent.php
-msgid "https://github.com/hmbashar/hiretalent"
+#: talentora.php
+msgid "https://github.com/hmbashar/talentora"
 msgstr ""
 
 #. Description of the plugin
-#: hiretalent.php
+#: talentora.php
 msgid "A simple yet powerful job board plugin for WordPress. Post jobs, manage applications, and help employers find the right talent."
 msgstr ""
 
 #. Author of the plugin
-#: hiretalent.php
+#: talentora.php
 msgid "Md Abul Bashar"
 msgstr ""
 
 #. Author URI of the plugin
-#: hiretalent.php
+#: talentora.php
 msgid "https://github.com/hmbashar"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:91
 #: Frontend/Shortcodes/JobsList.php:252
-#: templates/single-hiretalent_job.php:316
+#: templates/single-talentora_job.php:316
 msgid "Location"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgid "e.g., New York, NY"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:101
-#: templates/single-hiretalent_job.php:129
+#: templates/single-talentora_job.php:129
 msgid "Salary Range"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgid "Max"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:125
-#: templates/single-hiretalent_job.php:364
+#: templates/single-talentora_job.php:364
 msgid "Experience"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgid "e.g., 2 Years+"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:135
-#: templates/single-hiretalent_job.php:400
+#: templates/single-talentora_job.php:400
 msgid "Vacancy"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgid "e.g., 3"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:147
-#: templates/single-hiretalent_job.php:376
+#: templates/single-talentora_job.php:376
 msgid "Working Hours"
 msgstr ""
 
@@ -119,7 +119,7 @@ msgid "e.g., 9:00 AM - 5:00 PM"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:158
-#: templates/single-hiretalent_job.php:388
+#: templates/single-talentora_job.php:388
 msgid "Working Days"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgid "e.g., Mon - Fri"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:170
-#: templates/single-hiretalent_job.php:152
+#: templates/single-talentora_job.php:152
 msgid "Application Deadline"
 msgstr ""
 
@@ -157,7 +157,7 @@ msgid "e.g., Acme Corporation"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:223
-#: templates/single-hiretalent_job.php:273
+#: templates/single-talentora_job.php:273
 msgid "Company Website"
 msgstr ""
 
@@ -586,7 +586,7 @@ msgstr ""
 
 #: Frontend/Shortcodes/ApplyForm.php:75
 #: Frontend/Shortcodes/ApplyForm.php:96
-#: templates/single-hiretalent_job.php:234
+#: templates/single-talentora_job.php:234
 msgid "Apply for this Position"
 msgstr ""
 
@@ -887,7 +887,7 @@ msgstr ""
 
 #: Modules/Jobs/PostType.php:42
 msgctxt "Admin Menu text"
-msgid "HireTalent"
+msgid "Talentora"
 msgstr ""
 
 #: Modules/Jobs/PostType.php:43
@@ -1069,93 +1069,93 @@ msgstr ""
 msgid "Job Types"
 msgstr ""
 
-#: templates/archive-hiretalent_job.php:24
+#: templates/archive-talentora_job.php:24
 msgid "Job Opportunities"
 msgstr ""
 
-#: templates/archive-hiretalent_job.php:32
+#: templates/archive-talentora_job.php:32
 msgid "Explore exciting career opportunities and find your next role"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:51
-#: templates/single-hiretalent_job.php:249
+#: templates/single-talentora_job.php:51
+#: templates/single-talentora_job.php:249
 msgid "Position Filled"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:56
+#: templates/single-talentora_job.php:56
 msgid "Now Hiring"
 msgstr ""
 
 #. translators: %s: Human-readable time difference (e.g., "5 minutes").
-#: templates/single-hiretalent_job.php:90
-msgid "Posted %1$hiretalent_s ago"
+#: templates/single-talentora_job.php:90
+msgid "Posted %1$s ago"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:107
+#: templates/single-talentora_job.php:107
 msgid "Visit Company Website"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:167
+#: templates/single-talentora_job.php:167
 msgid "Employment Type"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:189
-#: templates/single-hiretalent_job.php:438
+#: templates/single-talentora_job.php:189
+#: templates/single-talentora_job.php:438
 msgid "Joining Date"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:203
+#: templates/single-talentora_job.php:203
 msgid "Category"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:222
+#: templates/single-talentora_job.php:222
 msgid "Job Description"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:237
+#: templates/single-talentora_job.php:237
 msgid "Ready to take the next step? Submit your application below."
 msgstr ""
 
-#: templates/single-hiretalent_job.php:250
+#: templates/single-talentora_job.php:250
 msgid "This position has been filled. Thank you for your interest! Check out our other openings."
 msgstr ""
 
-#: templates/single-hiretalent_job.php:283
+#: templates/single-talentora_job.php:283
 msgid "Quick Actions"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:289
+#: templates/single-talentora_job.php:289
 msgid "Apply Now"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:294
+#: templates/single-talentora_job.php:294
 msgid "Print Job"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:297
+#: templates/single-talentora_job.php:297
 msgid "Copy this URL to share"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:299
+#: templates/single-talentora_job.php:299
 msgid "Share Job"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:307
+#: templates/single-talentora_job.php:307
 msgid "Job Summary:"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:328
+#: templates/single-talentora_job.php:328
 msgid "Salary"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:351
+#: templates/single-talentora_job.php:351
 msgid "Job Type"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:413
+#: templates/single-talentora_job.php:413
 msgid "Last Date of Submission"
 msgstr ""
 
-#: templates/single-hiretalent_job.php:425
+#: templates/single-talentora_job.php:425
 msgid "Published"
 msgstr ""

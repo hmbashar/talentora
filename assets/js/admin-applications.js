@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         Swal.fire({
-            title: hiretalent_admin.strings.confirm_bulk_action,
+            title: talentora_admin.strings.confirm_bulk_action,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

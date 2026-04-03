@@ -4,11 +4,11 @@
  *
  * Handles plugin activation tasks.
  *
- * @package HireTalent\Inc
+ * @package Talentora\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent;
+namespace Talentora;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -33,8 +33,8 @@ class Activate
         flush_rewrite_rules();
 
         // Schedule daily maintenance event
-        if (!wp_next_scheduled('hiretalent_daily_event')) {
-            wp_schedule_event(time(), 'daily', 'hiretalent_daily_event');
+        if (!wp_next_scheduled('talentora_daily_event')) {
+            wp_schedule_event(time(), 'daily', 'talentora_daily_event');
         }
     }
 
@@ -46,13 +46,13 @@ class Activate
     private static function set_default_options()
     {
         // Set default jobs per page
-        if (false === get_option('hiretalent_jobs_per_page')) {
-            add_option('hiretalent_jobs_per_page', 10);
+        if (false === get_option('talentora_jobs_per_page')) {
+            add_option('talentora_jobs_per_page', 10);
         }
 
         // Set default apply form shortcode (empty by default)
-        if (false === get_option('hiretalent_apply_form_shortcode')) {
-            add_option('hiretalent_apply_form_shortcode', '');
+        if (false === get_option('talentora_apply_form_shortcode')) {
+            add_option('talentora_apply_form_shortcode', '');
         }
     }
 }

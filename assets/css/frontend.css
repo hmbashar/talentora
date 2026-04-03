@@ -1,5 +1,5 @@
 /**
- * Frontend Styles for HireTalent
+ * Frontend Styles for Talentora
  * Premium Design Overhaul
  */
 
@@ -22,7 +22,7 @@
 }
 
 /* Wrapper */
-.hiretalent-jobs-wrapper {
+.talentora-jobs-wrapper {
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
@@ -31,7 +31,7 @@
 }
 
 /* Filter Bar */
-.hiretalent-filter-bar {
+.talentora-filter-bar {
     background: var(--ht-color-white);
     padding: 1.5rem;
     border-radius: var(--ht-radius);
@@ -40,7 +40,7 @@
     border: 1px solid var(--ht-border-color);
 }
 
-.hiretalent-filters {
+.talentora-filters {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1rem;
@@ -67,7 +67,7 @@
     background-color: var(--ht-color-white);
 }
 
-.hiretalent-btn {
+.talentora-btn {
     display: inline-block;
     width: 100%;
     padding: 0.75rem 1.5rem;
@@ -82,7 +82,7 @@
     text-decoration: none;
 }
 
-.hiretalent-btn:hover {
+.talentora-btn:hover {
     background: var(--ht-color-primary-dark);
     transform: translateY(-1px);
     box-shadow: var(--ht-shadow-md);
@@ -90,14 +90,14 @@
 }
 
 /* Jobs Grid */
-.hiretalent-jobs-list {
+.talentora-jobs-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
 }
 
 /* Job Card */
-.hiretalent-job-card {
+.talentora-job-card {
     background: var(--ht-color-white);
     border: 1px solid var(--ht-border-color);
     border-radius: var(--ht-radius);
@@ -108,13 +108,13 @@
     flex-direction: column;
 }
 
-.hiretalent-job-card:hover {
+.talentora-job-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--ht-shadow-lg);
     border-color: var(--ht-color-primary);
 }
 
-.hiretalent-job-card.job-filled {
+.talentora-job-card.job-filled {
     opacity: 0.7;
     background: var(--ht-color-bg);
     pointer-events: none;
@@ -240,28 +240,28 @@
     border-top: 1px solid var(--ht-border-color);
 }
 
-.job-card-footer .hiretalent-btn {
+.job-card-footer .talentora-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
 }
 
-.job-card-footer .hiretalent-btn .dashicons {
+.job-card-footer .talentora-btn .dashicons {
     font-size: 18px;
     width: 18px;
     height: 18px;
 }
 
 /* Pagination */
-.hiretalent-pagination {
+.talentora-pagination {
     margin-top: 3rem;
     display: flex;
     justify-content: center;
     gap: 0.5rem;
 }
 
-.hiretalent-pagination .page-numbers {
+.talentora-pagination .page-numbers {
     padding: 0.5rem 1rem;
     border-radius: var(--ht-radius);
     background: var(--ht-color-white);
@@ -271,8 +271,8 @@
     transition: all 0.2s;
 }
 
-.hiretalent-pagination .page-numbers.current,
-.hiretalent-pagination .page-numbers:hover {
+.talentora-pagination .page-numbers.current,
+.talentora-pagination .page-numbers:hover {
     background: var(--ht-color-primary);
     color: var(--ht-color-white);
     border-color: var(--ht-color-primary);
@@ -350,7 +350,7 @@
 }
 
 /* Main Content Layout */
-.hiretalent-single-job .hiretalent-job-container {
+.talentora-single-job .talentora-job-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem 4rem 1rem;
@@ -627,7 +627,7 @@
 }
 
 /* Application Form Redesign */
-.hiretalent-form-grid {
+.talentora-form-grid {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -638,7 +638,7 @@
     gap: 1.5rem;
 }
 
-.hiretalent-form-field {
+.talentora-form-field {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -647,17 +647,17 @@
     margin-bottom: 1.5rem;
 }
 
-.hiretalent-form-field.full-width {
+.talentora-form-field.full-width {
     width: 100%;
 }
 
-.hiretalent-form-field label {
+.talentora-form-field label {
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--ht-color-text);
 }
 
-.hiretalent-form-field label .required {
+.talentora-form-field label .required {
     color: #e53e3e;
 }
 
@@ -675,10 +675,10 @@
     z-index: 10;
 }
 
-.hiretalent-form-field input[type="text"],
-.hiretalent-form-field input[type="email"],
-.hiretalent-form-field input[type="tel"],
-.hiretalent-form-field textarea {
+.talentora-form-field input[type="text"],
+.talentora-form-field input[type="email"],
+.talentora-form-field input[type="tel"],
+.talentora-form-field textarea {
     width: 100%;
     padding: 0.875rem 1rem 0.875rem 2.75rem; /* Left padding for icon */
     border: 1px solid var(--ht-border-color);
@@ -689,13 +689,13 @@
     transition: all 0.2s ease;
 }
 
-.hiretalent-form-field textarea {
+.talentora-form-field textarea {
     padding-left: 1rem; /* No icon for textarea usually */
     resize: vertical;
 }
 
-.hiretalent-form-field input:focus,
-.hiretalent-form-field textarea:focus {
+.talentora-form-field input:focus,
+.talentora-form-field textarea:focus {
     outline: none;
     border-color: var(--ht-color-primary);
     background-color: #fff;
@@ -760,11 +760,11 @@
 }
 
 /* Submit Button */
-.hiretalent-form-submit {
+.talentora-form-submit {
     margin-top: 1rem;
 }
 
-.hiretalent-button.large {
+.talentora-button.large {
     width: 100%;
     padding: 1rem;
     font-size: 1.1rem;
@@ -782,13 +782,13 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.hiretalent-button.large:hover {
+.talentora-button.large:hover {
     background: var(--ht-color-primary-dark);
     transform: translateY(-1px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.hiretalent-button.large:active {
+.talentora-button.large:active {
     transform: translateY(0);
 }
 

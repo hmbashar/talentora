@@ -4,21 +4,21 @@
  *
  * Coordinates all frontend functionality.
  *
- * @package HireTalent\Frontend\Inc
+ * @package Talentora\Frontend\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent\Frontend\Inc;
+namespace Talentora\Frontend\Inc;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-use HireTalent\Frontend\Shortcodes\JobsList;
-use HireTalent\Frontend\Shortcodes\ApplyForm;
-use HireTalent\Frontend\Templates;
-use HireTalent\Frontend\Assets\Assets;
-use HireTalent\Frontend\Applications\ApplicationHandler;
+use Talentora\Frontend\Shortcodes\JobsList;
+use Talentora\Frontend\Shortcodes\ApplyForm;
+use Talentora\Frontend\Templates;
+use Talentora\Frontend\Assets\Assets;
+use Talentora\Frontend\Applications\ApplicationHandler;
 
 /**
  * Frontend Manager class.

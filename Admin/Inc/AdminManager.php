@@ -4,19 +4,19 @@
  *
  * Coordinates all admin-side functionality.
  *
- * @package HireTalent\Admin\Inc
+ * @package Talentora\Admin\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent\Admin\Inc;
+namespace Talentora\Admin\Inc;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-use HireTalent\Admin\Metaboxes\JobMetabox;
-use HireTalent\Admin\Pages\Settings;
-use HireTalent\Admin\Assets\Assets;
+use Talentora\Admin\Metaboxes\JobMetabox;
+use Talentora\Admin\Pages\Settings;
+use Talentora\Admin\Assets\Assets;
 
 /**
  * Admin Manager class.
@@ -62,11 +62,11 @@ class AdminManager
         // Main menu is already added by the CPT
         // Add Settings submenu
         add_submenu_page(
-            'edit.php?post_type=hiretalent_job',
-            __('Settings', 'hiretalent'),
-            __('Settings', 'hiretalent'),
+            'edit.php?post_type=talentora_job',
+            __('Settings', 'talentora'),
+            __('Settings', 'talentora'),
             'manage_options',
-            'hiretalent-settings',
+            'talentora-settings',
             array($this->settings, 'render_settings_page')
         );
     }

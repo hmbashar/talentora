@@ -1,10 +1,10 @@
 jQuery(document).ready(function ($) {
     // Clear Email Log
-    $('#hiretalent-clear-log').on('click', function (e) {
+    $('#talentora-clear-log').on('click', function (e) {
         e.preventDefault();
 
         Swal.fire({
-            title: hiretalent_admin.strings.confirm_clear_log,
+            title: talentora_admin.strings.confirm_clear_log,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -13,17 +13,17 @@ jQuery(document).ready(function ($) {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: hiretalent_admin.ajax_url,
+                    url: talentora_admin.ajax_url,
                     type: 'POST',
                     data: {
-                        action: 'hiretalent_clear_email_log',
-                        nonce: hiretalent_admin.nonce
+                        action: 'talentora_clear_email_log',
+                        nonce: talentora_admin.nonce
                     },
                     success: function (response) {
                         if (response.success) {
                             Swal.fire(
                                 'Cleared!',
-                                hiretalent_admin.strings.log_cleared,
+                                talentora_admin.strings.log_cleared,
                                 'success'
                             ).then(() => {
                                 window.location.reload();
@@ -31,7 +31,7 @@ jQuery(document).ready(function ($) {
                         } else {
                             Swal.fire(
                                 'Error!',
-                                response.data || hiretalent_admin.strings.error,
+                                response.data || talentora_admin.strings.error,
                                 'error'
                             );
                         }
@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
                     error: function () {
                         Swal.fire(
                             'Error!',
-                            hiretalent_admin.strings.error,
+                            talentora_admin.strings.error,
                             'error'
                         );
                     }

@@ -9,20 +9,20 @@
     --ht-admin-success: #10b981;
 }
 
-.hiretalent-metabox {
+.talentora-metabox {
     padding: 10px 5px;
     color: var(--ht-admin-text);
 }
 
 /* Status Toggle Switch */
-.hiretalent-status-toggle {
+.talentora-status-toggle {
     display: flex;
     flex-direction: column;
     gap: 12px;
     padding: 10px 0;
 }
 
-.hiretalent-status-toggle .status-label {
+.talentora-status-toggle .status-label {
     font-weight: 700;
     font-size: 14px;
     color: var(--ht-admin-text);
@@ -116,14 +116,14 @@ input:checked + .slider:before {
 }
 
 /* Dynamic Badge Highlighting */
-.hiretalent-status-toggle:has(input:checked) .badge-open {
+.talentora-status-toggle:has(input:checked) .badge-open {
     background: #f1f5f9;
     color: #64748b;
     border-color: transparent;
     opacity: 0.5;
 }
 
-.hiretalent-status-toggle:has(input:checked) .badge-filled {
+.talentora-status-toggle:has(input:checked) .badge-filled {
     background: #fef2f2;
     color: var(--ht-admin-danger);
     border-color: var(--ht-admin-danger);
@@ -132,7 +132,7 @@ input:checked + .slider:before {
 }
 
 /* Section Styling */
-.hiretalent-section {
+.talentora-section {
     background: #fff;
     border: 1px solid var(--ht-admin-border);
     border-radius: 8px;
@@ -207,8 +207,8 @@ input:checked + .slider:before {
 }
 
 /* Form Elements */
-.hiretalent-input,
-.hiretalent-select {
+.talentora-input,
+.talentora-select {
     width: 100% !important;
     max-width: 100% !important;
     height: 40px !important;
@@ -220,8 +220,8 @@ input:checked + .slider:before {
     box-shadow: none !important;
 }
 
-.hiretalent-input:focus,
-.hiretalent-select:focus {
+.talentora-input:focus,
+.talentora-select:focus {
     border-color: var(--ht-admin-primary) !important;
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1) !important;
     outline: none !important;

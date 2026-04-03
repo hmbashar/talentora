@@ -4,11 +4,11 @@
  *
  * Handles plugin deactivation tasks.
  *
- * @package HireTalent\Inc
+ * @package Talentora\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent;
+namespace Talentora;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -30,6 +30,6 @@ class Deactivate
         flush_rewrite_rules();
 
         // Clear scheduled events
-        wp_clear_scheduled_hook('hiretalent_daily_event');
+        wp_clear_scheduled_hook('talentora_daily_event');
     }
 }

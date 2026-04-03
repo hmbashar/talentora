@@ -2,13 +2,13 @@
 /**
  * ApplicationPostType.php
  *
- * Registers the hiretalent_application custom post type.
+ * Registers the talentora_application custom post type.
  *
- * @package HireTalent\Modules\Applications
+ * @package Talentora\Modules\Applications
  * @since 1.0.0
  */
 
-namespace HireTalent\Modules\Applications;
+namespace Talentora\Modules\Applications;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -37,19 +37,19 @@ class ApplicationPostType
     public function register_post_type()
     {
         $labels = array(
-            'name' => _x('Applications', 'Post type general name', 'hiretalent'),
-            'singular_name' => _x('Application', 'Post type singular name', 'hiretalent'),
-            'menu_name' => _x('Applications', 'Admin Menu text', 'hiretalent'),
-            'name_admin_bar' => _x('Application', 'Add New on Toolbar', 'hiretalent'),
-            'add_new' => __('Add New', 'hiretalent'),
-            'add_new_item' => __('Add New Application', 'hiretalent'),
-            'new_item' => __('New Application', 'hiretalent'),
-            'edit_item' => __('View Application', 'hiretalent'),
-            'view_item' => __('View Application', 'hiretalent'),
-            'all_items' => __('Applications', 'hiretalent'),
-            'search_items' => __('Search Applications', 'hiretalent'),
-            'not_found' => __('No applications found.', 'hiretalent'),
-            'not_found_in_trash' => __('No applications found in Trash.', 'hiretalent'),
+            'name' => _x('Applications', 'Post type general name', 'talentora'),
+            'singular_name' => _x('Application', 'Post type singular name', 'talentora'),
+            'menu_name' => _x('Applications', 'Admin Menu text', 'talentora'),
+            'name_admin_bar' => _x('Application', 'Add New on Toolbar', 'talentora'),
+            'add_new' => __('Add New', 'talentora'),
+            'add_new_item' => __('Add New Application', 'talentora'),
+            'new_item' => __('New Application', 'talentora'),
+            'edit_item' => __('View Application', 'talentora'),
+            'view_item' => __('View Application', 'talentora'),
+            'all_items' => __('Applications', 'talentora'),
+            'search_items' => __('Search Applications', 'talentora'),
+            'not_found' => __('No applications found.', 'talentora'),
+            'not_found_in_trash' => __('No applications found in Trash.', 'talentora'),
         );
 
         $args = array(
@@ -58,7 +58,7 @@ class ApplicationPostType
             'publicly_queryable' => false,
             'exclude_from_search' => true,
             'show_ui' => true,
-            'show_in_menu' => 'edit.php?post_type=hiretalent_job',
+            'show_in_menu' => 'edit.php?post_type=talentora_job',
             'query_var' => false,
             'rewrite' => false,
             'capability_type' => 'post',
@@ -69,7 +69,7 @@ class ApplicationPostType
             'show_in_rest' => false,
         );
 
-        register_post_type('hiretalent_app', $args);
+        register_post_type('talentora_app', $args);
     }
 
 

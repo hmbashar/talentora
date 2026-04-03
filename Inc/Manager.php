@@ -4,34 +4,34 @@
  *
  * This file contains the Manager class, which is responsible for handling
  * the initialization of the required configurations and functionalities
- * for HireTalent. It ensures the proper setup and coordination of
+ * for Talentora. It ensures the proper setup and coordination of
  * Admin and Frontend managers.
  *
- * @package HireTalent\Inc
+ * @package Talentora\Inc
  * @since 1.0.0
  */
 
-namespace HireTalent;
+namespace Talentora;
 
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-use HireTalent\Admin\Inc\AdminManager;
-use HireTalent\Frontend\Inc\FrontendManager;
-use HireTalent\Modules\Jobs\PostType;
-use HireTalent\Modules\Jobs\Taxonomies;
-use HireTalent\Modules\Applications\ApplicationPostType;
-use HireTalent\Modules\Applications\ApplicationMeta;
+use Talentora\Admin\Inc\AdminManager;
+use Talentora\Frontend\Inc\FrontendManager;
+use Talentora\Modules\Jobs\PostType;
+use Talentora\Modules\Jobs\Taxonomies;
+use Talentora\Modules\Applications\ApplicationPostType;
+use Talentora\Modules\Applications\ApplicationMeta;
 
 /**
- * The manager class for HireTalent.
+ * The manager class for Talentora.
  *
  * This class handles the initialization of the required configurations and functionalities
- * for the HireTalent plugin. The class is responsible for coordinating Admin, Frontend,
+ * for the Talentora plugin. The class is responsible for coordinating Admin, Frontend,
  * and Module managers.
  *
- * @package HireTalent\Inc
+ * @package Talentora\Inc
  * @since 1.0.0
  */
 class Manager
@@ -46,7 +46,7 @@ class Manager
     /**
      * Constructor for the Manager class.
      *
-     * This method initializes the HireTalent Manager by calling the init method.
+     * This method initializes the Talentora Manager by calling the init method.
      *
      * @since 1.0.0
      */
@@ -56,7 +56,7 @@ class Manager
     }
 
     /**
-     * Initiate the HireTalent Manager
+     * Initiate the Talentora Manager
      *
      * This method initializes all managers and modules.
      *
@@ -77,7 +77,7 @@ class Manager
         $this->frontend_manager = new FrontendManager();
 
         // Register daily maintenance hook
-        add_action('hiretalent_daily_event', array($this, 'daily_maintenance'));
+        add_action('talentora_daily_event', array($this, 'daily_maintenance'));
     }
 
     /**
@@ -107,20 +107,20 @@ class Manager
         $today = current_time('Y-m-d');
 
         $args = array(
-            'post_type' => 'hiretalent_job',
+            'post_type' => 'talentora_job',
             'posts_per_page' => -1,
             'post_status' => 'publish',
             // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- meta_query is unavoidable: no WP API alternative exists to filter published posts by a date-type meta field (deadline) during a scheduled cron event.
             'meta_query' => array(
                 'relation' => 'AND',
                 array(
-                    'key' => 'hiretalent_deadline',
+                    'key' => 'talentora_deadline',
                     'value' => $today,
                     'compare' => '<',
                     'type' => 'DATE',
                 ),
                 array(
-                    'key' => 'hiretalent_deadline',
+                    'key' => 'talentora_deadline',
                     'value' => '',
                     'compare' => '!=',
                 ),
@@ -133,11 +133,11 @@ class Manager
             while ($query->have_posts()) {
                 $query->the_post();
                 $job_id = get_the_ID();
-                $status = get_post_meta($job_id, 'hiretalent_job_status', true);
+                $status = get_post_meta($job_id, 'talentora_job_status', true);
 
                 // Only close if not already closed or filled
                 if ($status !== 'closed' && $status !== 'filled') {
-                    update_post_meta($job_id, 'hiretalent_job_status', 'closed');
+                    update_post_meta($job_id, 'talentora_job_status', 'closed');
                 }
             }
             wp_reset_postdata();

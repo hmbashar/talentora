@@ -2,13 +2,13 @@
 /**
  * JobsList.php
  *
- * Handles the [hiretalent_jobs] shortcode.
+ * Handles the [talentora_jobs] shortcode.
  *
- * @package HireTalent\Frontend\Shortcodes
+ * @package Talentora\Frontend\Shortcodes
  * @since 1.0.0
  */
 
-namespace HireTalent\Frontend\Shortcodes;
+namespace Talentora\Frontend\Shortcodes;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -26,9 +26,9 @@ class JobsList
      */
     public function __construct()
     {
-        add_shortcode('hiretalent_jobs', array($this, 'render_jobs_list'));
-        add_action('wp_ajax_hiretalent_filter_jobs', array($this, 'handle_ajax_filter'));
-        add_action('wp_ajax_nopriv_hiretalent_filter_jobs', array($this, 'handle_ajax_filter'));
+        add_shortcode('talentora_jobs', array($this, 'render_jobs_list'));
+        add_action('wp_ajax_talentora_filter_jobs', array($this, 'handle_ajax_filter'));
+        add_action('wp_ajax_nopriv_talentora_filter_jobs', array($this, 'handle_ajax_filter'));
     }
 
     /**
@@ -40,13 +40,13 @@ class JobsList
     {
         // Verify nonce
         if (!isset($_POST['nonce'])) {
-            wp_send_json_error(esc_html__('Invalid nonce', 'hiretalent'));
+            wp_send_json_error(esc_html__('Invalid nonce', 'talentora'));
         }
 
         $nonce = sanitize_text_field(wp_unslash($_POST['nonce']));
 
-        if (!wp_verify_nonce($nonce, 'hiretalent_filter_nonce')) {
-            wp_send_json_error(esc_html__('Invalid nonce', 'hiretalent'));
+        if (!wp_verify_nonce($nonce, 'talentora_filter_nonce')) {
+            wp_send_json_error(esc_html__('Invalid nonce', 'talentora'));
         }
 
         $params = $_POST;
@@ -61,22 +61,22 @@ class JobsList
 
             // Pagination
             $paged = isset($params['paged']) ? absint($params['paged']) : 1;
-            echo '<div class="hiretalent-pagination">';
+            echo '<div class="talentora-pagination">';
             echo wp_kses_post(
                 paginate_links(
                     array(
                         'total' => $query->max_num_pages,
                         'current' => $paged,
                         /* translators: Pagination previous text. */
-                        'prev_text' => esc_html__('&laquo; Previous', 'hiretalent'),
+                        'prev_text' => esc_html__('&laquo; Previous', 'talentora'),
                         /* translators: Pagination next text. */
-                        'next_text' => esc_html__('Next &raquo;', 'hiretalent'),
+                        'next_text' => esc_html__('Next &raquo;', 'talentora'),
                     )
                 ) ?? ''
             );
             echo '</div>';
         } else {
-            echo '<p class="hiretalent-no-jobs">' . esc_html__('No jobs found.', 'hiretalent') . '</p>';
+            echo '<p class="talentora-no-jobs">' . esc_html__('No jobs found.', 'talentora') . '</p>';
         }
         $content = ob_get_clean();
         wp_reset_postdata();
@@ -92,7 +92,7 @@ class JobsList
      */
     private function get_jobs_query($params)
     {
-        $posts_per_page = isset($params['posts_per_page']) ? absint($params['posts_per_page']) : get_option('hiretalent_jobs_per_page', 10);
+        $posts_per_page = isset($params['posts_per_page']) ? absint($params['posts_per_page']) : get_option('talentora_jobs_per_page', 10);
         $paged = isset($params['paged']) ? absint($params['paged']) : 1;
         $keyword = isset($params['job_keyword']) ? sanitize_text_field($params['job_keyword']) : '';
         $category = isset($params['job_category']) ? absint($params['job_category']) : 0;
@@ -101,7 +101,7 @@ class JobsList
 
         // Build query args
         $args = array(
-            'post_type' => 'hiretalent_job',
+            'post_type' => 'talentora_job',
             'posts_per_page' => $posts_per_page,
             'paged' => $paged,
             'post_status' => 'publish',
@@ -116,14 +116,14 @@ class JobsList
         $tax_query = array();
         if ($category) {
             $tax_query[] = array(
-                'taxonomy' => 'hiretalent_job_category',
+                'taxonomy' => 'talentora_job_category',
                 'field' => 'term_id',
                 'terms' => $category,
             );
         }
         if ($type) {
             $tax_query[] = array(
-                'taxonomy' => 'hiretalent_job_type',
+                'taxonomy' => 'talentora_job_type',
                 'field' => 'term_id',
                 'terms' => $type,
             );
@@ -139,7 +139,7 @@ class JobsList
             // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- meta_query is unavoidable: no WP API alternative exists to filter posts by a meta field (location) with a LIKE comparison.
             $args['meta_query'] = array(
                 array(
-                    'key' => 'hiretalent_location',
+                    'key' => 'talentora_location',
                     'value' => $location,
                     'compare' => 'LIKE',
                 ),
@@ -147,7 +147,7 @@ class JobsList
         }
 
         // Apply filter hook
-        $args = apply_filters('hiretalent_jobs_query_args', $args);
+        $args = apply_filters('talentora_jobs_query_args', $args);
 
         return new \WP_Query($args);
     }
@@ -162,7 +162,7 @@ class JobsList
     public function render_jobs_list($atts)
     {
         $atts = shortcode_atts(array(
-            'posts_per_page' => get_option('hiretalent_jobs_per_page', 10),
+            'posts_per_page' => get_option('talentora_jobs_per_page', 10),
         ), $atts);
         // Build params from a whitelist of GET keys (read-only filtering).
         $params = $atts;
@@ -195,28 +195,28 @@ class JobsList
 
         ob_start();
         ?>
-        <div class="hiretalent-jobs-wrapper">
-            <?php do_action('hiretalent_before_job_list'); ?>
+        <div class="talentora-jobs-wrapper">
+            <?php do_action('talentora_before_job_list'); ?>
 
             <!-- Filter Bar -->
-            <div class="hiretalent-filter-bar">
-                <form id="hiretalent-job-filter-form" method="get" class="hiretalent-filters">
+            <div class="talentora-filter-bar">
+                <form id="talentora-job-filter-form" method="get" class="talentora-filters">
                     <div class="filter-field">
-                        <input type="text" name="job_keyword" placeholder="<?php esc_attr_e('Search jobs...', 'hiretalent'); ?>"
+                        <input type="text" name="job_keyword" placeholder="<?php esc_attr_e('Search jobs...', 'talentora'); ?>"
                             value="<?php echo esc_attr($keyword); ?>">
                     </div>
 
                     <div class="filter-field">
                         <?php
                         $categories = get_terms(array(
-                            'taxonomy' => 'hiretalent_job_category',
+                            'taxonomy' => 'talentora_job_category',
                             'hide_empty' => true,
                         ));
                         if (!empty($categories) && !is_wp_error($categories)):
                             ?>
                             <select name="job_category">
                                 <option value="">
-                                    <?php esc_html_e('All Categories', 'hiretalent'); ?>
+                                    <?php esc_html_e('All Categories', 'talentora'); ?>
                                 </option>
                                 <?php foreach ($categories as $cat): ?>
                                     <option value="<?php echo esc_attr($cat->term_id); ?>" <?php selected($category, $cat->term_id); ?>>
@@ -230,14 +230,14 @@ class JobsList
                     <div class="filter-field">
                         <?php
                         $types = get_terms(array(
-                            'taxonomy' => 'hiretalent_job_type',
+                            'taxonomy' => 'talentora_job_type',
                             'hide_empty' => true,
                         ));
                         if (!empty($types) && !is_wp_error($types)):
                             ?>
                             <select name="job_type">
                                 <option value="">
-                                    <?php esc_html_e('All Types', 'hiretalent'); ?>
+                                    <?php esc_html_e('All Types', 'talentora'); ?>
                                 </option>
                                 <?php foreach ($types as $job_type): ?>
                                     <option value="<?php echo esc_attr($job_type->term_id); ?>" <?php selected($type, $job_type->term_id); ?>>
@@ -249,20 +249,20 @@ class JobsList
                     </div>
 
                     <div class="filter-field">
-                        <input type="text" name="job_location" placeholder="<?php esc_attr_e('Location', 'hiretalent'); ?>"
+                        <input type="text" name="job_location" placeholder="<?php esc_attr_e('Location', 'talentora'); ?>"
                             value="<?php echo esc_attr($location); ?>">
                     </div>
 
                     <div class="filter-field">
-                        <button type="submit" class="hiretalent-btn">
-                            <?php esc_html_e('Search', 'hiretalent'); ?>
+                        <button type="submit" class="talentora-btn">
+                            <?php esc_html_e('Search', 'talentora'); ?>
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- Jobs List -->
-            <div class="hiretalent-jobs-list">
+            <div class="talentora-jobs-list">
                 <?php if ($jobs_query->have_posts()): ?>
                     <?php while ($jobs_query->have_posts()):
                         $jobs_query->the_post(); ?>
@@ -270,7 +270,7 @@ class JobsList
                     <?php endwhile; ?>
 
                     <!-- Pagination -->
-                    <div class="hiretalent-pagination">
+                    <div class="talentora-pagination">
                         <?php
                         echo wp_kses_post(
                             paginate_links(
@@ -278,23 +278,23 @@ class JobsList
                                     'total' => $jobs_query->max_num_pages,
                                     'current' => $params['paged'],
                                     /* translators: Pagination previous text. */
-                                    'prev_text' => esc_html__('&laquo; Previous', 'hiretalent'),
+                                    'prev_text' => esc_html__('&laquo; Previous', 'talentora'),
                                     /* translators: Pagination next text. */
-                                    'next_text' => esc_html__('Next &raquo;', 'hiretalent'),
+                                    'next_text' => esc_html__('Next &raquo;', 'talentora'),
                                 )
                             ) ?? ''
                         );
                         ?>
                     </div>
                 <?php else: ?>
-                    <p class="hiretalent-no-jobs">
-                        <?php esc_html_e('No jobs found.', 'hiretalent'); ?>
+                    <p class="talentora-no-jobs">
+                        <?php esc_html_e('No jobs found.', 'talentora'); ?>
                     </p>
                 <?php endif; ?>
                 <?php wp_reset_postdata(); ?>
             </div>
 
-            <?php do_action('hiretalent_after_job_list'); ?>
+            <?php do_action('talentora_after_job_list'); ?>
         </div>
         <?php
 
@@ -309,15 +309,15 @@ class JobsList
      */
     private function render_job_card($job_id)
     {
-        $company_name = get_post_meta($job_id, 'hiretalent_company_name', true);
-        $location = get_post_meta($job_id, 'hiretalent_location', true);
-        $deadline = get_post_meta($job_id, 'hiretalent_deadline', true);
-        $is_filled = get_post_meta($job_id, 'hiretalent_is_filled', true);
-        $salary_min = get_post_meta($job_id, 'hiretalent_salary_min', true);
-        $salary_max = get_post_meta($job_id, 'hiretalent_salary_max', true);
-        $company_logo_id = get_post_meta($job_id, 'hiretalent_company_logo_id', true);
+        $company_name = get_post_meta($job_id, 'talentora_company_name', true);
+        $location = get_post_meta($job_id, 'talentora_location', true);
+        $deadline = get_post_meta($job_id, 'talentora_deadline', true);
+        $is_filled = get_post_meta($job_id, 'talentora_is_filled', true);
+        $salary_min = get_post_meta($job_id, 'talentora_salary_min', true);
+        $salary_max = get_post_meta($job_id, 'talentora_salary_max', true);
+        $company_logo_id = get_post_meta($job_id, 'talentora_company_logo_id', true);
 
-        $job_types = get_the_terms($job_id, 'hiretalent_job_type');
+        $job_types = get_the_terms($job_id, 'talentora_job_type');
         $job_type_names = array();
         if ($job_types && !is_wp_error($job_types)) {
             foreach ($job_types as $job_type) {
@@ -326,7 +326,7 @@ class JobsList
         }
 
         ?>
-        <div class="hiretalent-job-card <?php echo $is_filled ? 'job-filled' : ''; ?>">
+        <div class="talentora-job-card <?php echo $is_filled ? 'job-filled' : ''; ?>">
 
             <div class="job-card-header">
                 <?php if ($company_logo_id): ?>
@@ -352,7 +352,7 @@ class JobsList
                 <?php if ($is_filled): ?>
                     <span class="job-filled-badge">
                         <span class="dashicons dashicons-yes"></span>
-                        <?php esc_html_e('Filled', 'hiretalent'); ?>
+                        <?php esc_html_e('Filled', 'talentora'); ?>
                     </span>
                 <?php endif; ?>
             </div>
@@ -377,7 +377,7 @@ class JobsList
                         <span class="job-meta-item">
                             <span class="dashicons dashicons-money-alt"></span>
                             <?php
-                            $currency = get_option('hiretalent_currency_symbol', '$');
+                            $currency = get_option('talentora_currency_symbol', '$');
                             if ($salary_min && $salary_max) {
                                 echo esc_html($currency . number_format($salary_min) . ' - ' . $currency . number_format($salary_max));
                             } elseif ($salary_min) {
@@ -393,7 +393,7 @@ class JobsList
                     <?php if ($deadline): ?>
                         <span class="job-meta-item">
                             <span class="dashicons dashicons-calendar-alt"></span>
-                            <?php esc_html_e('Deadline:', 'hiretalent'); ?>
+                            <?php esc_html_e('Deadline:', 'talentora'); ?>
                             <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($deadline))); ?>
                         </span>
                     <?php endif; ?>
@@ -408,8 +408,8 @@ class JobsList
             </div>
 
             <div class="job-card-footer">
-                <a href="<?php echo esc_url(get_permalink($job_id)); ?>" class="hiretalent-btn hiretalent-btn-primary">
-                    <?php esc_html_e('View Details', 'hiretalent'); ?>
+                <a href="<?php echo esc_url(get_permalink($job_id)); ?>" class="talentora-btn talentora-btn-primary">
+                    <?php esc_html_e('View Details', 'talentora'); ?>
                     <span class="dashicons dashicons-arrow-right-alt2"></span>
                 </a>
             </div>

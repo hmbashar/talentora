@@ -1,4 +1,4 @@
-# HireTalent – Simple & Powerful Job Board Plugin
+# Talentora – Simple & Powerful Job Board Plugin
 
 A clean, modern WordPress job board plugin that helps you manage job listings with ease. Built with OOP architecture and WordPress best practices.
 
@@ -16,10 +16,10 @@ A clean, modern WordPress job board plugin that helps you manage job listings wi
 
 ## Installation
 
-1. Upload the `hiretalent` folder to `/wp-content/plugins/`
+1. Upload the `talentora` folder to `/wp-content/plugins/`
 2. Run `composer install` in the plugin directory to generate autoloader
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Visit **HireTalent > Settings** to configure the plugin
+4. Visit **Talentora > Settings** to configure the plugin
 
 ## Requirements
 
@@ -31,7 +31,7 @@ A clean, modern WordPress job board plugin that helps you manage job listings wi
 
 ### 1. Create Your First Job
 
-1. Go to **HireTalent > Add New** in your WordPress admin
+1. Go to **Talentora > Add New** in your WordPress admin
 2. Fill in the job title and description
 3. Complete the **Job Details** metabox with:
    - Location
@@ -44,14 +44,14 @@ A clean, modern WordPress job board plugin that helps you manage job listings wi
 
 ### 2. Configure Settings
 
-Go to **HireTalent > Settings** and configure:
+Go to **Talentora > Settings** and configure:
 
 - **Apply Form Shortcode**: Enter your contact form shortcode (e.g., `[contact-form-7 id="123"]`)
 - **Jobs Per Page**: Set how many jobs to display per page (default: 10)
 
 ### 3. Display Jobs on Your Site
 
-Use the `[hiretalent_jobs]` shortcode on any page or post to display the job listing with filters.
+Use the `[talentora_jobs]` shortcode on any page or post to display the job listing with filters.
 
 ## Shortcodes
 
@@ -60,7 +60,7 @@ Use the `[hiretalent_jobs]` shortcode on any page or post to display the job lis
 Display a filterable list of jobs:
 
 ```
-[hiretalent_jobs]
+[talentora_jobs]
 ```
 
 **Attributes:**
@@ -68,7 +68,7 @@ Display a filterable list of jobs:
 
 **Example:**
 ```
-[hiretalent_jobs posts_per_page="20"]
+[talentora_jobs posts_per_page="20"]
 ```
 
 ### Apply Form Shortcode
@@ -76,7 +76,7 @@ Display a filterable list of jobs:
 Display the application form (usually used in templates):
 
 ```
-[hiretalent_apply_form]
+[talentora_apply_form]
 ```
 
 **Attributes:**
@@ -84,7 +84,7 @@ Display the application form (usually used in templates):
 
 **Example:**
 ```
-[hiretalent_apply_form form_shortcode="[contact-form-7 id='456']"]
+[talentora_apply_form form_shortcode="[contact-form-7 id='456']"]
 ```
 
 ## Permalinks
@@ -100,13 +100,13 @@ If permalinks don't work, go to **Settings > Permalinks** and click "Save Change
 
 You can override plugin templates by copying them to your theme:
 
-1. Create a folder: `your-theme/hiretalent/`
-2. Copy template files from `plugins/hiretalent/templates/` to your theme folder
+1. Create a folder: `your-theme/talentora/`
+2. Copy template files from `plugins/talentora/templates/` to your theme folder
 3. Customize as needed
 
 **Available Templates:**
-- `single-hiretalent_job.php` - Single job page
-- `archive-hiretalent_job.php` - Job archive page
+- `single-talentora_job.php` - Single job page
+- `archive-talentora_job.php` - Job archive page
 
 ## Developer Hooks
 
@@ -114,7 +114,7 @@ You can override plugin templates by copying them to your theme:
 
 **Modify job query arguments:**
 ```php
-add_filter('hiretalent_jobs_query_args', function($args) {
+add_filter('talentora_jobs_query_args', function($args) {
     // Modify $args
     return $args;
 });
@@ -122,7 +122,7 @@ add_filter('hiretalent_jobs_query_args', function($args) {
 
 **Modify apply form shortcode:**
 ```php
-add_filter('hiretalent_apply_form_shortcode', function($shortcode, $job_id) {
+add_filter('talentora_apply_form_shortcode', function($shortcode, $job_id) {
     // Modify $shortcode based on job
     return $shortcode;
 }, 10, 2);
@@ -132,36 +132,36 @@ add_filter('hiretalent_apply_form_shortcode', function($shortcode, $job_id) {
 
 **Before job list:**
 ```php
-add_action('hiretalent_before_job_list', function() {
+add_action('talentora_before_job_list', function() {
     echo '<div class="custom-content">Custom content before jobs</div>';
 });
 ```
 
 **After job list:**
 ```php
-add_action('hiretalent_after_job_list', function() {
+add_action('talentora_after_job_list', function() {
     echo '<div class="custom-content">Custom content after jobs</div>';
 });
 ```
 
 ## Job Meta Fields
 
-All job meta fields use the `hiretalent_` prefix:
+All job meta fields use the `talentora_` prefix:
 
-- `hiretalent_location` - Job location (text)
-- `hiretalent_salary_min` - Minimum salary (number)
-- `hiretalent_salary_max` - Maximum salary (number)
-- `hiretalent_deadline` - Application deadline (date)
-- `hiretalent_company_name` - Company name (text)
-- `hiretalent_company_website` - Company website (URL)
-- `hiretalent_company_logo_id` - Company logo attachment ID (number)
-- `hiretalent_is_filled` - Job filled status (boolean: '1' or '0')
-- `hiretalent_expiry_date` - Job expiry date (date, optional)
+- `talentora_location` - Job location (text)
+- `talentora_salary_min` - Minimum salary (number)
+- `talentora_salary_max` - Maximum salary (number)
+- `talentora_deadline` - Application deadline (date)
+- `talentora_company_name` - Company name (text)
+- `talentora_company_website` - Company website (URL)
+- `talentora_company_logo_id` - Company logo attachment ID (number)
+- `talentora_is_filled` - Job filled status (boolean: '1' or '0')
+- `talentora_expiry_date` - Job expiry date (date, optional)
 
 **Example - Get job meta:**
 ```php
-$location = get_post_meta($job_id, 'hiretalent_location', true);
-$company = get_post_meta($job_id, 'hiretalent_company_name', true);
+$location = get_post_meta($job_id, 'talentora_location', true);
+$company = get_post_meta($job_id, 'talentora_company_name', true);
 ```
 
 ## Styling
@@ -176,12 +176,12 @@ You can override styles in your theme's CSS file.
 ## Taxonomies
 
 ### Job Categories
-- Taxonomy: `hiretalent_job_category`
+- Taxonomy: `talentora_job_category`
 - Hierarchical: Yes
 - Slug: `job-category`
 
 ### Job Types
-- Taxonomy: `hiretalent_job_type`
+- Taxonomy: `talentora_job_type`
 - Hierarchical: Yes
 - Slug: `job-type`
 
@@ -191,7 +191,7 @@ You can override styles in your theme's CSS file.
 Go to **Settings > Permalinks** and click "Save Changes" to flush rewrite rules.
 
 ### Apply form not showing
-1. Make sure you've configured the apply form shortcode in **HireTalent > Settings**
+1. Make sure you've configured the apply form shortcode in **Talentora > Settings**
 2. Verify your contact form plugin is active and the shortcode is correct
 3. Check that the job is not marked as "filled"
 
@@ -201,7 +201,7 @@ Clear your cache (browser cache and any caching plugins).
 ## Support
 
 For issues, feature requests, or contributions:
-- GitHub: https://github.com/hmbashar/hiretalent
+- GitHub: https://github.com/hmbashar/talentora
 - Author: Md Abul Bashar
 
 ## Changelog

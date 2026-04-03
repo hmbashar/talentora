@@ -7,29 +7,29 @@ namespace Composer\Autoload;
 class ComposerStaticInitb62457c9982ca69551af49147d1c16b9
 {
     public static $prefixLengthsPsr4 = array (
-        'H' =>
+        'T' =>
         array (
-            'HireTalent\\Modules\\' => 19,
-            'HireTalent\\Frontend\\' => 20,
-            'HireTalent\\Admin\\' => 17,
-            'HireTalent\\' => 11,
+            'Talentora\\Modules\\' => 18,
+            'Talentora\\Frontend\\' => 19,
+            'Talentora\\Admin\\' => 16,
+            'Talentora\\' => 10,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'HireTalent\\Modules\\' =>
+        'Talentora\\Modules\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Modules',
         ),
-        'HireTalent\\Frontend\\' =>
+        'Talentora\\Frontend\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Frontend',
         ),
-        'HireTalent\\Admin\\' =>
+        'Talentora\\Admin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Admin',
         ),
-        'HireTalent\\' =>
+        'Talentora\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Inc',
         ),

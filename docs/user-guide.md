@@ -1,6 +1,6 @@
-# HireTalent – User Guide
+# Talentora – User Guide
 
-Welcome to **HireTalent**, the simple and powerful job board plugin for WordPress. This guide will help you get up and running quickly.
+Welcome to **Talentora**, the simple and powerful job board plugin for WordPress. This guide will help you get up and running quickly.
 
 ---
 
@@ -23,7 +23,7 @@ Welcome to **HireTalent**, the simple and powerful job board plugin for WordPres
 ### Option A: Install from WordPress.org
 
 1. In your WordPress admin, go to **Plugins → Add New**.
-2. Search for **HireTalent**.
+2. Search for **Talentora**.
 3. Click **Install Now** and then **Activate**.
 
 ### Option B: Manual Installation
@@ -39,7 +39,7 @@ Welcome to **HireTalent**, the simple and powerful job board plugin for WordPres
 
 ## Getting Started
 
-After activating the plugin, a new **HireTalent** menu item will appear in your WordPress admin sidebar. From there you can:
+After activating the plugin, a new **Talentora** menu item will appear in your WordPress admin sidebar. From there you can:
 
 - **Jobs** – View, add, edit, and delete job listings.
 - **Job Categories** – Manage categories like "Engineering", "Marketing", etc.
@@ -50,7 +50,7 @@ After activating the plugin, a new **HireTalent** menu item will appear in your 
 
 ## Creating a Job Listing
 
-1. Go to **HireTalent → Add New**.
+1. Go to **Talentora → Add New**.
 2. Enter the **Job Title** and write the full **Job Description** in the editor.
 3. Fill out the **Job Details** metabox on the right:
 
@@ -75,13 +75,13 @@ After activating the plugin, a new **HireTalent** menu item will appear in your 
 
 ### Job Categories
 
-- Go to **HireTalent → Job Categories**.
+- Go to **Talentora → Job Categories**.
 - Add categories like "Engineering", "Design", "Sales", etc.
 - These are hierarchical (parent/child supported).
 
 ### Job Types
 
-- Go to **HireTalent → Job Types**.
+- Go to **Talentora → Job Types**.
 - Add types like "Full-Time", "Part-Time", "Freelance", "Remote".
 - These are also hierarchical.
 
@@ -89,7 +89,7 @@ After activating the plugin, a new **HireTalent** menu item will appear in your 
 
 ## Plugin Settings
 
-Navigate to **HireTalent → Settings** to configure:
+Navigate to **Talentora → Settings** to configure:
 
 | Setting                  | Description                                                   |
 |--------------------------|---------------------------------------------------------------|
@@ -106,7 +106,7 @@ Navigate to **HireTalent → Settings** to configure:
 Paste the following shortcode on any Page or Post to show the filterable job board:
 
 ```
-[hiretalent_jobs]
+[talentora_jobs]
 ```
 
 **Optional attributes:**
@@ -117,7 +117,7 @@ Paste the following shortcode on any Page or Post to show the filterable job boa
 
 **Example:**
 ```
-[hiretalent_jobs posts_per_page="15"]
+[talentora_jobs posts_per_page="15"]
 ```
 
 ### Apply Form Shortcode
@@ -125,7 +125,7 @@ Paste the following shortcode on any Page or Post to show the filterable job boa
 The apply form is automatically embedded on the single job page template. You can also place it manually:
 
 ```
-[hiretalent_apply_form]
+[talentora_apply_form]
 ```
 
 **Optional attributes:**
@@ -140,10 +140,10 @@ The apply form is automatically embedded on the single job page template. You ca
 
 You can customize how job pages look without editing plugin files:
 
-1. Create a folder in your active theme: `your-theme/hiretalent/`
+1. Create a folder in your active theme: `your-theme/talentora/`
 2. Copy the template file(s) you want to override from:
    ```
-   wp-content/plugins/hiretalent/templates/
+   wp-content/plugins/talentora/templates/
    ```
    into your theme folder.
 3. Modify the copied files as needed.
@@ -152,8 +152,8 @@ You can customize how job pages look without editing plugin files:
 
 | Template File                  | Used For                  |
 |--------------------------------|---------------------------|
-| `single-hiretalent_job.php`    | Single job detail page    |
-| `archive-hiretalent_job.php`   | All jobs archive page     |
+| `single-talentora_job.php`    | Single job detail page    |
+| `archive-talentora_job.php`   | All jobs archive page     |
 
 ---
 
@@ -163,7 +163,7 @@ You can customize how job pages look without editing plugin files:
 Go to **Settings → Permalinks** and click **Save Changes**. This flushes WordPress rewrite rules.
 
 ### The apply form is not showing
-1. Make sure the apply form shortcode is configured in **HireTalent → Settings**.
+1. Make sure the apply form shortcode is configured in **Talentora → Settings**.
 2. Confirm your form plugin (e.g., Contact Form 7) is active and the shortcode is valid.
 3. Check that the job is not marked as "filled".
 
@@ -175,7 +175,7 @@ Clear your browser cache and any caching plugin (e.g., WP Rocket, W3 Total Cache
 ## FAQ
 
 **Q: Can I display jobs in multiple places on my site?**  
-A: Yes! Just add `[hiretalent_jobs]` to any page or post.
+A: Yes! Just add `[talentora_jobs]` to any page or post.
 
 **Q: Can I use my own apply form?**  
 A: Yes. Any shortcode-based form plugin (Contact Form 7, WPForms, Gravity Forms, etc.) works. Paste the shortcode in **Settings → Apply Form Shortcode**.
@@ -188,4 +188,4 @@ A: Not if you use the Template Override method described above. Never edit plugi
 
 ---
 
-*For further help, visit the [GitHub repository](https://github.com/hmbashar/hiretalent) or the plugin's WordPress.org support forum.*
+*For further help, visit the [GitHub repository](https://github.com/hmbashar/talentora) or the plugin's WordPress.org support forum.*

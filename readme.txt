@@ -1,4 +1,4 @@
-=== HireTalent – Simple & Powerful Job Board ===
+=== Talentora – Simple & Powerful Job Board ===
 
 Contributors: hmbashar
 Tags: job board, job listing, recruitment, employment, careers
@@ -13,14 +13,14 @@ A simple yet powerful job board plugin for WordPress. Post jobs, manage applicat
 
 == Description ==
 
-**HireTalent** is a lightweight, developer-friendly job board plugin that makes it easy to add a professional career page to any WordPress site. Whether you run a small business or a large recruiting platform, HireTalent gives you all the tools you need to post jobs, categorize them, and let candidates apply — all without leaving WordPress.
+**Talentora** is a lightweight, developer-friendly job board plugin that makes it easy to add a professional career page to any WordPress site. Whether you run a small business or a large recruiting platform, Talentora gives you all the tools you need to post jobs, categorize them, and let candidates apply — all without leaving WordPress.
 
 = Key Features =
 
 * **Custom Post Type** – A dedicated `Job` post type with clean, SEO-friendly URLs (`/job/job-title/`).
 * **Job Categories & Types** – Flexible hierarchical taxonomies to organize your listings (e.g., Engineering, Remote, Full-Time).
 * **Rich Job Meta Fields** – Location, salary range, currency, application deadline, company name/logo, and more.
-* **Shortcode-Powered** – Display a filterable job board anywhere using `[hiretalent_jobs]`.
+* **Shortcode-Powered** – Display a filterable job board anywhere using `[talentora_jobs]`.
 * **Apply Form Integration** – Works with any shortcode-based form plugin (Contact Form 7, WPForms, Gravity Forms).
 * **Template Override Support** – Copy templates to your theme and customize without editing plugin files.
 * **Developer-Friendly Hooks** – Actions and filters to extend every part of the plugin.
@@ -31,36 +31,36 @@ A simple yet powerful job board plugin for WordPress. Post jobs, manage applicat
 
 Display the job listing:
 
-`[hiretalent_jobs]`
+`[talentora_jobs]`
 
 Optional attribute: `posts_per_page` — Number of jobs to show per page.
 
 Display the apply form:
 
-`[hiretalent_apply_form]`
+`[talentora_apply_form]`
 
 Optional attribute: `form_shortcode` — Override the global apply form shortcode for a specific placement.
 
 = Template Override =
 
-1. Create a folder `hiretalent/` inside your active theme directory.
-2. Copy the template file(s) from `wp-content/plugins/hiretalent/templates/` to your theme folder.
+1. Create a folder `talentora/` inside your active theme directory.
+2. Copy the template file(s) from `wp-content/plugins/talentora/templates/` to your theme folder.
 3. Customise the copied files.
 
-Available templates: `single-hiretalent_job.php`, `archive-hiretalent_job.php`.
+Available templates: `single-talentora_job.php`, `archive-talentora_job.php`.
 
 = Developer Hooks =
 
 **Filters**
 
-* `hiretalent_jobs_query_args` – Modify the WP_Query arguments for the job listing.
-* `hiretalent_apply_form_shortcode` – Modify the apply form shortcode string per job.
-* `hiretalent_currency_symbol` – Filter the currency symbol.
+* `talentora_jobs_query_args` – Modify the WP_Query arguments for the job listing.
+* `talentora_apply_form_shortcode` – Modify the apply form shortcode string per job.
+* `talentora_currency_symbol` – Filter the currency symbol.
 
 **Actions**
 
-* `hiretalent_before_job_list` – Fires before the job listing is rendered.
-* `hiretalent_after_job_list` – Fires after the job listing is rendered.
+* `talentora_before_job_list` – Fires before the job listing is rendered.
+* `talentora_after_job_list` – Fires after the job listing is rendered.
 
 = Privacy =
 
@@ -68,26 +68,26 @@ This plugin does not collect or store any personal data. It does not set any coo
 
 == Installation ==
 
-1. Upload the `hiretalent` folder to the `/wp-content/plugins/` directory.
+1. Upload the `talentora` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the **Plugins** menu in WordPress.
 3. Go to **Settings > Permalinks** and click **Save Changes** to flush rewrite rules.
-4. Visit **HireTalent > Settings** to configure your apply form shortcode and other options.
-5. Add job listings under **HireTalent > Add New**.
-6. Place the `[hiretalent_jobs]` shortcode on any page to display your job board.
+4. Visit **Talentora > Settings** to configure your apply form shortcode and other options.
+5. Add job listings under **Talentora > Add New**.
+6. Place the `[talentora_jobs]` shortcode on any page to display your job board.
 
 == Frequently Asked Questions ==
 
-= Do I need a specific form plugin to use HireTalent? =
+= Do I need a specific form plugin to use Talentora? =
 
-No. You can use any shortcode-based form plugin such as Contact Form 7, WPForms, Gravity Forms, or others. Simply paste the form shortcode into **HireTalent > Settings > Apply Form Shortcode**.
+No. You can use any shortcode-based form plugin such as Contact Form 7, WPForms, Gravity Forms, or others. Simply paste the form shortcode into **Talentora > Settings > Apply Form Shortcode**.
 
 = How do I customise the job listing page design? =
 
-You can override the plugin templates from your theme. Create a `hiretalent/` folder in your active theme and copy templates from `wp-content/plugins/hiretalent/templates/` there. You can also add custom CSS in your theme's stylesheet.
+You can override the plugin templates from your theme. Create a `talentora/` folder in your active theme and copy templates from `wp-content/plugins/talentora/templates/` there. You can also add custom CSS in your theme's stylesheet.
 
 = Can I display the job board in multiple places? =
 
-Yes. Simply add the `[hiretalent_jobs]` shortcode to any page or post.
+Yes. Simply add the `[talentora_jobs]` shortcode to any page or post.
 
 = My job pages return a 404 error. How do I fix it? =
 
@@ -95,19 +95,19 @@ Go to **Settings > Permalinks** and click **Save Changes** to flush WordPress re
 
 = How do I change the currency symbol? =
 
-Go to **HireTalent > Settings** and update the **Currency Symbol** field. The symbol will be displayed alongside salary information across all job listings.
+Go to **Talentora > Settings** and update the **Currency Symbol** field. The symbol will be displayed alongside salary information across all job listings.
 
 = Can themes override plugin templates? =
 
-Yes. Copy the template file(s) to a `hiretalent/` folder in your theme. The plugin will automatically use your theme's version instead of its own.
+Yes. Copy the template file(s) to a `talentora/` folder in your theme. The plugin will automatically use your theme's version instead of its own.
 
-= Is HireTalent compatible with the latest version of WordPress? =
+= Is Talentora compatible with the latest version of WordPress? =
 
-Yes. HireTalent is tested with WordPress 6.7 and kept up to date with each WordPress release.
+Yes. Talentora is tested with WordPress 6.9 and kept up to date with each WordPress release.
 
-= Will HireTalent slow down my site? =
+= Will Talentora slow down my site? =
 
-No. HireTalent only loads its assets on pages where they are needed (job listing and single job pages). The plugin is lightweight by design.
+No. Talentora only loads its assets on pages where they are needed (job listing and single job pages). The plugin is lightweight by design.
 
 == Screenshots ==
 
@@ -121,14 +121,14 @@ No. HireTalent only loads its assets on pages where they are needed (job listing
 
 = 1.0.0 – 2025-03-01 =
 * Initial release.
-* Custom post type `hiretalent_job` with clean permalink structure.
-* Job Categories (`hiretalent_job_category`) and Job Types (`hiretalent_job_type`) taxonomies.
+* Custom post type `talentora_job` with clean permalink structure.
+* Job Categories (`talentora_job_category`) and Job Types (`talentora_job_type`) taxonomies.
 * Job details meta: location, salary range, currency symbol, deadline, company info, logo.
-* `[hiretalent_jobs]` shortcode with `posts_per_page` attribute.
-* `[hiretalent_apply_form]` shortcode with `form_shortcode` attribute.
-* Template override support for `single-hiretalent_job.php` and `archive-hiretalent_job.php`.
+* `[talentora_jobs]` shortcode with `posts_per_page` attribute.
+* `[talentora_apply_form]` shortcode with `form_shortcode` attribute.
+* Template override support for `single-talentora_job.php` and `archive-talentora_job.php`.
 * React-based admin settings page (apply form shortcode, jobs per page, currency symbol).
-* Developer hooks: `hiretalent_before_job_list`, `hiretalent_after_job_list`, `hiretalent_jobs_query_args`, `hiretalent_apply_form_shortcode`, `hiretalent_currency_symbol`.
+* Developer hooks: `talentora_before_job_list`, `talentora_after_job_list`, `talentora_jobs_query_args`, `talentora_apply_form_shortcode`, `talentora_currency_symbol`.
 * Translation-ready with `.pot` file.
 
 == Upgrade Notice ==

@@ -4,11 +4,11 @@
  *
  * Handles template loading and overrides.
  *
- * @package HireTalent\Frontend
+ * @package Talentora\Frontend
  * @since 1.0.0
  */
 
-namespace HireTalent\Frontend;
+namespace Talentora\Frontend;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -38,12 +38,12 @@ class Templates
      */
     public function load_job_templates($template)
     {
-        if (is_singular('hiretalent_job')) {
-            return $this->get_template('single-hiretalent_job.php', $template);
+        if (is_singular('talentora_job')) {
+            return $this->get_template('single-talentora_job.php', $template);
         }
 
-        if (is_post_type_archive('hiretalent_job')) {
-            return $this->get_template('archive-hiretalent_job.php', $template);
+        if (is_post_type_archive('talentora_job')) {
+            return $this->get_template('archive-talentora_job.php', $template);
         }
 
         return $template;
@@ -63,7 +63,7 @@ class Templates
     {
         // Check if template exists in theme
         $theme_template = locate_template(array(
-            'hiretalent/' . $template_name,
+            'talentora/' . $template_name,
             $template_name,
         ));
 
@@ -72,7 +72,7 @@ class Templates
         }
 
         // Use plugin template
-        $plugin_template = HIRETALENT_PATH . 'templates/' . $template_name;
+        $plugin_template = TALENTORA_PATH . 'templates/' . $template_name;
         if (file_exists($plugin_template)) {
             return $plugin_template;
         }

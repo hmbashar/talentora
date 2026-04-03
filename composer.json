@@ -1,5 +1,5 @@
 {
-    "name": "hmbashar/hiretalent",
+    "name": "hmbashar/talentora",
     "description": "Simple & Powerful Job Board Plugin for WordPress",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
@@ -12,16 +12,16 @@
     ],
     "autoload": {
         "psr-4": {
-            "HireTalent\\": "Inc/",
-            "HireTalent\\Admin\\": "Admin/",
-            "HireTalent\\Frontend\\": "Frontend/",
-            "HireTalent\\Modules\\": "Modules/"
+            "Talentora\\": "Inc/",
+            "Talentora\\Admin\\": "Admin/",
+            "Talentora\\Frontend\\": "Frontend/",
+            "Talentora\\Modules\\": "Modules/"
         }
     },
     "scripts": {
         "lint:wpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
         "lint:php": "@php ./vendor/bin/parallel-lint --exclude .git --exclude vendor .",
-        "make-pot": "wp i18n make-pot . languages/hiretalent.pot",
+        "make-pot": "wp i18n make-pot . languages/talentora.pot",
         "lint:autofix": "vendor/bin/phpcbf"
     },  
     "require": {

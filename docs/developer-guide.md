@@ -1,6 +1,6 @@
-# HireTalent – Developer Guide
+# Talentora – Developer Guide
 
-This guide covers the technical architecture, extension points, and development workflow for the **HireTalent** WordPress plugin.
+This guide covers the technical architecture, extension points, and development workflow for the **Talentora** WordPress plugin.
 
 ---
 
@@ -26,7 +26,7 @@ This guide covers the technical architecture, extension points, and development 
 ## Project Structure
 
 ```
-hiretalent/
+talentora/
 ├── Admin/                      # Admin-side classes
 │   ├── MetaBox/                # Post meta box registrations
 │   ├── Pages/                  # Admin menu pages & settings
@@ -49,11 +49,11 @@ hiretalent/
 ├── Modules/                    # Feature modules
 ├── templates/                  # Frontend template files
 │   ├── index.php               # Security guard
-│   ├── single-hiretalent_job.php
-│   └── archive-hiretalent_job.php
+│   ├── single-talentora_job.php
+│   └── archive-talentora_job.php
 ├── vendor/                     # Composer dependencies
 ├── composer.json
-├── hiretalent.php              # Plugin entry point
+├── talentora.php              # Plugin entry point
 └── index.php                   # Root security guard
 ```
 
@@ -61,17 +61,17 @@ hiretalent/
 
 ## Architecture Overview
 
-HireTalent follows a **Singleton + OOP** pattern:
+Talentora follows a **Singleton + OOP** pattern:
 
 ```
-hiretalent.php (entry point)
-    └── HireTalent (singleton)
-            ├── define_constants()     → HIRETALENT_*, etc.
+talentora.php (entry point)
+    └── Talentora (singleton)
+            ├── define_constants()     → TALENTORA_*, etc.
             ├── include_files()        → Composer autoloader
             └── init_hooks()
-                    ├── plugins_loaded → new HireTalent\Manager()
-                    ├── activation     → HireTalent\Activate::activate()
-                    └── deactivation   → HireTalent\Deactivate::deactivate()
+                    ├── plugins_loaded → new Talentora\Manager()
+                    ├── activation     → Talentora\Activate::activate()
+                    └── deactivation   → Talentora\Deactivate::deactivate()
 ```
 
 The `Manager` class is responsible for bootstrapping all sub-systems (admin, frontend, modules).
@@ -80,21 +80,21 @@ The `Manager` class is responsible for bootstrapping all sub-systems (admin, fro
 
 ## Namespace & Autoloading
 
-All classes use the `HireTalent` root namespace, following PSR-4 via Composer:
+All classes use the `Talentora` root namespace, following PSR-4 via Composer:
 
 ```json
 // composer.json (autoload section)
 "autoload": {
     "psr-4": {
-        "HireTalent\\": "./"
+        "Talentora\\": "./"
     }
 }
 ```
 
 **Examples:**
-- `HireTalent\Admin\Pages\Settings` → `Admin/Pages/Settings.php`
-- `HireTalent\Frontend\Shortcodes\JobsList` → `Frontend/Shortcodes/JobsList.php`
-- `HireTalent\Inc\Sanitizer` → `Inc/Sanitizer.php`
+- `Talentora\Admin\Pages\Settings` → `Admin/Pages/Settings.php`
+- `Talentora\Frontend\Shortcodes\JobsList` → `Frontend/Shortcodes/JobsList.php`
+- `Talentora\Inc\Sanitizer` → `Inc/Sanitizer.php`
 
 Always run `composer dump-autoload` after adding new classes.
 
@@ -102,17 +102,17 @@ Always run `composer dump-autoload` after adding new classes.
 
 ## Post Types & Taxonomies
 
-### Custom Post Type: `hiretalent_job`
+### Custom Post Type: `talentora_job`
 
 | Property      | Value                            |
 |---------------|----------------------------------|
-| Post type     | `hiretalent_job`                 |
+| Post type     | `talentora_job`                 |
 | Slug          | `job`                            |
 | Archive slug  | `jobs`                           |
 | Supports      | `title`, `editor`, `thumbnail`   |
 | Public        | `true`                           |
 
-### Taxonomy: `hiretalent_job_category`
+### Taxonomy: `talentora_job_category`
 
 | Property     | Value             |
 |--------------|-------------------|
@@ -120,7 +120,7 @@ Always run `composer dump-autoload` after adding new classes.
 | Slug         | `job-category`    |
 | Hierarchical | Yes               |
 
-### Taxonomy: `hiretalent_job_type`
+### Taxonomy: `talentora_job_type`
 
 | Property     | Value             |
 |--------------|-------------------|
@@ -132,25 +132,25 @@ Always run `composer dump-autoload` after adding new classes.
 
 ## Meta Fields Reference
 
-All meta keys use the `hiretalent_` prefix. Always use `sanitize_*` functions when saving.
+All meta keys use the `talentora_` prefix. Always use `sanitize_*` functions when saving.
 
 | Meta Key                     | Type    | Description                          |
 |------------------------------|---------|--------------------------------------|
-| `hiretalent_location`        | string  | Job location                         |
-| `hiretalent_salary_min`      | number  | Minimum salary                       |
-| `hiretalent_salary_max`      | number  | Maximum salary                       |
-| `hiretalent_deadline`        | date    | Application deadline (Y-m-d)         |
-| `hiretalent_company_name`    | string  | Company name                         |
-| `hiretalent_company_website` | URL     | Company website                      |
-| `hiretalent_company_logo_id` | int     | Attachment ID for company logo       |
-| `hiretalent_is_filled`       | bool    | '1' = filled, '0' = open            |
-| `hiretalent_expiry_date`     | date    | Optional job expiry (Y-m-d)          |
+| `talentora_location`        | string  | Job location                         |
+| `talentora_salary_min`      | number  | Minimum salary                       |
+| `talentora_salary_max`      | number  | Maximum salary                       |
+| `talentora_deadline`        | date    | Application deadline (Y-m-d)         |
+| `talentora_company_name`    | string  | Company name                         |
+| `talentora_company_website` | URL     | Company website                      |
+| `talentora_company_logo_id` | int     | Attachment ID for company logo       |
+| `talentora_is_filled`       | bool    | '1' = filled, '0' = open            |
+| `talentora_expiry_date`     | date    | Optional job expiry (Y-m-d)          |
 
 **Reading meta in templates:**
 ```php
-$location     = get_post_meta( get_the_ID(), 'hiretalent_location', true );
-$salary_min   = get_post_meta( get_the_ID(), 'hiretalent_salary_min', true );
-$company_name = get_post_meta( get_the_ID(), 'hiretalent_company_name', true );
+$location     = get_post_meta( get_the_ID(), 'talentora_location', true );
+$salary_min   = get_post_meta( get_the_ID(), 'talentora_salary_min', true );
+$company_name = get_post_meta( get_the_ID(), 'talentora_company_name', true );
 ```
 
 ---
@@ -161,14 +161,14 @@ $company_name = get_post_meta( get_the_ID(), 'hiretalent_company_name', true );
 
 | Hook                           | When it fires                          | Args     |
 |--------------------------------|----------------------------------------|----------|
-| `hiretalent_before_job_list`   | Before the job listing is rendered     | none     |
-| `hiretalent_after_job_list`    | After the job listing is rendered      | none     |
-| `hiretalent_before_single_job` | Before single job content              | `$job_id`|
-| `hiretalent_after_single_job`  | After single job content               | `$job_id`|
+| `talentora_before_job_list`   | Before the job listing is rendered     | none     |
+| `talentora_after_job_list`    | After the job listing is rendered      | none     |
+| `talentora_before_single_job` | Before single job content              | `$job_id`|
+| `talentora_after_single_job`  | After single job content               | `$job_id`|
 
 **Example – Add content before job list:**
 ```php
-add_action( 'hiretalent_before_job_list', function() {
+add_action( 'talentora_before_job_list', function() {
     echo '<div class="ht-notice">We are hiring!</div>';
 } );
 ```
@@ -177,17 +177,17 @@ add_action( 'hiretalent_before_job_list', function() {
 
 | Filter                              | Description                                  | Args                    |
 |-------------------------------------|----------------------------------------------|-------------------------|
-| `hiretalent_jobs_query_args`        | Modify the WP_Query args for job listing     | `$args` (array)         |
-| `hiretalent_apply_form_shortcode`   | Modify the apply form shortcode string       | `$shortcode`, `$job_id` |
-| `hiretalent_job_card_classes`       | Add extra CSS classes to a job card          | `$classes`, `$job_id`   |
-| `hiretalent_currency_symbol`        | Filter the currency symbol                   | `$symbol`               |
+| `talentora_jobs_query_args`        | Modify the WP_Query args for job listing     | `$args` (array)         |
+| `talentora_apply_form_shortcode`   | Modify the apply form shortcode string       | `$shortcode`, `$job_id` |
+| `talentora_job_card_classes`       | Add extra CSS classes to a job card          | `$classes`, `$job_id`   |
+| `talentora_currency_symbol`        | Filter the currency symbol                   | `$symbol`               |
 
 **Example – Filter query to show only remote jobs:**
 ```php
-add_filter( 'hiretalent_jobs_query_args', function( $args ) {
+add_filter( 'talentora_jobs_query_args', function( $args ) {
     $args['tax_query'] = [
         [
-            'taxonomy' => 'hiretalent_job_type',
+            'taxonomy' => 'talentora_job_type',
             'field'    => 'slug',
             'terms'    => 'remote',
         ],
@@ -198,7 +198,7 @@ add_filter( 'hiretalent_jobs_query_args', function( $args ) {
 
 **Example – Swap the apply form per job:**
 ```php
-add_filter( 'hiretalent_apply_form_shortcode', function( $shortcode, $job_id ) {
+add_filter( 'talentora_apply_form_shortcode', function( $shortcode, $job_id ) {
     if ( $job_id === 42 ) {
         return '[contact-form-7 id="99"]';
     }
@@ -210,7 +210,7 @@ add_filter( 'hiretalent_apply_form_shortcode', function( $shortcode, $job_id ) {
 
 ## Shortcodes
 
-### `[hiretalent_jobs]`
+### `[talentora_jobs]`
 
 Registered in `Frontend/Shortcodes/JobsList.php`.
 
@@ -218,7 +218,7 @@ Registered in `Frontend/Shortcodes/JobsList.php`.
 |-----------------|---------|--------------------------------|
 | `posts_per_page`| Setting | Number of jobs per page        |
 
-### `[hiretalent_apply_form]`
+### `[talentora_apply_form]`
 
 Registered in `Frontend/Shortcodes/ApplyForm.php` (or similar).
 
@@ -234,15 +234,15 @@ Settings are stored as individual WordPress options (not a single array).
 
 | Option Key                  | Description                     | Default |
 |-----------------------------|---------------------------------|---------|
-| `hiretalent_apply_shortcode`| Apply form shortcode string     | `''`    |
-| `hiretalent_jobs_per_page`  | Jobs per page                   | `10`    |
-| `hiretalent_currency_symbol`| Global currency symbol          | `$`     |
+| `talentora_apply_shortcode`| Apply form shortcode string     | `''`    |
+| `talentora_jobs_per_page`  | Jobs per page                   | `10`    |
+| `talentora_currency_symbol`| Global currency symbol          | `$`     |
 
 All settings are saved/retrieved via the WordPress Settings API. The settings page UI is built with React and lives under `assets/js/`.
 
 **Reading a setting in PHP:**
 ```php
-$currency = get_option( 'hiretalent_currency_symbol', '$' );
+$currency = get_option( 'talentora_currency_symbol', '$' );
 ```
 
 **Adding a new setting:**
@@ -258,9 +258,9 @@ Templates are loaded with a fallback to the theme:
 
 ```php
 // Theme override takes precedence
-$template = locate_template( 'hiretalent/single-hiretalent_job.php' );
+$template = locate_template( 'talentora/single-talentora_job.php' );
 if ( ! $template ) {
-    $template = HIRETALENT_PATH . 'templates/single-hiretalent_job.php';
+    $template = TALENTORA_PATH . 'templates/single-talentora_job.php';
 }
 load_template( $template );
 ```
@@ -278,22 +278,22 @@ Assets are enqueued in the relevant Admin/Frontend class. Use the constants for 
 
 ```php
 wp_enqueue_style(
-    'hiretalent-frontend',
-    HIRETALENT_URL . 'assets/css/frontend.css',
+    'talentora-frontend',
+    TALENTORA_URL . 'assets/css/frontend.css',
     [],
-    HIRETALENT_VERSION
+    TALENTORA_VERSION
 );
 
 wp_enqueue_script(
-    'hiretalent-frontend',
-    HIRETALENT_URL . 'assets/js/frontend.js',
+    'talentora-frontend',
+    TALENTORA_URL . 'assets/js/frontend.js',
     [ 'jquery' ],
-    HIRETALENT_VERSION,
+    TALENTORA_VERSION,
     true
 );
 ```
 
-**Asset handles always use the `hiretalent-` prefix.**
+**Asset handles always use the `talentora-` prefix.**
 
 ---
 
@@ -323,10 +323,10 @@ Follow this pattern when adding a new module:
 
 ```bash
 # Clone the repo into your WordPress plugins directory
-git clone https://github.com/hmbashar/hiretalent.git wp-content/plugins/hiretalent
+git clone https://github.com/hmbashar/talentora.git wp-content/plugins/talentora
 
 # Install PHP dependencies
-cd wp-content/plugins/hiretalent
+cd wp-content/plugins/talentora
 composer install
 
 # (Optional) Install JS dependencies and build assets
@@ -344,8 +344,8 @@ npm run dev
 - All output must be escaped (`esc_html()`, `esc_attr()`, `wp_kses_post()`, etc.).
 - All input must be sanitized before saving (`sanitize_text_field()`, `absint()`, etc.).
 - Nonces must be used for all form submissions and AJAX requests.
-- Prefix all global functions, hooks, and options with `hiretalent_`.
-- Classes must be namespaced under `HireTalent\`.
+- Prefix all global functions, hooks, and options with `talentora_`.
+- Classes must be namespaced under `Talentora\`.
 
 ---
 
@@ -353,7 +353,7 @@ npm run dev
 
 Before tagging a release:
 
-- [ ] Bump version in `hiretalent.php` (plugin header) and `define('HIRETALENT_VERSION', ...)`.
+- [ ] Bump version in `talentora.php` (plugin header) and `define('TALENTORA_VERSION', ...)`.
 - [ ] Update `readme.txt` changelog section.
 - [ ] Run `composer install --no-dev --optimize-autoloader`.
 - [ ] Run `npm run bundle` to compile production assets.

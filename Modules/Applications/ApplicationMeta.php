@@ -4,11 +4,11 @@
  *
  * Handles application meta fields and admin display.
  *
- * @package HireTalent\Modules\Applications
+ * @package Talentora\Modules\Applications
  * @since 1.0.0
  */
 
-namespace HireTalent\Modules\Applications;
+namespace Talentora\Modules\Applications;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -22,14 +22,14 @@ class ApplicationMeta
     /**
      * Notification Manager instance.
      *
-     * @var \HireTalent\NotificationManager
+     * @var \Talentora\NotificationManager
      */
     private $notification_manager;
 
     /**
      * Activity Logger instance.
      *
-     * @var \HireTalent\Inc\ActivityLogger
+     * @var \Talentora\Inc\ActivityLogger
      */
     private $activity_logger;
 
@@ -40,20 +40,20 @@ class ApplicationMeta
      */
     public function __construct()
     {
-        $this->notification_manager = new \HireTalent\NotificationManager();
-        $this->activity_logger = new \HireTalent\ActivityLogger();
+        $this->notification_manager = new \Talentora\NotificationManager();
+        $this->activity_logger = new \Talentora\ActivityLogger();
 
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
         add_action('save_post', array($this, 'save_application_meta'));
-        add_filter('manage_hiretalent_app_posts_columns', array($this, 'set_custom_columns'));
-        add_action('manage_hiretalent_app_posts_custom_column', array($this, 'custom_column_content'), 10, 2);
-        add_filter('bulk_actions-edit-hiretalent_app', array($this, 'register_bulk_actions'));
-        add_filter('handle_bulk_actions-edit-hiretalent_app', array($this, 'handle_bulk_actions'), 10, 3);
-        add_action('admin_post_hiretalent_download_resume', array($this, 'handle_resume_download'));
+        add_filter('manage_talentora_app_posts_columns', array($this, 'set_custom_columns'));
+        add_action('manage_talentora_app_posts_custom_column', array($this, 'custom_column_content'), 10, 2);
+        add_filter('bulk_actions-edit-talentora_app', array($this, 'register_bulk_actions'));
+        add_filter('handle_bulk_actions-edit-talentora_app', array($this, 'handle_bulk_actions'), 10, 3);
+        add_action('admin_post_talentora_download_resume', array($this, 'handle_resume_download'));
         add_action('manage_posts_extra_tablenav', array($this, 'render_export_button'));
-        add_action('admin_post_hiretalent_export_applications', array($this, 'handle_csv_export'));
+        add_action('admin_post_talentora_export_applications', array($this, 'handle_csv_export'));
     }
 
     /**
@@ -65,7 +65,7 @@ class ApplicationMeta
     private function get_statuses()
     {
         $default_statuses = "Pending, Reviewed, Shortlisted, Rejected, Hired";
-        $statuses_option = get_option('hiretalent_application_statuses', $default_statuses);
+        $statuses_option = get_option('talentora_application_statuses', $default_statuses);
 
         if (empty(trim($statuses_option))) {
             $statuses_option = $default_statuses;
@@ -84,19 +84,19 @@ class ApplicationMeta
     public function add_meta_boxes()
     {
         add_meta_box(
-            'hiretalent_app_details',
-            __('Application Details', 'hiretalent'),
+            'talentora_app_details',
+            __('Application Details', 'talentora'),
             array($this, 'render_details_metabox'),
-            'hiretalent_app',
+            'talentora_app',
             'normal',
             'high'
         );
 
         add_meta_box(
-            'hiretalent_activity_log',
-            __('Activity Log', 'hiretalent'),
+            'talentora_activity_log',
+            __('Activity Log', 'talentora'),
             array($this, 'render_activity_log_metabox'),
-            'hiretalent_app',
+            'talentora_app',
             'normal',
             'low'
         );
@@ -110,18 +110,18 @@ class ApplicationMeta
      */
     public function render_details_metabox($post)
     {
-        $job_id = get_post_meta($post->ID, 'hiretalent_job_id', true);
-        $name = get_post_meta($post->ID, 'hiretalent_applicant_name', true);
-        $email = get_post_meta($post->ID, 'hiretalent_applicant_email', true);
-        $phone = get_post_meta($post->ID, 'hiretalent_applicant_phone', true);
-        $cover_letter = get_post_meta($post->ID, 'hiretalent_cover_letter', true);
-        $resume_id = get_post_meta($post->ID, 'hiretalent_resume_id', true);
+        $job_id = get_post_meta($post->ID, 'talentora_job_id', true);
+        $name = get_post_meta($post->ID, 'talentora_applicant_name', true);
+        $email = get_post_meta($post->ID, 'talentora_applicant_email', true);
+        $phone = get_post_meta($post->ID, 'talentora_applicant_phone', true);
+        $cover_letter = get_post_meta($post->ID, 'talentora_cover_letter', true);
+        $resume_id = get_post_meta($post->ID, 'talentora_resume_id', true);
 
         // Get statuses
         $statuses = $this->get_statuses();
 
         // Get current status
-        $current_status = get_post_meta($post->ID, 'hiretalent_application_status', true);
+        $current_status = get_post_meta($post->ID, 'talentora_application_status', true);
         if (!$current_status) {
             $current_status = 'Pending';
         }
@@ -129,20 +129,20 @@ class ApplicationMeta
         ?>
 
 
-        <div class="hiretalent-application-details">
+        <div class="talentora-application-details">
 
             <!-- Applicant Information Section -->
-            <div class="hiretalent-section">
+            <div class="talentora-section">
                 <div class="section-header">
                     <h3><span class="dashicons dashicons-id"></span>
-                        <?php esc_html_e('Applicant Information', 'hiretalent'); ?></h3>
+                        <?php esc_html_e('Applicant Information', 'talentora'); ?></h3>
                 </div>
 
                 <div class="field-row">
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-admin-users"></span>
-                            <?php esc_html_e('Full Name', 'hiretalent'); ?>
+                            <?php esc_html_e('Full Name', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
                             <?php echo esc_html($name); ?>
@@ -152,7 +152,7 @@ class ApplicationMeta
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-email"></span>
-                            <?php esc_html_e('Email Address', 'hiretalent'); ?>
+                            <?php esc_html_e('Email Address', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
                             <a href="mailto:<?php echo esc_attr($email); ?>">
@@ -166,7 +166,7 @@ class ApplicationMeta
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-phone"></span>
-                            <?php esc_html_e('Phone Number', 'hiretalent'); ?>
+                            <?php esc_html_e('Phone Number', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
                             <?php echo esc_html($phone); ?>
@@ -176,17 +176,17 @@ class ApplicationMeta
             </div>
 
             <!-- Application Information Section -->
-            <div class="hiretalent-section">
+            <div class="talentora-section">
                 <div class="section-header">
                     <h3><span class="dashicons dashicons-portfolio"></span>
-                        <?php esc_html_e('Application Details', 'hiretalent'); ?></h3>
+                        <?php esc_html_e('Application Details', 'talentora'); ?></h3>
                 </div>
 
                 <div class="field-row">
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-awards"></span>
-                            <?php esc_html_e('Applied For', 'hiretalent'); ?>
+                            <?php esc_html_e('Applied For', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
                             <?php if ($job_id): ?>
@@ -194,7 +194,7 @@ class ApplicationMeta
                                     <?php echo esc_html(get_the_title($job_id)); ?>
                                 </a>
                             <?php else: ?>
-                                <?php esc_html_e('N/A', 'hiretalent'); ?>
+                                <?php esc_html_e('N/A', 'talentora'); ?>
                             <?php endif; ?>
                         </span>
                     </div>
@@ -202,7 +202,7 @@ class ApplicationMeta
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-calendar-alt"></span>
-                            <?php esc_html_e('Submission Date', 'hiretalent'); ?>
+                            <?php esc_html_e('Submission Date', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
                             <?php echo esc_html(get_the_date('', $post) . ' @ ' . get_the_time('', $post)); ?>
@@ -214,17 +214,17 @@ class ApplicationMeta
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-media-document"></span>
-                            <?php esc_html_e('Resume / CV', 'hiretalent'); ?>
+                            <?php esc_html_e('Resume / CV', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
                             <?php if ($resume_id): ?>
-                                <a href="<?php echo esc_url(add_query_arg(array('action' => 'hiretalent_download_resume', 'id' => $post->ID, 'nonce' => wp_create_nonce('hiretalent_download_resume_' . $post->ID)), admin_url('admin-post.php'))); ?>"
+                                <a href="<?php echo esc_url(add_query_arg(array('action' => 'talentora_download_resume', 'id' => $post->ID, 'nonce' => wp_create_nonce('talentora_download_resume_' . $post->ID)), admin_url('admin-post.php'))); ?>"
                                     class="button button-primary">
                                     <span class="dashicons dashicons-download"></span>
-                                    <?php esc_html_e('Download Resume', 'hiretalent'); ?>
+                                    <?php esc_html_e('Download Resume', 'talentora'); ?>
                                 </a>
                             <?php else: ?>
-                                <span class="description"><?php esc_html_e('No resume uploaded', 'hiretalent'); ?></span>
+                                <span class="description"><?php esc_html_e('No resume uploaded', 'talentora'); ?></span>
                             <?php endif; ?>
                         </span>
                     </div>
@@ -232,11 +232,11 @@ class ApplicationMeta
                     <div class="field-group half-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-flag"></span>
-                            <?php esc_html_e('Current Status', 'hiretalent'); ?>
+                            <?php esc_html_e('Current Status', 'talentora'); ?>
                         </span>
                         <span class="detail-value">
-                            <?php wp_nonce_field('hiretalent_save_application_status', 'hiretalent_application_status_nonce'); ?>
-                            <select name="hiretalent_application_status" class="hiretalent-select-status">
+                            <?php wp_nonce_field('talentora_save_application_status', 'talentora_application_status_nonce'); ?>
+                            <select name="talentora_application_status" class="talentora-select-status">
                                 <?php foreach ($statuses as $status): ?>
                                     <option value="<?php echo esc_attr($status); ?>" <?php selected($current_status, $status); ?>>
                                         <?php echo esc_html($status); ?>
@@ -251,7 +251,7 @@ class ApplicationMeta
                     <div class="field-group full-width">
                         <span class="detail-label">
                             <span class="dashicons dashicons-editor-quote"></span>
-                            <?php esc_html_e('Cover Letter', 'hiretalent'); ?>
+                            <?php esc_html_e('Cover Letter', 'talentora'); ?>
                         </span>
                         <div class="cover-letter-box">
                             <?php echo esc_html($cover_letter); ?>
@@ -275,12 +275,12 @@ class ApplicationMeta
     {
         $new_columns = array();
         $new_columns['cb'] = $columns['cb'];
-        $new_columns['title'] = __('Applicant', 'hiretalent');
-        $new_columns['job'] = __('Job', 'hiretalent');
-        $new_columns['email'] = __('Email', 'hiretalent');
-        $new_columns['phone'] = __('Phone', 'hiretalent');
-        $new_columns['status'] = __('Status', 'hiretalent');
-        $new_columns['date'] = __('Date', 'hiretalent');
+        $new_columns['title'] = __('Applicant', 'talentora');
+        $new_columns['job'] = __('Job', 'talentora');
+        $new_columns['email'] = __('Email', 'talentora');
+        $new_columns['phone'] = __('Phone', 'talentora');
+        $new_columns['status'] = __('Status', 'talentora');
+        $new_columns['date'] = __('Date', 'talentora');
 
         return $new_columns;
     }
@@ -296,27 +296,27 @@ class ApplicationMeta
     {
         switch ($column) {
             case 'job':
-                $job_id = get_post_meta($post_id, 'hiretalent_job_id', true);
+                $job_id = get_post_meta($post_id, 'talentora_job_id', true);
                 if ($job_id) {
                     echo '<a href="' . esc_url(get_edit_post_link($job_id)) . '">' . esc_html(get_the_title($job_id)) . '</a>';
                 } else {
-                    esc_html_e('N/A', 'hiretalent');
+                    esc_html_e('N/A', 'talentora');
                 }
                 break;
 
             case 'email':
-                $email = get_post_meta($post_id, 'hiretalent_applicant_email', true);
+                $email = get_post_meta($post_id, 'talentora_applicant_email', true);
                 echo '<a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a>';
                 break;
 
             case 'phone':
-                $phone = get_post_meta($post_id, 'hiretalent_applicant_phone', true);
+                $phone = get_post_meta($post_id, 'talentora_applicant_phone', true);
                 echo esc_html($phone);
                 break;
 
             case 'status':
-                $status = get_post_meta($post_id, 'hiretalent_application_status', true);
-                echo esc_html($status ? $status : __('Pending', 'hiretalent'));
+                $status = get_post_meta($post_id, 'talentora_application_status', true);
+                echo esc_html($status ? $status : __('Pending', 'talentora'));
                 break;
         }
     }
@@ -335,7 +335,7 @@ class ApplicationMeta
         foreach ($statuses as $status) {
             $bulk_actions['mark_status_' . sanitize_key($status)] = sprintf(
                 /* translators: %s: Application status label. */
-                esc_html__('Change status to %1$s', 'hiretalent'),
+                esc_html__('Change status to %1$s', 'talentora'),
                 $status
             );
         }
@@ -380,9 +380,9 @@ class ApplicationMeta
         }
 
         foreach ($post_ids as $post_id) {
-            $old_status = get_post_meta($post_id, 'hiretalent_application_status', true);
+            $old_status = get_post_meta($post_id, 'talentora_application_status', true);
             if ($old_status !== $new_status) {
-                update_post_meta($post_id, 'hiretalent_application_status', $new_status);
+                update_post_meta($post_id, 'talentora_application_status', $new_status);
                 $this->notification_manager->send_status_change_notification($post_id, $old_status, $new_status);
 
                 // Log activity
@@ -390,7 +390,7 @@ class ApplicationMeta
                     $post_id,
                     sprintf(
                         /* translators: 1: Old application status, 2: New application status. */
-                        esc_html__('Status changed from %1$s to %2$s via bulk action', 'hiretalent'),
+                        esc_html__('Status changed from %1$s to %2$s via bulk action', 'talentora'),
                         $old_status,
                         $new_status
                     ),
@@ -412,15 +412,15 @@ class ApplicationMeta
 	public function save_application_meta( $post_id ) {
 
 		// Check nonce.
-		if ( ! isset( $_POST['hiretalent_application_status_nonce'] ) ) {
+		if ( ! isset( $_POST['talentora_application_status_nonce'] ) ) {
 			return;
 		}
 
 		$nonce = sanitize_text_field(
-			wp_unslash( $_POST['hiretalent_application_status_nonce'] )
+			wp_unslash( $_POST['talentora_application_status_nonce'] )
 		);
 
-		if ( ! wp_verify_nonce( $nonce, 'hiretalent_save_application_status' ) ) {
+		if ( ! wp_verify_nonce( $nonce, 'talentora_save_application_status' ) ) {
 			return;
 		}
 
@@ -430,15 +430,15 @@ class ApplicationMeta
 		}
 
 		// Save status.
-		if ( isset( $_POST['hiretalent_application_status'] ) ) {
+		if ( isset( $_POST['talentora_application_status'] ) ) {
 
 			$new_status = sanitize_text_field(
-				wp_unslash( $_POST['hiretalent_application_status'] )
+				wp_unslash( $_POST['talentora_application_status'] )
 			);
 
 			$old_status = get_post_meta(
 				$post_id,
-				'hiretalent_application_status',
+				'talentora_application_status',
 				true
 			);
 
@@ -455,7 +455,7 @@ class ApplicationMeta
 					$post_id,
 					sprintf(
 						/* translators: 1: Old application status, 2: New application status. */
-						esc_html__( 'Status changed from %1$s to %2$s', 'hiretalent' ),
+						esc_html__( 'Status changed from %1$s to %2$s', 'talentora' ),
 						esc_html( $old_status ),
 						esc_html( $new_status )
 					),
@@ -464,7 +464,7 @@ class ApplicationMeta
 
 				update_post_meta(
 					$post_id,
-					'hiretalent_application_status',
+					'talentora_application_status',
 					$new_status
 				);
 			}
@@ -482,15 +482,15 @@ class ApplicationMeta
         $logs = $this->activity_logger->get_logs($post->ID);
 
         if (empty($logs)) {
-            echo '<p>' . esc_html__('No activity recorded yet.', 'hiretalent') . '</p>';
+            echo '<p>' . esc_html__('No activity recorded yet.', 'talentora') . '</p>';
             return;
         }
 
-        echo '<ul class="hiretalent-activity-log">';
+        echo '<ul class="talentora-activity-log">';
         foreach ($logs as $log) {
             $timestamp = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log['timestamp']));
             $user = get_userdata($log['user_id']);
-            $user_name = $user ? $user->display_name : __('System', 'hiretalent');
+            $user_name = $user ? $user->display_name : __('System', 'talentora');
 
             echo '<li>';
             echo '<div class="activity-meta">';
@@ -511,31 +511,31 @@ class ApplicationMeta
     public function handle_resume_download()
     {
         if (!isset($_GET['nonce'], $_GET['id'])) {
-            wp_die(esc_html__('Invalid request.', 'hiretalent'));
+            wp_die(esc_html__('Invalid request.', 'talentora'));
         }
 
         $post_id = absint(wp_unslash($_GET['id']));
 
         $nonce = sanitize_text_field(wp_unslash($_GET['nonce']));
 
-        if (!wp_verify_nonce($nonce, 'hiretalent_download_resume_' . $post_id)) {
-            wp_die(esc_html__('Security check failed.', 'hiretalent'));
+        if (!wp_verify_nonce($nonce, 'talentora_download_resume_' . $post_id)) {
+            wp_die(esc_html__('Security check failed.', 'talentora'));
         }
 
         if (!current_user_can('edit_post', $post_id)) {
-            wp_die(esc_html__('You do not have permission to access this file.', 'hiretalent'));
+            wp_die(esc_html__('You do not have permission to access this file.', 'talentora'));
         }
 
-        $resume_id = absint(get_post_meta($post_id, 'hiretalent_resume_id', true));
+        $resume_id = absint(get_post_meta($post_id, 'talentora_resume_id', true));
 
         if (!$resume_id) {
-            wp_die(esc_html__('Resume not found.', 'hiretalent'));
+            wp_die(esc_html__('Resume not found.', 'talentora'));
         }
 
         $file_path = get_attached_file($resume_id);
 
         if (empty($file_path) || !file_exists($file_path)) {
-            wp_die(esc_html__('File not found.', 'hiretalent'));
+            wp_die(esc_html__('File not found.', 'talentora'));
         }
 
         // Serve file using WP_Filesystem (avoids direct PHP filesystem calls).
@@ -551,7 +551,7 @@ class ApplicationMeta
         $file_content = $wp_filesystem->get_contents($file_path);
 
         if (false === $file_content) {
-            wp_die(esc_html__('Could not read the file.', 'hiretalent'));
+            wp_die(esc_html__('Could not read the file.', 'talentora'));
         }
 
         header('Content-Type: ' . $mime_type);
@@ -572,15 +572,15 @@ class ApplicationMeta
     {
         global $typenow;
 
-        if ('hiretalent_app' !== $typenow || 'top' !== $which) {
+        if ('talentora_app' !== $typenow || 'top' !== $which) {
             return;
         }
 
         ?>
         <div class="alignleft actions">
-            <a href="<?php echo esc_url(add_query_arg(array('action' => 'hiretalent_export_applications', 'nonce' => wp_create_nonce('hiretalent_export_applications')), admin_url('admin-post.php'))); ?>"
+            <a href="<?php echo esc_url(add_query_arg(array('action' => 'talentora_export_applications', 'nonce' => wp_create_nonce('talentora_export_applications')), admin_url('admin-post.php'))); ?>"
                 class="button button-primary">
-                <?php esc_html_e('Export CSV', 'hiretalent'); ?>
+                <?php esc_html_e('Export CSV', 'talentora'); ?>
             </a>
         </div>
         <?php
@@ -596,26 +596,26 @@ class ApplicationMeta
 			! isset( $_GET['nonce'] ) ||
 			! wp_verify_nonce(
 				sanitize_text_field( wp_unslash( $_GET['nonce'] ) ),
-				'hiretalent_export_applications'
+				'talentora_export_applications'
 			)
 		) {
-			wp_die( esc_html__( 'Security check failed.', 'hiretalent' ) );
+			wp_die( esc_html__( 'Security check failed.', 'talentora' ) );
 		}
 
 		if ( ! current_user_can( 'edit_others_posts' ) ) {
-			wp_die( esc_html__( 'You do not have permission to export applications.', 'hiretalent' ) );
+			wp_die( esc_html__( 'You do not have permission to export applications.', 'talentora' ) );
 		}
 
 		$query = new \WP_Query(
 			array(
-				'post_type'      => 'hiretalent_app',
+				'post_type'      => 'talentora_app',
 				'posts_per_page' => -1,
 				'post_status'    => 'publish',
 			)
 		);
 
 		if ( ! $query->have_posts() ) {
-			wp_die( esc_html__( 'No applications found.', 'hiretalent' ) );
+			wp_die( esc_html__( 'No applications found.', 'talentora' ) );
 		}
 
 		$filename = sprintf( 'applications-%s.csv', current_time( 'Y-m-d' ) );
@@ -631,13 +631,13 @@ class ApplicationMeta
 		fputcsv(
 			$output,
 			array(
-				esc_html__( 'ID', 'hiretalent' ),
-				esc_html__( 'Applicant Name', 'hiretalent' ),
-				esc_html__( 'Email', 'hiretalent' ),
-				esc_html__( 'Phone', 'hiretalent' ),
-				esc_html__( 'Job Title', 'hiretalent' ),
-				esc_html__( 'Status', 'hiretalent' ),
-				esc_html__( 'Date Submitted', 'hiretalent' ),
+				esc_html__( 'ID', 'talentora' ),
+				esc_html__( 'Applicant Name', 'talentora' ),
+				esc_html__( 'Email', 'talentora' ),
+				esc_html__( 'Phone', 'talentora' ),
+				esc_html__( 'Job Title', 'talentora' ),
+				esc_html__( 'Status', 'talentora' ),
+				esc_html__( 'Date Submitted', 'talentora' ),
 			)
 		);
 
@@ -645,13 +645,13 @@ class ApplicationMeta
 			$query->the_post();
 
 			$post_id = get_the_ID();
-			$job_id  = absint( get_post_meta( $post_id, 'hiretalent_job_id', true ) );
+			$job_id  = absint( get_post_meta( $post_id, 'talentora_job_id', true ) );
 
-			$job_title = $job_id ? get_the_title( $job_id ) : esc_html__( 'N/A', 'hiretalent' );
+			$job_title = $job_id ? get_the_title( $job_id ) : esc_html__( 'N/A', 'talentora' );
 
-			$status = get_post_meta( $post_id, 'hiretalent_application_status', true );
+			$status = get_post_meta( $post_id, 'talentora_application_status', true );
 			if ( empty( $status ) ) {
-				$status = esc_html__( 'Pending', 'hiretalent' );
+				$status = esc_html__( 'Pending', 'talentora' );
 			}
 
 			// Use WP datetime and WP formatting (site timezone).
@@ -662,9 +662,9 @@ class ApplicationMeta
 				$output,
 				array(
 					$post_id,
-					(string) get_post_meta( $post_id, 'hiretalent_applicant_name', true ),
-					(string) get_post_meta( $post_id, 'hiretalent_applicant_email', true ),
-					(string) get_post_meta( $post_id, 'hiretalent_applicant_phone', true ),
+					(string) get_post_meta( $post_id, 'talentora_applicant_name', true ),
+					(string) get_post_meta( $post_id, 'talentora_applicant_email', true ),
+					(string) get_post_meta( $post_id, 'talentora_applicant_phone', true ),
 					(string) $job_title,
 					(string) $status,
 					(string) $submitted,
