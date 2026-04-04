@@ -49,8 +49,29 @@ class JobsList
             wp_send_json_error(esc_html__('Invalid nonce', 'talentora'));
         }
 
-        $params = $_POST;
-        $query = $this->get_jobs_query($params);
+        // Extract and sanitize only the specific keys needed by get_jobs_query().
+        // Never assign the entire $_POST stack to a variable.
+        $params = array(
+            'posts_per_page' => isset( $_POST['posts_per_page'] )
+                ? absint( $_POST['posts_per_page'] )
+                : absint( get_option( 'talentora_jobs_per_page', 10 ) ),
+            'paged'          => isset( $_POST['paged'] )
+                ? absint( $_POST['paged'] )
+                : 1,
+            'job_keyword'    => isset( $_POST['job_keyword'] )
+                ? sanitize_text_field( wp_unslash( $_POST['job_keyword'] ) )
+                : '',
+            'job_category'   => isset( $_POST['job_category'] )
+                ? absint( $_POST['job_category'] )
+                : 0,
+            'job_type'       => isset( $_POST['job_type'] )
+                ? absint( $_POST['job_type'] )
+                : 0,
+            'job_location'   => isset( $_POST['job_location'] )
+                ? sanitize_text_field( wp_unslash( $_POST['job_location'] ) )
+                : '',
+        );
+        $query = $this->get_jobs_query( $params );
 
         ob_start();
         if ($query->have_posts()) {

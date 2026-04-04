@@ -62,22 +62,47 @@ class ApplicationHandler
      */
     public function handle_application_submission()
     {
-        if (!isset($_POST['talentora_submit_application']) || !isset($_POST['talentora_application_nonce'])) {
+        if ( ! isset( $_POST['talentora_submit_application'] ) || ! isset( $_POST['talentora_application_nonce'] ) ) {
             return;
         }
-		
-		// Unsplash + sanitize first.
-		$nonce = sanitize_text_field(
-			wp_unslash( $_POST['talentora_application_nonce'] )
-		);
 
-		// Verify nonce.
-		if ( ! wp_verify_nonce( $nonce, 'talentora_submit_application' ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'talentora' ) );
-		}
+        // Unslash + sanitize nonce first.
+        $nonce = sanitize_text_field( wp_unslash( $_POST['talentora_application_nonce'] ) );
 
-        $result = $this->process_application_submission($_POST, $_FILES);
-        $job_id = isset($_POST['job_id']) ? absint($_POST['job_id']) : 0;
+        // Verify nonce.
+        if ( ! wp_verify_nonce( $nonce, 'talentora_submit_application' ) ) {
+            wp_die( esc_html__( 'Security check failed.', 'talentora' ) );
+        }
+
+        // Extract and sanitize only the specific fields this plugin needs.
+        // Never pass the entire $_POST stack to avoid processing unnecessary data.
+        $job_id = isset( $_POST['job_id'] ) ? absint( $_POST['job_id'] ) : 0;
+
+        $input = array(
+            'job_id'           => $job_id,
+            'talentora_website' => isset( $_POST['talentora_website'] )
+                ? sanitize_text_field( wp_unslash( $_POST['talentora_website'] ) )
+                : '',
+            'applicant_name'   => isset( $_POST['applicant_name'] )
+                ? sanitize_text_field( wp_unslash( $_POST['applicant_name'] ) )
+                : '',
+            'applicant_email'  => isset( $_POST['applicant_email'] )
+                ? sanitize_email( wp_unslash( $_POST['applicant_email'] ) )
+                : '',
+            'applicant_phone'  => isset( $_POST['applicant_phone'] )
+                ? sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ) )
+                : '',
+            'cover_letter'     => isset( $_POST['cover_letter'] )
+                ? sanitize_textarea_field( wp_unslash( $_POST['cover_letter'] ) )
+                : '',
+        );
+
+        // Extract only the resume file entry from $_FILES.
+        $files = array(
+            'resume' => isset( $_FILES['resume'] ) ? $_FILES['resume'] : array(),
+        );
+
+        $result = $this->process_application_submission( $input, $files );
 
         if ($result['success']) {
             set_transient('talentora_application_success_' . $job_id, true, 60);
@@ -117,9 +142,35 @@ class ApplicationHandler
      */
     public function handle_ajax_application_submission()
     {
-        check_ajax_referer('talentora_submit_application', 'talentora_application_nonce');
+        check_ajax_referer( 'talentora_submit_application', 'talentora_application_nonce' );
 
-        $result = $this->process_application_submission($_POST, $_FILES);
+        // Extract and sanitize only the specific fields this plugin needs.
+        // Never pass the entire $_POST stack to avoid processing unnecessary data.
+        $input = array(
+            'job_id'           => isset( $_POST['job_id'] ) ? absint( $_POST['job_id'] ) : 0,
+            'talentora_website' => isset( $_POST['talentora_website'] )
+                ? sanitize_text_field( wp_unslash( $_POST['talentora_website'] ) )
+                : '',
+            'applicant_name'   => isset( $_POST['applicant_name'] )
+                ? sanitize_text_field( wp_unslash( $_POST['applicant_name'] ) )
+                : '',
+            'applicant_email'  => isset( $_POST['applicant_email'] )
+                ? sanitize_email( wp_unslash( $_POST['applicant_email'] ) )
+                : '',
+            'applicant_phone'  => isset( $_POST['applicant_phone'] )
+                ? sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ) )
+                : '',
+            'cover_letter'     => isset( $_POST['cover_letter'] )
+                ? sanitize_textarea_field( wp_unslash( $_POST['cover_letter'] ) )
+                : '',
+        );
+
+        // Extract only the resume file entry from $_FILES.
+        $files = array(
+            'resume' => isset( $_FILES['resume'] ) ? $_FILES['resume'] : array(),
+        );
+
+        $result = $this->process_application_submission( $input, $files );
 
         if ($result['success']) {
             wp_send_json_success(array('message' => $result['message']));
