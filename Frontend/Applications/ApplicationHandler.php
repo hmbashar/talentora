@@ -62,47 +62,55 @@ class ApplicationHandler
      */
     public function handle_application_submission()
     {
-        if ( ! isset( $_POST['talentora_submit_application'] ) || ! isset( $_POST['talentora_application_nonce'] ) ) {
+        if (!isset($_POST['talentora_submit_application']) || !isset($_POST['talentora_application_nonce'])) {
             return;
         }
 
         // Unslash + sanitize nonce first.
-        $nonce = sanitize_text_field( wp_unslash( $_POST['talentora_application_nonce'] ) );
+        $nonce = sanitize_text_field(wp_unslash($_POST['talentora_application_nonce']));
 
         // Verify nonce.
-        if ( ! wp_verify_nonce( $nonce, 'talentora_submit_application' ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'talentora' ) );
+        if (!wp_verify_nonce($nonce, 'talentora_submit_application')) {
+            wp_die(esc_html__('Security check failed.', 'talentora'));
         }
 
         // Extract and sanitize only the specific fields this plugin needs.
         // Never pass the entire $_POST stack to avoid processing unnecessary data.
-        $job_id = isset( $_POST['job_id'] ) ? absint( $_POST['job_id'] ) : 0;
+        $job_id = isset($_POST['job_id']) ? absint($_POST['job_id']) : 0;
 
         $input = array(
-            'job_id'           => $job_id,
-            'talentora_website' => isset( $_POST['talentora_website'] )
-                ? sanitize_text_field( wp_unslash( $_POST['talentora_website'] ) )
+            'job_id' => $job_id,
+            'talentora_website' => isset($_POST['talentora_website'])
+                ? sanitize_text_field(wp_unslash($_POST['talentora_website']))
                 : '',
-            'applicant_name'   => isset( $_POST['applicant_name'] )
-                ? sanitize_text_field( wp_unslash( $_POST['applicant_name'] ) )
+            'applicant_name' => isset($_POST['applicant_name'])
+                ? sanitize_text_field(wp_unslash($_POST['applicant_name']))
                 : '',
-            'applicant_email'  => isset( $_POST['applicant_email'] )
-                ? sanitize_email( wp_unslash( $_POST['applicant_email'] ) )
+            'applicant_email' => isset($_POST['applicant_email'])
+                ? sanitize_email(wp_unslash($_POST['applicant_email']))
                 : '',
-            'applicant_phone'  => isset( $_POST['applicant_phone'] )
-                ? sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ) )
+            'applicant_phone' => isset($_POST['applicant_phone'])
+                ? sanitize_text_field(wp_unslash($_POST['applicant_phone']))
                 : '',
-            'cover_letter'     => isset( $_POST['cover_letter'] )
-                ? sanitize_textarea_field( wp_unslash( $_POST['cover_letter'] ) )
+            'cover_letter' => isset($_POST['cover_letter'])
+                ? sanitize_textarea_field(wp_unslash($_POST['cover_letter']))
                 : '',
         );
 
         // Extract only the resume file entry from $_FILES.
-        $files = array(
-            'resume' => isset( $_FILES['resume'] ) ? $_FILES['resume'] : array(),
-        );
+        $resume_file = array();
 
-        $result = $this->process_application_submission( $input, $files );
+        if (isset($_FILES['resume']) && is_array($_FILES['resume'])) {
+            $resume_file = array(
+                'name' => isset($_FILES['resume']['name']) ? sanitize_file_name(wp_unslash($_FILES['resume']['name'])) : '',
+                'type' => isset($_FILES['resume']['type']) ? sanitize_mime_type(wp_unslash($_FILES['resume']['type'])) : '',
+                'tmp_name' => isset($_FILES['resume']['tmp_name']) ? sanitize_text_field(wp_unslash($_FILES['resume']['tmp_name'])) : '',
+                'error' => isset($_FILES['resume']['error']) ? absint($_FILES['resume']['error']) : UPLOAD_ERR_NO_FILE,
+                'size' => isset($_FILES['resume']['size']) ? absint($_FILES['resume']['size']) : 0,
+            );
+        }
+
+        $result = $this->process_application_submission($input, $resume_file);
 
         if ($result['success']) {
             set_transient('talentora_application_success_' . $job_id, true, 60);
@@ -115,20 +123,20 @@ class ApplicationHandler
                 // Only store the specific fields needed to repopulate the form,
                 // each sanitized with the most appropriate function for its type.
                 $sanitized_data = array(
-                    'applicant_name'  => isset( $_POST['applicant_name'] )
-                        ? sanitize_text_field( wp_unslash( $_POST['applicant_name'] ) )
+                    'applicant_name' => isset($_POST['applicant_name'])
+                        ? sanitize_text_field(wp_unslash($_POST['applicant_name']))
                         : '',
-                    'applicant_email' => isset( $_POST['applicant_email'] )
-                        ? sanitize_email( wp_unslash( $_POST['applicant_email'] ) )
+                    'applicant_email' => isset($_POST['applicant_email'])
+                        ? sanitize_email(wp_unslash($_POST['applicant_email']))
                         : '',
-                    'applicant_phone' => isset( $_POST['applicant_phone'] )
-                        ? sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ) )
+                    'applicant_phone' => isset($_POST['applicant_phone'])
+                        ? sanitize_text_field(wp_unslash($_POST['applicant_phone']))
                         : '',
-                    'cover_letter'    => isset( $_POST['cover_letter'] )
-                        ? sanitize_textarea_field( wp_unslash( $_POST['cover_letter'] ) )
+                    'cover_letter' => isset($_POST['cover_letter'])
+                        ? sanitize_textarea_field(wp_unslash($_POST['cover_letter']))
                         : '',
                 );
-                set_transient( 'talentora_application_data_' . $job_id, $sanitized_data, 60 );
+                set_transient('talentora_application_data_' . $job_id, $sanitized_data, 60);
             }
             wp_safe_redirect(get_permalink($job_id) . '#application-form');
             exit;
@@ -142,35 +150,43 @@ class ApplicationHandler
      */
     public function handle_ajax_application_submission()
     {
-        check_ajax_referer( 'talentora_submit_application', 'talentora_application_nonce' );
+        check_ajax_referer('talentora_submit_application', 'talentora_application_nonce');
 
         // Extract and sanitize only the specific fields this plugin needs.
         // Never pass the entire $_POST stack to avoid processing unnecessary data.
         $input = array(
-            'job_id'           => isset( $_POST['job_id'] ) ? absint( $_POST['job_id'] ) : 0,
-            'talentora_website' => isset( $_POST['talentora_website'] )
-                ? sanitize_text_field( wp_unslash( $_POST['talentora_website'] ) )
+            'job_id' => isset($_POST['job_id']) ? absint($_POST['job_id']) : 0,
+            'talentora_website' => isset($_POST['talentora_website'])
+                ? sanitize_text_field(wp_unslash($_POST['talentora_website']))
                 : '',
-            'applicant_name'   => isset( $_POST['applicant_name'] )
-                ? sanitize_text_field( wp_unslash( $_POST['applicant_name'] ) )
+            'applicant_name' => isset($_POST['applicant_name'])
+                ? sanitize_text_field(wp_unslash($_POST['applicant_name']))
                 : '',
-            'applicant_email'  => isset( $_POST['applicant_email'] )
-                ? sanitize_email( wp_unslash( $_POST['applicant_email'] ) )
+            'applicant_email' => isset($_POST['applicant_email'])
+                ? sanitize_email(wp_unslash($_POST['applicant_email']))
                 : '',
-            'applicant_phone'  => isset( $_POST['applicant_phone'] )
-                ? sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ) )
+            'applicant_phone' => isset($_POST['applicant_phone'])
+                ? sanitize_text_field(wp_unslash($_POST['applicant_phone']))
                 : '',
-            'cover_letter'     => isset( $_POST['cover_letter'] )
-                ? sanitize_textarea_field( wp_unslash( $_POST['cover_letter'] ) )
+            'cover_letter' => isset($_POST['cover_letter'])
+                ? sanitize_textarea_field(wp_unslash($_POST['cover_letter']))
                 : '',
         );
 
         // Extract only the resume file entry from $_FILES.
-        $files = array(
-            'resume' => isset( $_FILES['resume'] ) ? $_FILES['resume'] : array(),
-        );
+        $resume_file = array();
 
-        $result = $this->process_application_submission( $input, $files );
+        if (isset($_FILES['resume']) && is_array($_FILES['resume'])) {
+            $resume_file = array(
+                'name' => isset($_FILES['resume']['name']) ? sanitize_file_name(wp_unslash($_FILES['resume']['name'])) : '',
+                'type' => isset($_FILES['resume']['type']) ? sanitize_mime_type(wp_unslash($_FILES['resume']['type'])) : '',
+                'tmp_name' => isset($_FILES['resume']['tmp_name']) ? sanitize_text_field(wp_unslash($_FILES['resume']['tmp_name'])) : '',
+                'error' => isset($_FILES['resume']['error']) ? absint($_FILES['resume']['error']) : UPLOAD_ERR_NO_FILE,
+                'size' => isset($_FILES['resume']['size']) ? absint($_FILES['resume']['size']) : 0,
+            );
+        }
+
+        $result = $this->process_application_submission($input, $resume_file);
 
         if ($result['success']) {
             wp_send_json_success(array('message' => $result['message']));
@@ -197,8 +213,8 @@ class ApplicationHandler
         if (!$job_id || get_post_type($job_id) !== 'talentora_job') {
             return array(
                 'success' => false,
-                'message' => __('Invalid job ID.', 'talentora'),
-                'errors' => array(__('Invalid job ID.', 'talentora'))
+                'message' => esc_html__('Invalid job ID.', 'talentora'),
+                'errors' => array(esc_html__('Invalid job ID.', 'talentora'))
             );
         }
 
@@ -206,7 +222,7 @@ class ApplicationHandler
         if (!empty($post_data['talentora_website'])) {
             return array(
                 'success' => true, // Silently succeed for bots
-                'message' => __('Application submitted successfully.', 'talentora')
+                'message' => esc_html__('Application submitted successfully.', 'talentora')
             );
         }
 
@@ -220,34 +236,34 @@ class ApplicationHandler
         $errors = array();
 
         if (empty($name)) {
-            $errors[] = __('Name is required.', 'talentora');
+            $errors[] = esc_html__('Name is required.', 'talentora');
         }
 
         if (empty($email) || !is_email($email)) {
-            $errors[] = __('Valid email is required.', 'talentora');
+            $errors[] = esc_html__('Valid email is required.', 'talentora');
         }
 
         if (empty($phone)) {
-            $errors[] = __('Phone is required.', 'talentora');
+            $errors[] = esc_html__('Phone is required.', 'talentora');
         }
 
         if (empty($cover_letter)) {
-            $errors[] = __('Cover letter is required.', 'talentora');
+            $errors[] = esc_html__('Cover letter is required.', 'talentora');
         }
 
         // Handle resume upload
         $resume_id = 0;
-        if (isset($files['resume']) && $files['resume']['error'] === UPLOAD_ERR_OK) {
-            $resume_id = $this->handle_resume_upload($files['resume'], $errors);
+        if (!empty($files) && isset($files['error']) && UPLOAD_ERR_OK === $files['error']) {
+            $resume_id = $this->handle_resume_upload($files, $errors);
         } else {
-            $errors[] = __('Resume is required.', 'talentora');
+            $errors[] = esc_html__('Resume is required.', 'talentora');
         }
 
         // Return error if any
         if (!empty($errors)) {
             return array(
                 'success' => false,
-                'message' => __('Please fix the errors below.', 'talentora'),
+                'message' => esc_html__('Please fix the errors below.', 'talentora'),
                 'errors' => $errors
             );
         }
@@ -264,14 +280,14 @@ class ApplicationHandler
 
             return array(
                 'success' => true,
-                'message' => __('Thank you! Your application has been submitted successfully.', 'talentora')
+                'message' => esc_html__('Thank you! Your application has been submitted successfully.', 'talentora')
             );
         }
 
         return array(
             'success' => false,
-            'message' => __('Failed to submit application. Please try again.', 'talentora'),
-            'errors' => array(__('Failed to submit application. Please try again.', 'talentora'))
+            'message' => esc_html__('Failed to submit application. Please try again.', 'talentora'),
+            'errors' => array(esc_html__('Failed to submit application. Please try again.', 'talentora'))
         );
     }
 
@@ -290,13 +306,13 @@ class ApplicationHandler
         $file_type = wp_check_filetype($file['name']);
 
         if (!in_array($file['type'], $allowed_types)) {
-            $errors[] = __('Resume must be a PDF or DOC file.', 'talentora');
+            $errors[] = esc_html__('Resume must be a PDF or DOC file.', 'talentora');
             return 0;
         }
 
         // Validate file size (5MB max)
         if ($file['size'] > 5 * 1024 * 1024) {
-            $errors[] = __('Resume file size must not exceed 5MB.', 'talentora');
+            $errors[] = esc_html__('Resume file size must not exceed 5MB.', 'talentora');
             return 0;
         }
 
@@ -304,17 +320,17 @@ class ApplicationHandler
         // These are core WordPress admin includes required for wp_handle_upload(),
         // media_handle_upload(), and wp_generate_attachment_metadata(). They are
         // guarded by function_exists() to avoid redundant loading.
-        if ( ! function_exists( 'wp_handle_upload' ) ) {
+        if (!function_exists('wp_handle_upload')) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
-        if ( ! function_exists( 'media_handle_upload' ) ) {
+        if (!function_exists('media_handle_upload')) {
             require_once ABSPATH . 'wp-admin/includes/media.php';
         }
-        if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+        if (!function_exists('wp_generate_attachment_metadata')) {
             require_once ABSPATH . 'wp-admin/includes/image.php';
         }
 
-        $upload = wp_handle_upload( $file, array( 'test_form' => false ) );
+        $upload = wp_handle_upload($file, array('test_form' => false));
 
         if (isset($upload['error'])) {
             $errors[] = $upload['error'];
@@ -354,16 +370,16 @@ class ApplicationHandler
      */
     private function create_application($job_id, $name, $email, $phone, $cover_letter, $resume_id)
     {
-		$application_data = array(
-			'post_title' => sprintf(
-				/* translators: 1: Applicant name, 2: Job title. */
-				__('Application from %1$s for %2$s', 'talentora'),
-				$name,
-				get_the_title($job_id)
-			),
-			'post_type'   => 'talentora_app',
-			'post_status' => 'publish',
-		);
+        $application_data = array(
+            'post_title' => sprintf(
+                /* translators: 1: Applicant name, 2: Job title. */
+                __('Application from %1$s for %2$s', 'talentora'),
+                $name,
+                get_the_title($job_id)
+            ),
+            'post_type' => 'talentora_app',
+            'post_status' => 'publish',
+        );
 
         $application_id = wp_insert_post($application_data);
 
