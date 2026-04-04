@@ -87,7 +87,7 @@ while (have_posts()):
                                 <?php
                                 printf(
                                     /* translators: %s: Human-readable time difference (e.g., "5 minutes"). */
-                                    esc_html__('Posted %1$talentora_s ago', 'talentora'),
+                                    esc_html__('Posted %1$s ago', 'talentora'),
                                     esc_html(
                                         human_time_diff(
                                             get_the_time('U'),
