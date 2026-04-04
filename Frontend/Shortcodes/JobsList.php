@@ -128,9 +128,9 @@ class JobsList
                 'terms' => $type,
             );
         }
-        
+
         if (!empty($tax_query)) {
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- tax_query is unavoidable: it is the only WP API to filter posts by taxonomy terms (category/type).
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- tax_query is unavoidable: it is the only WP API to filter posts by taxonomy terms (category/type).
             $args['tax_query'] = $tax_query;
         }
 
@@ -168,30 +168,30 @@ class JobsList
         $params = $atts;
 
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
-		$keyword = isset( $_GET['job_keyword'] ) ? sanitize_text_field( wp_unslash( $_GET['job_keyword'] ) ) : '';
+        $keyword = isset($_GET['job_keyword']) ? sanitize_text_field(wp_unslash($_GET['job_keyword'])) : '';
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
-		$category = isset( $_GET['job_category'] ) ? absint( wp_unslash( $_GET['job_category'] ) ) : 0;
+        $category = isset($_GET['job_category']) ? absint(wp_unslash($_GET['job_category'])) : 0;
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
-		$type = isset( $_GET['job_type'] ) ? absint( wp_unslash( $_GET['job_type'] ) ) : 0;
+        $type = isset($_GET['job_type']) ? absint(wp_unslash($_GET['job_type'])) : 0;
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filtering (no state change). Inputs are whitelisted and sanitized.
-		$location = isset( $_GET['job_location'] ) ? sanitize_text_field( wp_unslash( $_GET['job_location'] ) ) : '';
+        $location = isset($_GET['job_location']) ? sanitize_text_field(wp_unslash($_GET['job_location'])) : '';
 
-		if ( '' !== $keyword ) {
+        if ('' !== $keyword) {
             $params['job_keyword'] = $keyword;
         }
-		if ( $category > 0 ) {
+        if ($category > 0) {
             $params['job_category'] = $category;
         }
-		if ( $type > 0 ) {
+        if ($type > 0) {
             $params['job_type'] = $type;
         }
-		if ( '' !== $location ) {
+        if ('' !== $location) {
             $params['job_location'] = $location;
         }
 
-		$params['paged'] = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+        $params['paged'] = get_query_var('paged') ? absint(get_query_var('paged')) : 1;
 
-		$jobs_query = $this->get_jobs_query( $params );
+        $jobs_query = $this->get_jobs_query($params);
 
         ob_start();
         ?>
@@ -326,12 +326,12 @@ class JobsList
         }
 
         ?>
-        <div class="talentora-job-card <?php echo $is_filled ? 'job-filled' : ''; ?>">
+        <div class="talentora-job-card <?php echo esc_attr($is_filled ? 'job-filled' : ''); ?>">
 
             <div class="job-card-header">
                 <?php if ($company_logo_id): ?>
                     <div class="company-logo-mini">
-                        <?php echo wp_get_attachment_image($company_logo_id, 'thumbnail'); ?>
+                        <?php echo wp_kses_post(wp_get_attachment_image($company_logo_id, 'thumbnail')); ?>
                     </div>
                 <?php endif; ?>
 

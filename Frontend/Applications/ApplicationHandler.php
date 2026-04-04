@@ -86,7 +86,24 @@ class ApplicationHandler
         } else {
             if (!empty($result['errors'])) {
                 set_transient('talentora_application_errors_' . $job_id, $result['errors'], 60);
-                set_transient('talentora_application_data_' . $job_id, $_POST, 60);
+                // Build a sanitized data array — never persist raw $_POST.
+                // Only store the specific fields needed to repopulate the form,
+                // each sanitized with the most appropriate function for its type.
+                $sanitized_data = array(
+                    'applicant_name'  => isset( $_POST['applicant_name'] )
+                        ? sanitize_text_field( wp_unslash( $_POST['applicant_name'] ) )
+                        : '',
+                    'applicant_email' => isset( $_POST['applicant_email'] )
+                        ? sanitize_email( wp_unslash( $_POST['applicant_email'] ) )
+                        : '',
+                    'applicant_phone' => isset( $_POST['applicant_phone'] )
+                        ? sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ) )
+                        : '',
+                    'cover_letter'    => isset( $_POST['cover_letter'] )
+                        ? sanitize_textarea_field( wp_unslash( $_POST['cover_letter'] ) )
+                        : '',
+                );
+                set_transient( 'talentora_application_data_' . $job_id, $sanitized_data, 60 );
             }
             wp_safe_redirect(get_permalink($job_id) . '#application-form');
             exit;
