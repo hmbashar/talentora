@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'hmbashar/hiretalent',
+        'name' => 'hmbashar/talentora',
         'pretty_version' => '1.0.0',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -10,7 +10,7 @@
         'dev' => false,
     ),
     'versions' => array(
-        'hmbashar/hiretalent' => array(
+        'hmbashar/talentora' => array(
             'pretty_version' => '1.0.0',
             'version' => '1.0.0.0',
             'reference' => null,

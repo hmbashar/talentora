@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-01T18:08:32+00:00\n"
+"POT-Creation-Date: 2026-04-04T10:02:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: talentora\n"
@@ -69,7 +69,7 @@ msgid "Job Information"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:91
-#: Frontend/Shortcodes/JobsList.php:252
+#: Frontend/Shortcodes/JobsList.php:273
 #: templates/single-talentora_job.php:316
 msgid "Location"
 msgstr ""
@@ -239,7 +239,7 @@ msgid "Open"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:354
-#: Frontend/Shortcodes/JobsList.php:355
+#: Frontend/Shortcodes/JobsList.php:376
 msgid "Filled"
 msgstr ""
 
@@ -451,128 +451,128 @@ msgstr ""
 msgid "Log file not found."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:76
+#: Frontend/Applications/ApplicationHandler.php:74
 #: Modules/Applications/ApplicationMeta.php:522
 #: Modules/Applications/ApplicationMeta.php:602
 msgid "Security check failed."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:132
-#: Frontend/Applications/ApplicationHandler.php:133
-#: Frontend/Applications/ApplicationHandler.php:329
+#: Frontend/Applications/ApplicationHandler.php:216
+#: Frontend/Applications/ApplicationHandler.php:217
+#: Frontend/Applications/ApplicationHandler.php:422
 msgid "Invalid job ID."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:141
+#: Frontend/Applications/ApplicationHandler.php:225
 msgid "Application submitted successfully."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:155
+#: Frontend/Applications/ApplicationHandler.php:239
 msgid "Name is required."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:159
+#: Frontend/Applications/ApplicationHandler.php:243
 msgid "Valid email is required."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:163
+#: Frontend/Applications/ApplicationHandler.php:247
 msgid "Phone is required."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:167
+#: Frontend/Applications/ApplicationHandler.php:251
 msgid "Cover letter is required."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:175
+#: Frontend/Applications/ApplicationHandler.php:259
 msgid "Resume is required."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:182
+#: Frontend/Applications/ApplicationHandler.php:266
 msgid "Please fix the errors below."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:199
-#: Frontend/Applications/ApplicationHandler.php:355
+#: Frontend/Applications/ApplicationHandler.php:283
+#: Frontend/Applications/ApplicationHandler.php:448
 msgid "Thank you! Your application has been submitted successfully."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:205
-#: Frontend/Applications/ApplicationHandler.php:206
+#: Frontend/Applications/ApplicationHandler.php:289
+#: Frontend/Applications/ApplicationHandler.php:290
 msgid "Failed to submit application. Please try again."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:225
+#: Frontend/Applications/ApplicationHandler.php:309
 msgid "Resume must be a PDF or DOC file."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:231
+#: Frontend/Applications/ApplicationHandler.php:315
 msgid "Resume file size must not exceed 5MB."
 msgstr ""
 
 #. translators: 1: Applicant name, 2: Job title.
-#: Frontend/Applications/ApplicationHandler.php:283
+#: Frontend/Applications/ApplicationHandler.php:376
 #, php-format
 msgid "Application from %1$s for %2$s"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:336
+#: Frontend/Applications/ApplicationHandler.php:429
 msgid "Thank you! Your application has been submitted successfully. We will contact you soon."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:367
+#: Frontend/Applications/ApplicationHandler.php:460
 msgid "Website"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:374
+#: Frontend/Applications/ApplicationHandler.php:467
 #: Modules/Applications/ApplicationMeta.php:145
 msgid "Full Name"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:380
+#: Frontend/Applications/ApplicationHandler.php:473
 msgid "John Doe"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:386
+#: Frontend/Applications/ApplicationHandler.php:479
 #: Modules/Applications/ApplicationMeta.php:155
 msgid "Email Address"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:392
+#: Frontend/Applications/ApplicationHandler.php:485
 msgid "john@example.com"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:400
+#: Frontend/Applications/ApplicationHandler.php:493
 #: Modules/Applications/ApplicationMeta.php:169
 msgid "Phone Number"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:406
+#: Frontend/Applications/ApplicationHandler.php:499
 msgid "+1 234 567 8900"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:412
+#: Frontend/Applications/ApplicationHandler.php:505
 #: Modules/Applications/ApplicationMeta.php:217
 msgid "Resume / CV"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:418
+#: Frontend/Applications/ApplicationHandler.php:511
 msgid "Choose a file..."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:420
+#: Frontend/Applications/ApplicationHandler.php:513
 msgid "PDF or DOC, max 5MB"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:427
+#: Frontend/Applications/ApplicationHandler.php:520
 #: Modules/Applications/ApplicationMeta.php:254
 msgid "Cover Letter"
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:430
+#: Frontend/Applications/ApplicationHandler.php:523
 msgid "Tell us why you are a great fit for this role..."
 msgstr ""
 
-#: Frontend/Applications/ApplicationHandler.php:437
+#: Frontend/Applications/ApplicationHandler.php:530
 msgid "Submit Application"
 msgstr ""
 
@@ -610,44 +610,44 @@ msgid "Invalid nonce"
 msgstr ""
 
 #. translators: Pagination previous text.
-#: Frontend/Shortcodes/JobsList.php:71
-#: Frontend/Shortcodes/JobsList.php:281
+#: Frontend/Shortcodes/JobsList.php:92
+#: Frontend/Shortcodes/JobsList.php:302
 msgid "&laquo; Previous"
 msgstr ""
 
 #. translators: Pagination next text.
-#: Frontend/Shortcodes/JobsList.php:73
-#: Frontend/Shortcodes/JobsList.php:283
+#: Frontend/Shortcodes/JobsList.php:94
+#: Frontend/Shortcodes/JobsList.php:304
 msgid "Next &raquo;"
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:79
-#: Frontend/Shortcodes/JobsList.php:291
+#: Frontend/Shortcodes/JobsList.php:100
+#: Frontend/Shortcodes/JobsList.php:312
 #: Modules/Jobs/PostType.php:52
 msgid "No jobs found."
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:205
+#: Frontend/Shortcodes/JobsList.php:226
 msgid "Search jobs..."
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:219
+#: Frontend/Shortcodes/JobsList.php:240
 msgid "All Categories"
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:240
+#: Frontend/Shortcodes/JobsList.php:261
 msgid "All Types"
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:258
+#: Frontend/Shortcodes/JobsList.php:279
 msgid "Search"
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:396
+#: Frontend/Shortcodes/JobsList.php:417
 msgid "Deadline:"
 msgstr ""
 
-#: Frontend/Shortcodes/JobsList.php:412
+#: Frontend/Shortcodes/JobsList.php:433
 msgid "View Details"
 msgstr ""
 
@@ -1088,6 +1088,7 @@ msgstr ""
 
 #. translators: %s: Human-readable time difference (e.g., "5 minutes").
 #: templates/single-talentora_job.php:90
+#, php-format
 msgid "Posted %1$s ago"
 msgstr ""
 
