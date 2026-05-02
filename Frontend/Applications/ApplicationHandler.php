@@ -303,7 +303,7 @@ class ApplicationHandler
     {
         // Validate file type
         $allowed_types = array('application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-        $file_type = wp_check_filetype($file['name']);
+
 
         if (!in_array($file['type'], $allowed_types)) {
             $errors[] = esc_html__('Resume must be a PDF or DOC file.', 'talentora');
@@ -317,14 +317,11 @@ class ApplicationHandler
         }
 
         // Load wp-admin file helpers only when needed for upload processing.
-        // These are core WordPress admin includes required for wp_handle_upload(),
-        // media_handle_upload(), and wp_generate_attachment_metadata(). They are
-        // guarded by function_exists() to avoid redundant loading.
+        // These are core WordPress admin includes required for wp_handle_upload()
+        // and wp_generate_attachment_metadata(). Guarded by function_exists()
+        // to avoid redundant loading.
         if (!function_exists('wp_handle_upload')) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
-        }
-        if (!function_exists('media_handle_upload')) {
-            require_once ABSPATH . 'wp-admin/includes/media.php';
         }
         if (!function_exists('wp_generate_attachment_metadata')) {
             require_once ABSPATH . 'wp-admin/includes/image.php';
