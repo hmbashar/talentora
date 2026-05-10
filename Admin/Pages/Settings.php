@@ -26,8 +26,39 @@ class Settings
      */
     public function __construct()
     {
+        add_action('init', array($this, 'maybe_redirect_settings_url'));
         add_action('admin_init', array($this, 'register_settings'));
         add_action('wp_ajax_talentora_clear_email_log', array($this, 'ajax_clear_email_log'));
+    }
+
+    /**
+     * Redirect requests to admin.php?page=talentora-settings to the correct
+     * edit.php?post_type=talentora_job&page=talentora-settings URL.
+     *
+     * WordPress registers the settings page under edit.php (CPT submenu).
+     * If accessed via admin.php, WordPress dies with "Cannot load talentora-settings"
+     * before admin_init fires. The init hook runs early enough to redirect first.
+     *
+     * @since 1.0.0
+     */
+    public function maybe_redirect_settings_url()
+    {
+        if ( ! is_admin() ) {
+            return;
+        }
+
+        global $pagenow;
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only redirect based on URL params; no state change.
+        if ( 'admin.php' === $pagenow
+            && isset( $_GET['page'] )
+            && 'talentora-settings' === sanitize_key( wp_unslash( $_GET['page'] ) )
+        ) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only redirect; no state change.
+            $tab    = isset( $_GET['tab'] ) ? '&tab=' . sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+            wp_safe_redirect( admin_url( 'edit.php?post_type=talentora_job&page=talentora-settings' . $tab ) );
+            exit;
+        }
     }
 
     /**
@@ -178,17 +209,17 @@ class Settings
 
             <!-- Modern Tab Navigation -->
             <nav class="nav-tab-wrapper talentora-nav-tabs">
-                <a href="?post_type=talentora_job&page=talentora-settings&tab=general"
+                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=talentora_job&page=talentora-settings&tab=general' ) ); ?>"
                     class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-admin-generic"></span>
                     <span><?php esc_html_e('General Settings', 'talentora'); ?></span>
                 </a>
-                <a href="?post_type=talentora_job&page=talentora-settings&tab=email_templates"
+                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=talentora_job&page=talentora-settings&tab=email_templates' ) ); ?>"
                     class="nav-tab <?php echo $active_tab == 'email_templates' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-email"></span>
                     <span><?php esc_html_e('Email Templates', 'talentora'); ?></span>
                 </a>
-                <a href="?post_type=talentora_job&page=talentora-settings&tab=email_logs"
+                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=talentora_job&page=talentora-settings&tab=email_logs' ) ); ?>"
                     class="nav-tab <?php echo $active_tab == 'email_logs' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-media-text"></span>
                     <span><?php esc_html_e('Email Logs', 'talentora'); ?></span>
