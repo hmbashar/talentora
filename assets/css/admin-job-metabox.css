@@ -1,0 +1,328 @@
+/* Job Metabox Variables */
+:root {
+    --ht-admin-primary: #2563eb;
+    --ht-admin-primary-dark: #1d4ed8;
+    --ht-admin-bg-light: #f8fafc;
+    --ht-admin-border: #e2e8f0;
+    --ht-admin-text: #1e293b;
+    --ht-admin-text-light: #64748b;
+    --ht-admin-success: #10b981;
+}
+
+.talentora-metabox {
+    padding: 10px 5px;
+    color: var(--ht-admin-text);
+}
+
+/* Status Toggle Switch */
+.talentora-status-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.talentora-status-toggle .status-label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ht-admin-text);
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.badge-open {
+    background: #ecfdf5;
+    color: #059669;
+    border-color: #10b981;
+}
+
+.badge-filled {
+    background: #f1f5f9;
+    color: #64748b;
+    opacity: 0.5;
+}
+
+/* Toggle Switch Core */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .4s;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+    background-color: var(--ht-admin-danger);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--ht-admin-danger);
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Dynamic Badge Highlighting */
+.talentora-status-toggle:has(input:checked) .badge-open {
+    background: #f1f5f9;
+    color: #64748b;
+    border-color: transparent;
+    opacity: 0.5;
+}
+
+.talentora-status-toggle:has(input:checked) .badge-filled {
+    background: #fef2f2;
+    color: var(--ht-admin-danger);
+    border-color: var(--ht-admin-danger);
+    opacity: 1;
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.2);
+}
+
+/* Section Styling */
+.talentora-section {
+    background: #fff;
+    border: 1px solid var(--ht-admin-border);
+    border-radius: 8px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    background: var(--ht-admin-bg-light);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--ht-admin-border);
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ht-admin-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header .dashicons {
+    color: var(--ht-admin-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Grid Layout */
+.field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.field-row:not(:last-child) {
+    border-bottom: 1px solid var(--ht-admin-border);
+}
+
+.field-group {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 15px;
+}
+
+.field-group.full-width {
+    flex: 0 0 100%;
+}
+
+.field-group.half-width {
+    flex: 1 1 calc(50% - 10px);
+}
+
+.field-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--ht-admin-text);
+}
+
+.field-group label .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--ht-admin-text-light);
+}
+
+/* Form Elements */
+.talentora-input,
+.talentora-select {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 40px !important;
+    border: 1px solid var(--ht-admin-border) !important;
+    border-radius: 6px !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+}
+
+.talentora-input:focus,
+.talentora-select:focus {
+    border-color: var(--ht-admin-primary) !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1) !important;
+    outline: none !important;
+}
+
+.salary-fields {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.salary-field {
+    flex: 1;
+}
+
+.salary-separator {
+    color: var(--ht-admin-text-light);
+    font-weight: bold;
+}
+
+/* Logo Upload Area */
+.logo-upload-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--ht-admin-bg-light);
+    border-radius: 8px;
+    border: 2px dashed var(--ht-admin-border);
+}
+
+.company-logo-preview {
+    width: 100px;
+    height: 100px;
+    background: #fff;
+    border: 1px solid var(--ht-admin-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.company-logo-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.logo-placeholder {
+    text-align: center;
+    color: var(--ht-admin-text-light);
+}
+
+.logo-placeholder .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 5px;
+}
+
+.logo-placeholder p {
+    margin: 0;
+    font-size: 11px;
+}
+
+.logo-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Application Type Styling */
+.description {
+    margin-top: 8px;
+    color: var(--ht-admin-text-light);
+    font-style: italic;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Checkbox Modernization */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.checkbox-text {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+}
+
+.checkbox-text .dashicons-yes {
+    color: var(--ht-admin-success);
+}
+

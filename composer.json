@@ -1,0 +1,38 @@
+{
+    "name": "hmbashar/talentora",
+    "description": "Simple & Powerful Job Board Plugin for WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Md Abul Bashar",
+            "email": "hmbashar@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Talentora\\": "Inc/",
+            "Talentora\\Admin\\": "Admin/",
+            "Talentora\\Frontend\\": "Frontend/",
+            "Talentora\\Modules\\": "Modules/"
+        }
+    },
+    "scripts": {
+        "lint:wpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "lint:php": "@php ./vendor/bin/parallel-lint --exclude .git --exclude vendor .",
+        "make-pot": "wp i18n make-pot . languages/talentora.pot",
+        "lint:autofix": "vendor/bin/phpcbf"
+    },  
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

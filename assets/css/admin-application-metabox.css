@@ -1,0 +1,196 @@
+/* Application Details Metabox Variables */
+:root {
+    --ht-admin-primary: #2563eb;
+    --ht-admin-primary-dark: #1d4ed8;
+    --ht-admin-bg-light: #f8fafc;
+    --ht-admin-border: #e2e8f0;
+    --ht-admin-text: #1e293b;
+    --ht-admin-text-light: #64748b;
+    --ht-admin-success: #10b981;
+    --ht-admin-warning: #f59e0b;
+    --ht-admin-danger: #ef4444;
+}
+
+.talentora-application-details {
+    padding: 10px 5px;
+    color: var(--ht-admin-text);
+}
+
+/* Section Styling */
+.talentora-section {
+    background: #fff;
+    border: 1px solid var(--ht-admin-border);
+    border-radius: 8px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    background: var(--ht-admin-bg-light);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--ht-admin-border);
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ht-admin-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header .dashicons {
+    color: var(--ht-admin-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Grid Layout */
+.field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.field-row:not(:last-child) {
+    border-bottom: 1px solid var(--ht-admin-border);
+}
+
+.field-group {
+    flex: 1;
+    min-width: 250px;
+}
+
+.field-group.full-width {
+    flex: 0 0 100%;
+}
+
+.field-group.half-width {
+    flex: 1 1 calc(50% - 10px);
+}
+
+.detail-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--ht-admin-text-light);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-label .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ht-admin-text);
+}
+
+.detail-value a {
+    color: var(--ht-admin-primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.detail-value a:hover {
+    text-decoration: underline;
+}
+
+/* Cover Letter Styling */
+.cover-letter-box {
+    background: var(--ht-admin-bg-light);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--ht-admin-border);
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    color: var(--ht-admin-text);
+}
+
+/* Status Selection */
+.talentora-select-status {
+    width: 100% !important;
+    max-width: 300px !important;
+    height: 40px !important;
+    border: 1px solid var(--ht-admin-border) !important;
+    border-radius: 6px !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--ht-admin-text) !important;
+    background-color: #fff !important;
+    transition: all 0.2s ease;
+}
+
+.talentora-select-status:focus {
+    border-color: var(--ht-admin-primary) !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Activity Log */
+.talentora-activity-log {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.talentora-activity-log li {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--ht-admin-border);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    padding-left: 45px;
+}
+
+.talentora-activity-log li:last-child {
+    border-bottom: none;
+}
+
+.talentora-activity-log li::before {
+    content: "\f469";
+    font-family: dashicons;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    color: var(--ht-admin-primary);
+    font-size: 18px;
+}
+
+.activity-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--ht-admin-text-light);
+}
+
+.activity-time {
+    font-weight: 700;
+}
+
+.activity-user {
+    background: #e2e8f0;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.activity-message {
+    font-size: 14px;
+    color: var(--ht-admin-text);
+}

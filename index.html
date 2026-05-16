@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Talentora is a simple, powerful job board plugin for WordPress. Publish jobs, collect applications, manage applicant status, export CSV, customize email templates, and override templates." />
+  <meta name="theme-color" content="#0457d8" />
+  <title>Talentora - Simple & Powerful Job Board Plugin for WordPress</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f7fbff;
+      --surface: #ffffff;
+      --surface-2: rgba(255,255,255,.74);
+      --ink: #0b1736;
+      --muted: #63708a;
+      --line: rgba(10, 31, 68, .10);
+      --blue: #075ee8;
+      --blue-2: #073a9b;
+      --cyan: #17d7ce;
+      --purple: #6d4cff;
+      --green: #16c784;
+      --orange: #ff8b1a;
+      --shadow: 0 24px 80px rgba(10, 31, 68, .14);
+      --shadow-soft: 0 12px 40px rgba(10, 31, 68, .09);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(23, 215, 206, .24), transparent 32%),
+        radial-gradient(circle at 92% 8%, rgba(7, 94, 232, .22), transparent 30%),
+        linear-gradient(180deg, #f8fcff 0%, #eef7ff 48%, #ffffff 100%);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input { font: inherit; }
+
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(7, 94, 232, .16);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      color: var(--blue-2);
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(7, 94, 232, .08);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,.34);
+      background: rgba(247, 251, 255, .76);
+      backdrop-filter: blur(18px);
+    }
+    .nav {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: -.03em; }
+    .brand img { width: 42px; height: 42px; border-radius: 12px; box-shadow: 0 10px 25px rgba(7, 94, 232, .22); }
+    .brand span { font-size: 21px; }
+    .nav-links { display: flex; align-items: center; gap: 22px; color: #34405b; font-size: 14px; font-weight: 700; }
+    .nav-links a { opacity: .82; transition: .2s ease; }
+    .nav-links a:hover { opacity: 1; color: var(--blue); }
+    .actions { display: flex; align-items: center; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(7, 94, 232, .18);
+      font-weight: 800;
+      font-size: 14px;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+    .btn-primary { color: white; background: linear-gradient(135deg, var(--blue), #003dc0); box-shadow: 0 16px 36px rgba(7, 94, 232, .28); }
+    .btn-secondary { color: var(--blue-2); background: rgba(255,255,255,.76); }
+    .mobile-menu { display: none; }
+
+    .hero {
+      position: relative;
+      padding: 86px 0 64px;
+      isolation: isolate;
+    }
+    .hero:before {
+      content: "";
+      position: absolute;
+      inset: -80px 0 auto 0;
+      height: 620px;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 20% 24%, rgba(7, 94, 232, .18), transparent 30%),
+        radial-gradient(circle at 78% 28%, rgba(23, 215, 206, .30), transparent 28%);
+      filter: blur(2px);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1.02fr; gap: 52px; align-items: center; }
+    .eyebrow { margin-bottom: 22px; }
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 6vw, 78px);
+      line-height: .95;
+      letter-spacing: -.075em;
+      color: #07132f;
+    }
+    .gradient-text { background: linear-gradient(135deg, #075ee8 10%, #10d7c6 74%); -webkit-background-clip: text; color: transparent; }
+    .hero-copy { margin: 24px 0 0; font-size: 19px; line-height: 1.75; color: #536079; max-width: 620px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+    .hero-note { margin-top: 18px; color: var(--muted); font-size: 13px; }
+    .mini-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 34px; max-width: 560px; }
+    .mini-stat {
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      border-radius: 18px;
+      box-shadow: 0 12px 34px rgba(10,31,68,.07);
+    }
+    .mini-stat strong { display: block; font-size: 24px; letter-spacing: -.04em; }
+    .mini-stat span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
+
+    .product-stage { position: relative; min-height: 560px; }
+    .glass-card {
+      border: 1px solid rgba(255,255,255,.72);
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+    .dashboard {
+      position: relative;
+      padding: 22px;
+      border-radius: 32px;
+      transform: rotate(-1deg);
+      animation: floaty 7s ease-in-out infinite;
+    }
+    .dash-top { display: flex; gap: 10px; margin-bottom: 18px; }
+    .search-box { flex: 1; height: 50px; border-radius: 15px; border: 1px solid var(--line); background: white; display: flex; align-items: center; gap: 10px; padding: 0 16px; color: #73809a; font-weight: 700; font-size: 13px; }
+    .search-btn { width: 92px; border-radius: 15px; border: 0; color: white; background: linear-gradient(135deg, var(--blue), #0042c9); font-weight: 800; }
+    .tags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .tag { padding: 10px 14px; border-radius: 14px; background: #eff6ff; border: 1px solid #dbeafe; color: #153c78; font-size: 12px; font-weight: 800; }
+    .job-card { display: grid; grid-template-columns: 56px 1fr auto; gap: 15px; align-items: center; padding: 18px; border-radius: 20px; background: white; box-shadow: 0 14px 34px rgba(10,31,68,.09); border: 1px solid var(--line); margin-bottom: 13px; }
+    .job-icon { width: 56px; height: 56px; border-radius: 16px; background: linear-gradient(135deg, var(--blue), var(--cyan)); display: grid; place-items: center; color: white; font-weight: 900; font-size: 22px; box-shadow: 0 12px 25px rgba(7,94,232,.25); }
+    .job-card h3 { margin: 0; font-size: 17px; letter-spacing: -.03em; }
+    .job-card p { margin: 7px 0 0; color: #65718a; font-size: 13px; font-weight: 700; }
+    .featured { padding: 8px 10px; background: #e8fff4; color: #087a4a; border-radius: 999px; font-size: 12px; font-weight: 900; }
+    .logo-float {
+      position: absolute;
+      width: 124px;
+      left: -34px;
+      top: 16px;
+      border-radius: 30px;
+      box-shadow: 0 28px 65px rgba(0, 70, 190, .32);
+      animation: floaty 6s ease-in-out infinite reverse;
+    }
+    .side-panel {
+      position: absolute;
+      right: -20px;
+      bottom: 22px;
+      width: 210px;
+      padding: 18px;
+      border-radius: 26px;
+      animation: floaty 8s ease-in-out infinite;
+    }
+    .side-panel h4 { margin: 0 0 12px; }
+    .side-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--line); color: #536079; font-size: 13px; font-weight: 700; }
+    .side-row strong { color: var(--ink); font-size: 18px; }
+    .screenshot-chip {
+      position: absolute;
+      left: 44px;
+      bottom: -16px;
+      width: 285px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 8px solid white;
+      box-shadow: var(--shadow);
+      transform: rotate(2deg);
+    }
+
+    section { padding: 84px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 34px; }
+    .section-head h2 { margin: 12px 0 0; font-size: clamp(32px, 4vw, 52px); line-height: 1.02; letter-spacing: -.06em; }
+    .section-head p { max-width: 580px; color: var(--muted); line-height: 1.7; font-size: 16px; margin: 0; }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature-card { padding: 25px; border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,.78); box-shadow: var(--shadow-soft); transition: .25s ease; }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .feature-icon { width: 46px; height: 46px; border-radius: 16px; display: grid; place-items: center; color: white; background: linear-gradient(135deg, var(--blue), var(--cyan)); font-weight: 900; margin-bottom: 18px; }
+    .feature-card h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -.03em; }
+    .feature-card p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 14px; }
+
+    .showcase { background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(237,248,255,.85)); }
+    .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    .tab { border: 1px solid var(--line); background: white; border-radius: 999px; padding: 12px 16px; color: #45516b; font-weight: 800; cursor: pointer; transition: .2s ease; }
+    .tab.active { color: white; background: linear-gradient(135deg, var(--blue), var(--purple)); box-shadow: 0 15px 35px rgba(7,94,232,.22); }
+    .screen-frame { border-radius: 30px; background: white; border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
+    .browser-bar { height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 18px; border-bottom: 1px solid var(--line); background: #f7fbff; }
+    .dot { width: 11px; height: 11px; border-radius: 99px; background: #cbd5e1; }
+    .screen-frame img { width: 100%; aspect-ratio: 16/9; object-fit: cover; object-position: top center; }
+    .screen-caption { display: flex; justify-content: space-between; gap: 18px; padding: 18px 22px; align-items: center; }
+    .screen-caption strong { font-size: 18px; }
+    .screen-caption span { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .steps-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: start; }
+    .guide-card { padding: 26px; border-radius: 28px; border: 1px solid var(--line); background: white; box-shadow: var(--shadow-soft); }
+    .guide-card h3 { margin: 0 0 18px; font-size: 23px; letter-spacing: -.04em; }
+    .timeline { display: grid; gap: 13px; }
+    .step { display: grid; grid-template-columns: 38px 1fr; gap: 14px; padding: 15px; border-radius: 18px; background: #f8fbff; border: 1px solid var(--line); }
+    .step-num { width: 38px; height: 38px; border-radius: 14px; display: grid; place-items: center; color: white; background: linear-gradient(135deg, var(--blue), var(--cyan)); font-weight: 900; }
+    .step strong { display: block; margin-bottom: 5px; }
+    .step span { color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .code-box { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid #1d2a4a; background: #08142b; box-shadow: var(--shadow); }
+    .code-head { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; color: #aab6d3; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .copy-btn { border: 0; background: rgba(255,255,255,.10); color: white; border-radius: 10px; padding: 8px 10px; cursor: pointer; font-weight: 800; }
+    pre { margin: 0; padding: 18px; overflow: auto; color: #dce7ff; font-size: 14px; line-height: 1.7; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    .docs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .doc-card { border-radius: 24px; background: white; border: 1px solid var(--line); padding: 24px; box-shadow: var(--shadow-soft); }
+    .doc-card h3 { margin: 0 0 10px; letter-spacing: -.03em; }
+    .doc-card ul { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .doc-card li { color: var(--muted); font-size: 14px; line-height: 1.45; display: grid; grid-template-columns: 18px 1fr; gap: 9px; }
+    .doc-card li:before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--cyan); margin-top: 7px; }
+
+    .shortcodes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .shortcode { padding: 20px; border-radius: 22px; border: 1px solid var(--line); background: #08142b; color: white; box-shadow: var(--shadow-soft); }
+    .shortcode span { color: #aab6d3; display: block; margin-top: 10px; font-size: 13px; line-height: 1.5; }
+
+    .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .road-card { position: relative; overflow: hidden; padding: 22px; border-radius: 24px; border: 1px solid var(--line); background: rgba(255,255,255,.82); box-shadow: var(--shadow-soft); }
+    .road-card:before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+    .road-card small { color: var(--blue); font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+    .road-card h3 { margin: 10px 0 8px; }
+    .road-card p { margin: 0; color: var(--muted); line-height: 1.58; font-size: 14px; }
+
+    .cta { padding: 96px 0; }
+    .cta-box { position: relative; overflow: hidden; border-radius: 38px; padding: 52px; color: white; background: linear-gradient(135deg, #052f91, #075ee8 48%, #12cfc4); box-shadow: 0 40px 100px rgba(7, 94, 232, .30); }
+    .cta-box:before { content: ""; position: absolute; width: 360px; height: 360px; border-radius: 50%; background: rgba(255,255,255,.16); right: -110px; top: -150px; }
+    .cta-grid { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; }
+    .cta h2 { margin: 0; font-size: clamp(34px, 5vw, 58px); line-height: 1; letter-spacing: -.065em; }
+    .cta p { margin: 16px 0 0; max-width: 680px; line-height: 1.7; color: rgba(255,255,255,.82); }
+    .cta .btn-secondary { background: white; color: var(--blue); }
+
+    footer { padding: 36px 0 54px; color: var(--muted); }
+    .footer-grid { display: flex; justify-content: space-between; gap: 18px; align-items: center; border-top: 1px solid var(--line); padding-top: 25px; }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .72s ease, transform .72s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes floaty { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-14px) rotate(1deg); } }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .mobile-menu { display: inline-flex; }
+      .hero-grid, .steps-grid, .cta-grid { grid-template-columns: 1fr; }
+      .product-stage { min-height: 480px; }
+      .features, .docs-grid, .roadmap, .shortcodes { grid-template-columns: repeat(2, 1fr); }
+      .section-head { display: block; }
+      .section-head p { margin-top: 14px; }
+    }
+    @media (max-width: 680px) {
+      .container { width: min(var(--max), calc(100% - 24px)); }
+      .hero { padding-top: 52px; }
+      .actions .btn-secondary { display: none; }
+      .mini-stats, .features, .docs-grid, .roadmap, .shortcodes { grid-template-columns: 1fr; }
+      .dash-top { flex-direction: column; }
+      .search-btn { width: 100%; height: 48px; }
+      .job-card { grid-template-columns: 48px 1fr; }
+      .featured { grid-column: 1 / -1; justify-self: start; }
+      .side-panel, .screenshot-chip { display: none; }
+      .logo-float { width: 84px; left: auto; right: 12px; top: -24px; }
+      .cta-box { padding: 34px 24px; border-radius: 28px; }
+      .footer-grid { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Talentora home">
+        <img src="https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/icon-256x256.png" alt="Talentora logo" />
+        <span>Talentora</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#guide">User Guide</a>
+        <a href="#developers">Developers</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-secondary" href="https://github.com/hmbashar/talentora" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn btn-primary" href="https://wordpress.org/plugins/talentora/" target="_blank" rel="noreferrer">Download</a>
+        <a class="btn btn-secondary mobile-menu" href="#guide">Guide</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <div class="eyebrow pill">WordPress job board plugin - lightweight, self-contained, developer friendly</div>
+          <h1>Launch a polished <span class="gradient-text">career page</span> inside WordPress.</h1>
+          <p class="hero-copy">Talentora helps site owners publish jobs, collect applications, review candidates, update applicant status, export submissions, and customize the experience without leaving WordPress.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://wordpress.org/plugins/talentora/" target="_blank" rel="noreferrer">Install from WordPress.org</a>
+            <a class="btn btn-secondary" href="#guide">Read the setup guide</a>
+          </div>
+          <p class="hero-note">Current plugin version in the WordPress readme: 0.0.1. Requirements: WordPress 5.8+ and PHP 7.4+.</p>
+          <div class="mini-stats" aria-label="Plugin highlights">
+            <div class="mini-stat"><strong>3</strong><span>Job shortcodes</span></div>
+            <div class="mini-stat"><strong>5 MB</strong><span>Resume upload limit</span></div>
+            <div class="mini-stat"><strong>CSV</strong><span>Application export</span></div>
+          </div>
+        </div>
+
+        <div class="product-stage reveal" aria-label="Talentora product preview">
+          <img class="logo-float" src="https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/icon-256x256.png" alt="Talentora app icon" />
+          <div class="dashboard glass-card">
+            <div class="dash-top">
+              <div class="search-box">Search job title, keyword, or company</div>
+              <button class="search-btn">Search</button>
+            </div>
+            <div class="tags">
+              <span class="tag">Remote</span>
+              <span class="tag">Full-Time</span>
+              <span class="tag">Engineering</span>
+              <span class="tag">WordPress</span>
+            </div>
+            <article class="job-card">
+              <div class="job-icon">01</div>
+              <div><h3>WordPress Developer</h3><p>Dhaka - Full-Time - $50,000 to $100,000</p></div>
+              <span class="featured">Open</span>
+            </article>
+            <article class="job-card">
+              <div class="job-icon">02</div>
+              <div><h3>Frontend Engineer</h3><p>Remote - Engineering - Apply online</p></div>
+              <span class="featured">New</span>
+            </article>
+            <article class="job-card">
+              <div class="job-icon">03</div>
+              <div><h3>Product Designer</h3><p>Design - Contract - Deadline tracked</p></div>
+              <span class="featured">Live</span>
+            </article>
+          </div>
+          <div class="side-panel glass-card">
+            <h4>At a glance</h4>
+            <div class="side-row"><span>Applications</span><strong>Private</strong></div>
+            <div class="side-row"><span>Status</span><strong>5-step</strong></div>
+            <div class="side-row"><span>Exports</span><strong>CSV</strong></div>
+          </div>
+          <div class="screenshot-chip">
+            <img src="https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/screenshot-2.png" alt="Talentora single job page screenshot" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">Current confirmed features</span>
+            <h2>Everything needed for a WordPress hiring workflow.</h2>
+          </div>
+          <p>These features are taken from the plugin readme, documentation, and source code so the landing page stays accurate to the current build.</p>
+        </div>
+        <div class="features">
+          <article class="feature-card reveal"><div class="feature-icon">J</div><h3>Job post type</h3><p>A dedicated public custom post type for jobs with clean job URLs and support for title, editor, and featured image.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">T</div><h3>Categories and job types</h3><p>Organize listings with hierarchical job categories and hierarchical job types such as Engineering, Full-Time, Remote, and more.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">M</div><h3>Rich job details</h3><p>Add location, salary range, deadline, company name, company website, company logo, and filled/expiry controls.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">A</div><h3>Built-in application form</h3><p>Collect full name, email, phone, resume/CV, and cover letter with server-side validation and AJAX support.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">P</div><h3>Private applications inbox</h3><p>Applications are stored as private WordPress posts and managed from Talentora - Applications in wp-admin.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">S</div><h3>Status workflow</h3><p>Use configurable statuses such as Pending, Reviewed, Shortlisted, Rejected, and Hired with activity tracking.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">C</div><h3>CSV export</h3><p>Export application records to a spreadsheet-ready CSV file directly from the Applications list screen.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">E</div><h3>Email notifications</h3><p>Send admin new-application emails, applicant confirmation emails, and applicant status-change emails with templates.</p></article>
+          <article class="feature-card reveal"><div class="feature-icon">D</div><h3>Developer extensibility</h3><p>Template overrides, filters, actions, namespaced classes, PSR-4 autoloading, and translation-ready strings are included.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="showcase">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">Official plugin screenshots</span>
+            <h2>Use real product visuals, not generic placeholders.</h2>
+          </div>
+          <p>The hero no longer uses the WordPress plugin banner as a background. The banner is reserved for branding assets, while the product screenshots demonstrate the real admin and frontend workflow.</p>
+        </div>
+        <div class="tabs reveal" role="tablist" aria-label="Talentora screenshots">
+          <button class="tab active" data-screen="0" type="button">Job editor</button>
+          <button class="tab" data-screen="1" type="button">Single job page</button>
+          <button class="tab" data-screen="2" type="button">Applications</button>
+          <button class="tab" data-screen="3" type="button">Settings</button>
+        </div>
+        <div class="screen-frame reveal">
+          <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <img id="screenImage" src="https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/screenshot-1.png" alt="Talentora job editor screenshot" />
+          <div class="screen-caption">
+            <strong id="screenTitle">Job Post Editor</strong>
+            <span id="screenText">Create a job listing from the WordPress editor and fill in job information, salary, deadlines, working schedule, company details, and logo.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="guide">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">User guide</span>
+            <h2>Install, configure, publish, and collect applications.</h2>
+          </div>
+          <p>This section summarizes the docs in a landing-page-friendly format so visitors can understand the full workflow before installing.</p>
+        </div>
+        <div class="steps-grid">
+          <div class="guide-card reveal">
+            <h3>Quick setup</h3>
+            <div class="timeline">
+              <div class="step"><div class="step-num">1</div><div><strong>Install the plugin</strong><span>Install from WordPress.org or upload the ZIP from Plugins - Add New - Upload Plugin.</span></div></div>
+              <div class="step"><div class="step-num">2</div><div><strong>Flush permalinks</strong><span>After activation, go to Settings - Permalinks and click Save Changes so job URLs work.</span></div></div>
+              <div class="step"><div class="step-num">3</div><div><strong>Configure settings</strong><span>Open Talentora - Settings to adjust apply form shortcode, jobs per page, application statuses, currency, email templates, and email logs.</span></div></div>
+              <div class="step"><div class="step-num">4</div><div><strong>Create jobs</strong><span>Go to Talentora - Add New, write the job description, fill in job details, assign categories/types, and publish.</span></div></div>
+              <div class="step"><div class="step-num">5</div><div><strong>Display jobs</strong><span>Add the jobs shortcode to any page to publish a filterable job board on the frontend.</span></div></div>
+            </div>
+          </div>
+          <div class="code-box reveal">
+            <div class="code-head"><span>Shortcodes</span><button class="copy-btn" data-copy="shortcodes" type="button">Copy</button></div>
+            <pre id="shortcodes"><code>[talentora_jobs]
+[talentora_jobs posts_per_page="15"]
+
+[talentora_application_form]
+[talentora_application_form job_id="123"]
+
+[talentora_apply_form]
+[talentora_apply_form form_shortcode="[contact-form-7 id='123']"]</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="applications" class="showcase">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">Application management</span>
+            <h2>A complete applicant pipeline inside WordPress.</h2>
+          </div>
+          <p>Talentora can use its built-in application system or render a third-party shortcode-based form when configured in settings.</p>
+        </div>
+        <div class="docs-grid">
+          <article class="doc-card reveal"><h3>Built-in form</h3><ul><li>Fields: full name, email, phone, resume/CV, and cover letter.</li><li>Supports PDF, DOC, and DOCX resume files up to 5 MB.</li><li>Uses nonce validation, required field validation, and AJAX or standard POST submission.</li></ul></article>
+          <article class="doc-card reveal"><h3>Admin workflow</h3><ul><li>Applications are stored in private post type <code>talentora_app</code>.</li><li>Admins can review applicant information, related job, resume, cover letter, and status.</li><li>Bulk status changes are available from the Applications list table.</li></ul></article>
+          <article class="doc-card reveal"><h3>Notifications and logs</h3><ul><li>Admin notification email when an application is submitted.</li><li>Applicant confirmation email after successful submission.</li><li>Status change email when an admin updates the workflow status.</li><li>Email logs are available under Talentora - Settings - Email Logs.</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="developers">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">Developer guide</span>
+            <h2>Built for WordPress customization.</h2>
+          </div>
+          <p>Talentora follows a namespaced OOP structure and gives developers safe extension points for templates, queries, classes, shortcodes, and display behavior.</p>
+        </div>
+        <div class="shortcodes reveal">
+          <div class="shortcode"><code>talentora_jobs_query_args</code><span>Filter the WP_Query arguments used by job listings.</span></div>
+          <div class="shortcode"><code>talentora_apply_form_shortcode</code><span>Swap or modify the external apply form shortcode per job.</span></div>
+          <div class="shortcode"><code>talentora_job_card_classes</code><span>Add custom classes to job cards in the listing UI.</span></div>
+          <div class="shortcode"><code>talentora_currency_symbol</code><span>Filter the global currency symbol used around salary values.</span></div>
+          <div class="shortcode"><code>talentora_before_job_list</code><span>Render custom content before the job listing output.</span></div>
+          <div class="shortcode"><code>talentora_after_single_job</code><span>Render custom content after a single job page.</span></div>
+        </div>
+        <div class="guide-card reveal" style="margin-top:18px">
+          <h3>Template override path</h3>
+          <p style="color:var(--muted);line-height:1.7;margin-top:0">Create <code>your-theme/talentora/</code>, copy <code>single-talentora_job.php</code> or <code>archive-talentora_job.php</code> from the plugin <code>templates/</code> folder, then customize the copied version in your theme.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="showcase">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">Future features from docs</span>
+            <h2>Planned improvements and future premium ideas.</h2>
+          </div>
+          <p>The items below come from the public FUTURE-FEATURES.md file. They are roadmap items, not current features.</p>
+        </div>
+        <div class="roadmap">
+          <article class="road-card reveal"><small>Planned - High priority</small><h3>Frontend job submission</h3><p>Employer job submission from the frontend, including guest or registered submissions, moderation, notifications, and approval workflow.</p></article>
+          <article class="road-card reveal"><small>Planned - High priority</small><h3>Employer dashboard</h3><p>A frontend dashboard for employers to view jobs, edit listings, see application statistics, mark jobs filled, and renew expired listings.</p></article>
+          <article class="road-card reveal"><small>Planned - Medium priority</small><h3>Gutenberg blocks</h3><p>Native blocks for job lists, single jobs, job search, featured jobs, and recent jobs.</p></article>
+          <article class="road-card reveal"><small>Planned - Medium priority</small><h3>Smart filtering and search</h3><p>AJAX filtering, salary range filters, date posted filters, remote/on-site filters, and saved search preferences.</p></article>
+          <article class="road-card reveal"><small>Planned - High priority</small><h3>User roles and permissions</h3><p>Dedicated employer and candidate roles, custom capabilities, role-based dashboards, and application tracking per role.</p></article>
+          <article class="road-card reveal"><small>Concept - Premium</small><h3>Paid listings and analytics</h3><p>Future premium concepts include paid job listings, featured jobs, analytics, resume database, AI matching, subscriptions, and multi-currency support.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="assets">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="pill">Brand assets</span>
+            <h2>Official WordPress.org artwork.</h2>
+          </div>
+          <p>The plugin banner is displayed here as a branding asset instead of being stretched behind the hero content.</p>
+        </div>
+        <div class="screen-frame reveal">
+          <img src="https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/banner-1544x500.png" alt="Talentora WordPress.org banner" style="aspect-ratio:auto;object-fit:contain;background:#035bcc" />
+          <div class="screen-caption"><strong>Talentora banner</strong><span>Use this for plugin directories, social previews, or brand sections rather than as a full hero background.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box reveal">
+          <div class="cta-grid">
+            <div>
+              <h2>Publish your job board today.</h2>
+              <p>Install Talentora, add your first job, place the shortcode on a page, and start receiving applications directly in WordPress.</p>
+            </div>
+            <div class="hero-actions" style="margin:0">
+              <a class="btn btn-secondary" href="https://wordpress.org/plugins/talentora/" target="_blank" rel="noreferrer">Download Plugin</a>
+              <a class="btn btn-primary" href="https://github.com/hmbashar/talentora" target="_blank" rel="noreferrer">View GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <a class="brand" href="#top"><img src="https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/icon-256x256.png" alt="Talentora logo" /><span>Talentora</span></a>
+      <div>Simple & Powerful Job Board Plugin for WordPress.</div>
+    </div>
+  </footer>
+
+  <script>
+    const screens = [
+      {
+        image: 'https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/screenshot-1.png',
+        alt: 'Talentora job editor screenshot',
+        title: 'Job Post Editor',
+        text: 'Create a job listing from the WordPress editor and fill in job information, salary, deadlines, working schedule, company details, and logo.'
+      },
+      {
+        image: 'https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/screenshot-2.png',
+        alt: 'Talentora single job page screenshot',
+        title: 'Single Job Page',
+        text: 'A public job detail page with job meta, company information, quick actions, summary sidebar, and the built-in application form.'
+      },
+      {
+        image: 'https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/screenshot-3.png',
+        alt: 'Talentora applications list screenshot',
+        title: 'Applications List',
+        text: 'Review submitted applications in wp-admin, update status in bulk, and export applicant data to CSV.'
+      },
+      {
+        image: 'https://raw.githubusercontent.com/hmbashar/talentora/refs/heads/main/.wordpress-org/screenshot-4.png',
+        alt: 'Talentora settings page screenshot',
+        title: 'Settings Page',
+        text: 'Configure form behavior, jobs per page, application statuses, currency symbol, email templates, and email logs.'
+      }
+    ];
+
+    const tabs = document.querySelectorAll('.tab');
+    const screenImage = document.getElementById('screenImage');
+    const screenTitle = document.getElementById('screenTitle');
+    const screenText = document.getElementById('screenText');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const item = screens[Number(tab.dataset.screen)];
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        screenImage.style.opacity = '0';
+        setTimeout(() => {
+          screenImage.src = item.image;
+          screenImage.alt = item.alt;
+          screenTitle.textContent = item.title;
+          screenText.textContent = item.text;
+          screenImage.style.opacity = '1';
+        }, 180);
+      });
+    });
+
+    document.querySelectorAll('[data-copy]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copy);
+        const text = target.innerText;
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = button.textContent;
+          button.textContent = 'Copied';
+          setTimeout(() => button.textContent = original, 1200);
+        } catch (error) {
+          button.textContent = 'Select code';
+        }
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.14 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

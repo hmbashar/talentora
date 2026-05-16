@@ -1,0 +1,266 @@
+:root {
+    /* Premium Color Palette */
+    --ht-primary: #4f46e5;
+    --ht-primary-hover: #4338ca;
+    --ht-primary-light: #818cf8;
+    --ht-secondary: #64748b;
+    --ht-success: #10b981;
+    --ht-danger: #ef4444;
+    --ht-warning: #f59e0b;
+    --ht-info: #3b82f6;
+    
+    /* Neutral Colors */
+    --ht-bg-light: #f8fafc;
+    --ht-bg-white: #ffffff;
+    --ht-text-main: #0f172a;
+    --ht-text-muted: #64748b;
+    --ht-border: #e2e8f0;
+    --ht-border-dark: #cbd5e1;
+    
+    /* Shadows */
+    --ht-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --ht-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --ht-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --ht-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    
+    /* Spacing & Radius */
+    --ht-radius-sm: 0.375rem;
+    --ht-radius-md: 0.5rem;
+    --ht-radius-lg: 0.75rem;
+    --ht-radius-xl: 1rem;
+    
+    /* Transitions */
+    --ht-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Settings Wrapper */
+.talentora-settings-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ht-text-main);
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Header Section */
+.talentora-header {
+    background: linear-gradient(135deg, var(--ht-primary) 0%, var(--ht-primary-hover) 100%);
+    border-radius: var(--ht-radius-xl);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--ht-shadow-lg);
+    color: white;
+}
+
+.talentora-header-content {
+    max-width: 1000px;
+}
+
+.talentora-page-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+}
+
+.talentora-page-title .dashicons {
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Tabs - Pill Style */
+.nav-tab-wrapper {
+    border-bottom: none !important;
+    padding: 0 !important;
+    margin-bottom: 2rem !important;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-tab {
+    background: transparent;
+    border: 1px solid transparent !important;
+    color: var(--ht-text-muted);
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--ht-radius-md);
+    transition: all 0.2s ease;
+    margin: 0 !important;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.nav-tab .dashicons {
+    font-size: 1.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.nav-tab:hover {
+    color: var(--ht-primary);
+    background: var(--ht-bg-light);
+}
+
+.nav-tab-active,
+.nav-tab-active:hover {
+    background: var(--ht-primary) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--ht-primary) !important;
+    box-shadow: var(--ht-shadow-sm);
+}
+
+/* Card Layout */
+.talentora-card {
+    background: var(--ht-bg-white);
+    border-radius: var(--ht-radius-lg);
+    box-shadow: var(--ht-shadow-md);
+    border: 1px solid var(--ht-border);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.talentora-card-header {
+    padding: 1.75rem 2rem;
+    border-bottom: 2px solid var(--ht-bg-light);
+    background: linear-gradient(to bottom, #ffffff, var(--ht-bg-light));
+}
+
+.talentora-card-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ht-text-main);
+}
+
+.talentora-card-header h2 .dashicons {
+    color: var(--ht-primary);
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.talentora-card-header .description {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.talentora-card-body {
+    padding: 2rem;
+}
+
+/* Forms */
+.form-table th {
+    font-weight: 600;
+    color: var(--ht-text-main);
+    padding: 20px 10px 20px 0;
+}
+
+.form-table td {
+    padding: 15px 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+    border: 1px solid var(--ht-border) !important;
+    border-radius: var(--ht-radius-md) !important;
+    padding: 0.625rem 1rem !important;
+    box-shadow: var(--ht-shadow-sm) !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+    width: 100%;
+    max-width: 500px;
+    font-size: 0.95rem;
+    color: var(--ht-text-main);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--ht-primary) !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    outline: none !important;
+}
+
+.description {
+    color: var(--ht-text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Buttons */
+.button.button-primary {
+    background: var(--ht-primary) !important;
+    border-color: var(--ht-primary) !important;
+    color: #ffffff !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: var(--ht-radius-md) !important;
+    font-weight: 600 !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: var(--ht-shadow-sm) !important;
+    text-shadow: none !important;
+}
+
+.button.button-primary:hover {
+    background: var(--ht-primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--ht-shadow-md) !important;
+}
+
+#talentora-clear-log {
+    background: #ffffff !important;
+    color: var(--ht-danger) !important;
+    border: 1px solid var(--ht-border) !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: var(--ht-radius-md) !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease;
+}
+
+#talentora-clear-log:hover {
+    background: #fee2e2 !important;
+    border-color: var(--ht-danger) !important;
+}
+
+/* Log Viewer */
+.talentora-log-viewer {
+    background: #1e293b; /* Slate 800 */
+    color: #cbd5e1; /* Slate 300 */
+    padding: 1.5rem;
+    border-radius: var(--ht-radius-md);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875rem;
+    height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.3);
+}
+
+.talentora-log-viewer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.talentora-log-viewer::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+.talentora-log-viewer::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
