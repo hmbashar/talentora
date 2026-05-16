@@ -81,14 +81,11 @@ Optional attribute: `form_shortcode` — Override the global apply form shortcod
 
 Full documentation is available in the `docs/` folder inside the plugin:
 
-* **User Guide** – Installation, job creation, settings, shortcodes, and template override.
-  `docs/user-guide.md` | https://github.com/hmbashar/talentora/blob/main/docs/user-guide.md
+* **[User Guide](https://github.com/hmbashar/talentora/blob/main/docs/user-guide.md)** – Installation, job creation, settings, shortcodes, and template override.
 
-* **Application Management** – Built-in application form, applications inbox, status workflow, bulk actions, CSV export, resume download, email notifications, activity log, and spam protection.
-  `docs/application-management.md` | https://github.com/hmbashar/talentora/blob/main/docs/application-management.md
+* **[Application Management](https://github.com/hmbashar/talentora/blob/main/docs/application-management.md)** – Built-in application form, applications inbox, status workflow, bulk actions, CSV export, resume download, email notifications, activity log, and spam protection.
 
-* **Developer Guide** – Architecture, namespace/autoloading, post types, meta fields reference, hooks & filters, shortcodes, Settings API, template system, assets, and release checklist.
-  `docs/developer-guide.md` | https://github.com/hmbashar/talentora/blob/main/docs/developer-guide.md
+* **[Developer Guide](https://github.com/hmbashar/talentora/blob/main/docs/developer-guide.md)** – Architecture, namespace/autoloading, post types, meta fields reference, hooks & filters, shortcodes, Settings API, template system, assets, and release checklist.
 
 = Template Override =
 
