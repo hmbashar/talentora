@@ -4,7 +4,7 @@ Contributors: hmbashar
 Tags: job board, job listing, recruitment, employment, careers
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 0.0.1
+Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,6 +12,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 A simple yet powerful job board plugin for WordPress. Post jobs, manage applications, and help employers find the right talent.
 
 == Description ==
+
+**[🌐 Visit the Plugin Landing Page →](https://hmbashar.github.io/talentora/)**
 
 **Talentora** is a lightweight, developer-friendly job board plugin that makes it easy to add a professional career page to any WordPress site. Whether you run a small business or a large recruiting platform, Talentora gives you all the tools you need to post jobs, categorize them, and let candidates apply — all without leaving WordPress.
 
