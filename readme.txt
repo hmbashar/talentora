@@ -4,7 +4,7 @@ Contributors: hmbashar
 Tags: job board, job listing, recruitment, employment, careers
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.0.0
+Stable tag: 0.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,15 +17,45 @@ A simple yet powerful job board plugin for WordPress. Post jobs, manage applicat
 
 = Key Features =
 
+**Job Management**
+
 * **Custom Post Type** – A dedicated `Job` post type with clean, SEO-friendly URLs (`/job/job-title/`).
-* **Job Categories & Types** – Flexible hierarchical taxonomies to organize your listings (e.g., Engineering, Remote, Full-Time).
-* **Rich Job Meta Fields** – Location, salary range, currency, application deadline, company name/logo, and more.
-* **Shortcode-Powered** – Display a filterable job board anywhere using `[talentora_jobs]`.
-* **Apply Form Integration** – Works with any shortcode-based form plugin (Contact Form 7, WPForms, Gravity Forms).
-* **Template Override Support** – Copy templates to your theme and customize without editing plugin files.
+* **Job Categories & Types** – Flexible hierarchical taxonomies to organize listings (e.g., Engineering, Remote, Full-Time).
+* **Rich Job Meta Fields** – Location, salary range, currency symbol, application deadline, company name, company website, and company logo.
+* **Job Filled Flag** – Mark any job as filled to automatically stop accepting new applications.
+* **Shortcode-Powered Listings** – Display a filterable job board anywhere with `[talentora_jobs]`.
+
+**Application Management**
+
+* **Built-in Application Form** – No third-party form plugin required. The `[talentora_application_form]` shortcode renders a complete form (name, email, phone, cover letter, resume upload).
+* **Resume Upload** – Supports PDF, DOC, DOCX files up to 5 MB; stored privately in the WordPress Media Library.
+* **Applications Inbox** – All submissions are stored as a private custom post type (`talentora_app`) and viewable under Talentora → Applications.
+* **Status Workflow** – Configurable application statuses (Pending, Reviewed, Shortlisted, Rejected, Hired) with per-application status selector.
+* **Bulk Status Actions** – Change the status of multiple applications at once directly from the list screen.
+* **CSV Export** – Export all applications to a spreadsheet-ready CSV file with one click.
+* **Secure Resume Download** – Nonce-protected download link for each applicant's CV, accessible only to authorised admins.
+* **Activity Log** – Per-application audit trail of every status change, timestamped and attributed to the acting user.
+
+**Email Notifications**
+
+* **Admin New-Application Email** – Notifies the site admin whenever a new application is submitted.
+* **Applicant Confirmation Email** – Sends an acknowledgement to the candidate on successful submission.
+* **Status-Change Email** – Notifies the applicant whenever their application status is updated.
+* **Customisable Templates** – Edit subject lines and message bodies with dynamic placeholders (`{applicant_name}`, `{job_title}`, `{status}`, etc.).
+* **Email Log** – View and clear a log of all emails sent by the plugin (Talentora → Settings → Email Logs).
+
+**Settings**
+
+* **General Settings** – Configure the global apply form shortcode, jobs per page, application statuses, and currency symbol.
+* **Email Templates** – Customise all three notification email templates from the admin panel.
+* **Third-Party Form Support** – Optionally use Contact Form 7, WPForms, Gravity Forms, or any shortcode-based form instead of the built-in form.
+
+**Developer & Extensibility**
+
+* **Template Override Support** – Copy templates to your theme folder and customise without touching plugin files.
 * **Developer-Friendly Hooks** – Actions and filters to extend every part of the plugin.
-* **React-Based Settings** – Clean, modern admin settings page.
-* **Translation Ready** – Fully internationalised with `.pot` file included.
+* **Spam Protection** – Honeypot field on the built-in application form silently blocks bot submissions without CAPTCHA.
+* **Translation Ready** – Fully internationalised with a `.pot` file included.
 
 = Shortcodes =
 
@@ -35,11 +65,30 @@ Display the job listing:
 
 Optional attribute: `posts_per_page` — Number of jobs to show per page.
 
-Display the apply form:
+Display the built-in application form:
+
+`[talentora_application_form]`
+
+Optional attribute: `job_id` — The job post ID to link the form to (defaults to the current post).
+
+Display an external apply form (third-party plugin):
 
 `[talentora_apply_form]`
 
 Optional attribute: `form_shortcode` — Override the global apply form shortcode for a specific placement.
+
+= Documentation =
+
+Full documentation is available in the `docs/` folder inside the plugin:
+
+* **User Guide** – Installation, job creation, settings, shortcodes, and template override.
+  `docs/user-guide.md` | https://github.com/hmbashar/talentora/blob/main/docs/user-guide.md
+
+* **Application Management** – Built-in application form, applications inbox, status workflow, bulk actions, CSV export, resume download, email notifications, activity log, and spam protection.
+  `docs/application-management.md` | https://github.com/hmbashar/talentora/blob/main/docs/application-management.md
+
+* **Developer Guide** – Architecture, namespace/autoloading, post types, meta fields reference, hooks & filters, shortcodes, Settings API, template system, assets, and release checklist.
+  `docs/developer-guide.md` | https://github.com/hmbashar/talentora/blob/main/docs/developer-guide.md
 
 = Template Override =
 
@@ -56,15 +105,18 @@ Available templates: `single-talentora_job.php`, `archive-talentora_job.php`.
 * `talentora_jobs_query_args` – Modify the WP_Query arguments for the job listing.
 * `talentora_apply_form_shortcode` – Modify the apply form shortcode string per job.
 * `talentora_currency_symbol` – Filter the currency symbol.
+* `talentora_job_card_classes` – Add extra CSS classes to a job card.
 
 **Actions**
 
 * `talentora_before_job_list` – Fires before the job listing is rendered.
 * `talentora_after_job_list` – Fires after the job listing is rendered.
+* `talentora_before_single_job` – Fires before single job content (passes `$job_id`).
+* `talentora_after_single_job` – Fires after single job content (passes `$job_id`).
 
 = Privacy =
 
-This plugin does not collect or store any personal data. It does not set any cookies. It stores only the job-related data that site administrators explicitly enter. For any GDPR considerations related to job application forms, please refer to the respective form plugin's privacy documentation.
+This plugin stores applicant-submitted data (name, email, phone, cover letter, resume) as part of its job application processing. This data is stored in the WordPress database and the Media Library, and is accessible only to authorised administrators. Site owners are responsible for disclosing this data collection in their privacy policy. The plugin does not share data with any external service and does not set any cookies on the frontend.
 
 == Installation ==
 
@@ -111,27 +163,40 @@ No. Talentora only loads its assets on pages where they are needed (job listing 
 
 == Screenshots ==
 
-1. Job listing page with filterable shortcode output.
-2. Single job detail page with company info and apply form.
-3. Add/edit job screen with Job Details metabox in the WordPress admin.
-4. Plugin settings page (Apply Form Shortcode, Jobs Per Page, Currency Symbol).
-5. Job Categories and Job Types management screens.
+1. **Job Post Editor** – The WordPress block editor showing a job post with the Job Details metabox: location, salary range, deadline, company name, logo, and the "Job Filled" toggle.
+2. **Single Job Page** – The public-facing single job detail page displaying job meta (location, salary, deadline, company) and the built-in application form.
+3. **Applications List** – The Talentora → Applications admin screen showing submitted applications with columns for applicant name, job, email, phone, status, date, and the CSV Export button.
+4. **Settings Page** – The Talentora → Settings admin panel with the General Settings tab (apply form shortcode, jobs per page, application statuses, currency symbol) and the Email Templates and Email Logs tabs.
 
 == Changelog ==
 
-= 1.0.0 – 2025-03-01 =
+= 0.0.1 – 2025-03-01 =
 * Initial release.
-* Custom post type `talentora_job` with clean permalink structure.
-* Job Categories (`talentora_job_category`) and Job Types (`talentora_job_type`) taxonomies.
-* Job details meta: location, salary range, currency symbol, deadline, company info, logo.
+* Custom post type `talentora_job` with clean permalink structure (`/job/job-title/`).
+* Job Categories (`talentora_job_category`) and Job Types (`talentora_job_type`) hierarchical taxonomies.
+* Job details meta: location, salary min/max, currency symbol, application deadline, company name, company website, company logo, job-filled flag.
 * `[talentora_jobs]` shortcode with `posts_per_page` attribute.
-* `[talentora_apply_form]` shortcode with `form_shortcode` attribute.
+* `[talentora_apply_form]` shortcode with `form_shortcode` attribute (third-party form integration).
+* Built-in application form shortcode `[talentora_application_form]` with name, email, phone, cover letter, and resume upload (PDF/DOC/DOCX, max 5 MB).
+* Private `talentora_app` custom post type to store submitted applications.
+* Applications list admin screen with columns: applicant, job, email, phone, status, date.
+* Configurable application status workflow (Pending, Reviewed, Shortlisted, Rejected, Hired).
+* Bulk status update actions on the applications list screen.
+* CSV export of all applications.
+* Secure nonce-protected resume download for administrators.
+* Per-application activity log tracking status changes.
+* Admin new-application email notification.
+* Applicant submission confirmation email.
+* Status-change email notification to applicant.
+* Customisable email templates with dynamic placeholders.
+* Email log viewer and clear function (Talentora → Settings → Email Logs).
+* Honeypot spam protection on the built-in application form.
 * Template override support for `single-talentora_job.php` and `archive-talentora_job.php`.
-* React-based admin settings page (apply form shortcode, jobs per page, currency symbol).
-* Developer hooks: `talentora_before_job_list`, `talentora_after_job_list`, `talentora_jobs_query_args`, `talentora_apply_form_shortcode`, `talentora_currency_symbol`.
+* Settings page with General, Email Templates, and Email Logs tabs.
+* Developer hooks: `talentora_before_job_list`, `talentora_after_job_list`, `talentora_before_single_job`, `talentora_after_single_job`, `talentora_jobs_query_args`, `talentora_apply_form_shortcode`, `talentora_currency_symbol`, `talentora_job_card_classes`.
 * Translation-ready with `.pot` file.
 
 == Upgrade Notice ==
 
-= 1.0.0 =
+= 0.0.1 =
 Initial release. No upgrade steps required.
