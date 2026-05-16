@@ -10,5 +10,4 @@ return array(
     'Talentora\\Frontend\\' => array($baseDir . '/Frontend'),
     'Talentora\\Admin\\' => array($baseDir . '/Admin'),
     'Talentora\\' => array($baseDir . '/Inc'),
-    'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => array($vendorDir . '/dealerdirect/phpcodesniffer-composer-installer/src'),
 );

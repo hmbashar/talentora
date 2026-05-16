@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-02T06:28:57+00:00\n"
+"POT-Creation-Date: 2026-05-10T07:32:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: talentora\n"
@@ -222,7 +222,7 @@ msgid "Third Party Form Shortcode"
 msgstr ""
 
 #: Admin/Metaboxes/JobMetabox.php:335
-#: Admin/Pages/Settings.php:285
+#: Admin/Pages/Settings.php:316
 msgid "[contact-form-7 id=\"123\"]"
 msgstr ""
 
@@ -247,158 +247,158 @@ msgstr ""
 msgid "Enable this to mark the job as filled. Filled jobs are marked as closed on the frontend."
 msgstr ""
 
-#: Admin/Pages/Settings.php:49
+#: Admin/Pages/Settings.php:80
 msgid "General Configuration"
 msgstr ""
 
-#: Admin/Pages/Settings.php:56
+#: Admin/Pages/Settings.php:87
 msgid "Third-Party Form Shortcode"
 msgstr ""
 
-#: Admin/Pages/Settings.php:64
+#: Admin/Pages/Settings.php:95
 msgid "Jobs Per Page"
 msgstr ""
 
-#: Admin/Pages/Settings.php:72
+#: Admin/Pages/Settings.php:103
 msgid "Application Statuses"
 msgstr ""
 
-#: Admin/Pages/Settings.php:80
+#: Admin/Pages/Settings.php:111
 msgid "Currency Symbol"
 msgstr ""
 
-#: Admin/Pages/Settings.php:97
+#: Admin/Pages/Settings.php:128
 msgid "Email Notification Templates"
 msgstr ""
 
-#: Admin/Pages/Settings.php:104
+#: Admin/Pages/Settings.php:135
 msgid "Admin Notification Subject"
 msgstr ""
 
-#: Admin/Pages/Settings.php:112
+#: Admin/Pages/Settings.php:143
 msgid "Admin Notification Message"
 msgstr ""
 
-#: Admin/Pages/Settings.php:120
+#: Admin/Pages/Settings.php:151
 msgid "Applicant Confirmation Subject"
 msgstr ""
 
-#: Admin/Pages/Settings.php:128
+#: Admin/Pages/Settings.php:159
 msgid "Applicant Confirmation Message"
 msgstr ""
 
-#: Admin/Pages/Settings.php:136
+#: Admin/Pages/Settings.php:167
 msgid "Status Change Subject"
 msgstr ""
 
-#: Admin/Pages/Settings.php:144
+#: Admin/Pages/Settings.php:175
 msgid "Status Change Message"
 msgstr ""
 
-#: Admin/Pages/Settings.php:174
+#: Admin/Pages/Settings.php:205
 msgid "Manage your recruitment settings and preferences"
 msgstr ""
 
-#: Admin/Pages/Settings.php:184
+#: Admin/Pages/Settings.php:215
 msgid "General Settings"
 msgstr ""
 
-#: Admin/Pages/Settings.php:189
+#: Admin/Pages/Settings.php:220
 msgid "Email Templates"
 msgstr ""
 
-#: Admin/Pages/Settings.php:194
+#: Admin/Pages/Settings.php:225
 msgid "Email Logs"
 msgstr ""
 
-#: Admin/Pages/Settings.php:217
+#: Admin/Pages/Settings.php:248
 msgid "Save Changes"
 msgstr ""
 
-#: Admin/Pages/Settings.php:234
+#: Admin/Pages/Settings.php:265
 msgid "Application Emails Log"
 msgstr ""
 
-#: Admin/Pages/Settings.php:235
+#: Admin/Pages/Settings.php:266
 msgid "View all email notifications sent by the system"
 msgstr ""
 
-#: Admin/Pages/Settings.php:246
+#: Admin/Pages/Settings.php:277
 msgid "No email logs yet. Logs will appear here when emails are sent."
 msgstr ""
 
-#: Admin/Pages/Settings.php:254
+#: Admin/Pages/Settings.php:285
 msgid "Log file location: "
 msgstr ""
 
-#: Admin/Pages/Settings.php:261
+#: Admin/Pages/Settings.php:292
 msgid "Clear Log"
 msgstr ""
 
-#: Admin/Pages/Settings.php:263
+#: Admin/Pages/Settings.php:294
 msgid "Warning: This action cannot be undone."
 msgstr ""
 
-#: Admin/Pages/Settings.php:268
+#: Admin/Pages/Settings.php:299
 msgid "No log file found. Logs will be created automatically when emails are sent."
 msgstr ""
 
-#: Admin/Pages/Settings.php:288
+#: Admin/Pages/Settings.php:319
 msgid "Global fallback shortcode for all jobs. Can be overridden per job in the post editor."
 msgstr ""
 
-#: Admin/Pages/Settings.php:306
+#: Admin/Pages/Settings.php:337
 msgid "Number of jobs to display per page in the job listings."
 msgstr ""
 
-#: Admin/Pages/Settings.php:327
+#: Admin/Pages/Settings.php:358
 msgid "Comma-separated list of application statuses (e.g., Pending, Reviewed, Shortlisted)."
 msgstr ""
 
-#: Admin/Pages/Settings.php:331
+#: Admin/Pages/Settings.php:362
 msgid "Changing these may affect existing application filtering."
 msgstr ""
 
-#: Admin/Pages/Settings.php:349
+#: Admin/Pages/Settings.php:380
 msgid "The currency symbol to display before salary values (e.g., $, €, £)."
 msgstr ""
 
-#: Admin/Pages/Settings.php:365
+#: Admin/Pages/Settings.php:396
 msgid "Customize email templates sent to applicants and administrators."
 msgstr ""
 
-#: Admin/Pages/Settings.php:368
+#: Admin/Pages/Settings.php:399
 msgid "Available Placeholders:"
 msgstr ""
 
-#: Admin/Pages/Settings.php:370
+#: Admin/Pages/Settings.php:401
 msgid "Name of the applicant"
 msgstr ""
 
-#: Admin/Pages/Settings.php:371
+#: Admin/Pages/Settings.php:402
 msgid "Job position title"
 msgstr ""
 
-#: Admin/Pages/Settings.php:372
+#: Admin/Pages/Settings.php:403
 msgid "Your website name"
 msgstr ""
 
-#: Admin/Pages/Settings.php:373
+#: Admin/Pages/Settings.php:404
 msgid "Application status"
 msgstr ""
 
-#: Admin/Pages/Settings.php:374
+#: Admin/Pages/Settings.php:405
 msgid "Link to view application"
 msgstr ""
 
 #. translators: {site_name}: Site name, {job_title}: Job title.
-#: Admin/Pages/Settings.php:389
+#: Admin/Pages/Settings.php:420
 #: Inc/NotificationManager.php:52
 #, php-format
 msgid "[%site_name] New Job Application: {job_title}"
 msgstr ""
 
-#: Admin/Pages/Settings.php:404
+#: Admin/Pages/Settings.php:435
 #: Inc/NotificationManager.php:58
 msgid ""
 "You have received a new job application.\n"
@@ -409,12 +409,12 @@ msgid ""
 "View application: {application_url}"
 msgstr ""
 
-#: Admin/Pages/Settings.php:418
+#: Admin/Pages/Settings.php:449
 #: Inc/NotificationManager.php:90
 msgid "Application Received: {job_title}"
 msgstr ""
 
-#: Admin/Pages/Settings.php:432
+#: Admin/Pages/Settings.php:463
 #: Inc/NotificationManager.php:91
 msgid ""
 "Dear {applicant_name},\n"
@@ -427,12 +427,12 @@ msgid ""
 "{site_name}"
 msgstr ""
 
-#: Admin/Pages/Settings.php:446
+#: Admin/Pages/Settings.php:477
 #: Inc/NotificationManager.php:124
 msgid "Application Update: {job_title}"
 msgstr ""
 
-#: Admin/Pages/Settings.php:460
+#: Admin/Pages/Settings.php:491
 #: Inc/NotificationManager.php:125
 msgid ""
 "Dear {applicant_name},\n"
@@ -443,11 +443,11 @@ msgid ""
 "{site_name}"
 msgstr ""
 
-#: Admin/Pages/Settings.php:479
+#: Admin/Pages/Settings.php:510
 msgid "Permission denied."
 msgstr ""
 
-#: Admin/Pages/Settings.php:488
+#: Admin/Pages/Settings.php:519
 msgid "Log file not found."
 msgstr ""
 
