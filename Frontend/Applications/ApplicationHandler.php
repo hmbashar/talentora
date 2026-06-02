@@ -198,14 +198,11 @@ class ApplicationHandler
     private function process_application_submission($post_data, $files)
     {
         // DEBUG: Check if file exists immediately upon entering function
-        if (!empty($files['tmp_name'])) {
-            $exists_early = file_exists($files['tmp_name']);
-            if (!$exists_early) {
-                return array(
-                    'success' => false,
-                    'message' => 'Submission Failed',
-                    'errors' => array('File disappeared before processing! tmp_name: ' . $files['tmp_name'])
-                );
+        if (!empty($files['tmp_name']) && file_exists($files['tmp_name'])) {
+            // Copy it immediately to prevent it from disappearing
+            $safe_tmp = wp_upload_dir()['basedir'] . '/talentora_tmp_' . basename($files['tmp_name']);
+            if (copy($files['tmp_name'], $safe_tmp)) {
+                $files['tmp_name'] = $safe_tmp; // Use the safe copy from now on
             }
         }
 
@@ -395,21 +392,18 @@ class ApplicationHandler
                 $upload = wp_upload_bits($file['name'], null, file_get_contents($file['tmp_name']));
                 if (!empty($upload['error'])) {
                     $errors[] = $upload['error'];
+                    @unlink($file['tmp_name']); // cleanup
                     return 0;
                 }
                 $upload['type'] = $file['type'];
             } else {
-                $debug = json_encode(array(
-                    'tmp_name' => $file['tmp_name'],
-                    'readable' => @is_readable($file['tmp_name']),
-                    'exists' => file_exists($file['tmp_name']),
-                    'is_upload' => is_uploaded_file($file['tmp_name']),
-                    'pre_debug' => $pre_debug
-                ));
-                $errors[] = $upload['error'] . ' [DEBUG: ' . $debug . ']';
+                $errors[] = $upload['error'];
+                @unlink($file['tmp_name']); // cleanup
                 return 0;
             }
         }
+        
+        @unlink($file['tmp_name']); // cleanup after successful upload
 
         // Create attachment
         $attachment = array(
