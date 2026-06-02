@@ -382,7 +382,13 @@ class ApplicationHandler
                 }
                 $upload['type'] = $file['type'];
             } else {
-                $errors[] = $upload['error'];
+                $debug = json_encode(array(
+                    'tmp_name' => $file['tmp_name'],
+                    'readable' => @is_readable($file['tmp_name']),
+                    'exists' => file_exists($file['tmp_name']),
+                    'is_upload' => is_uploaded_file($file['tmp_name'])
+                ));
+                $errors[] = $upload['error'] . ' [DEBUG: ' . $debug . ']';
                 return 0;
             }
         }
