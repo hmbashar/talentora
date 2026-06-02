@@ -136,6 +136,15 @@ class ApplicationHandler
                         ? sanitize_textarea_field(wp_unslash($_POST['cover_letter']))
                         : '',
                 );
+                
+                $custom_fields = json_decode(get_option('talentora_custom_form_fields', '[]'), true);
+                if (is_array($custom_fields)) {
+                    foreach ($custom_fields as $field) {
+                        if (empty($field['name'])) continue;
+                        $field_name = 'talentora_custom_' . $field['name'];
+                        $sanitized_data[$field_name] = isset($_POST[$field_name]) ? sanitize_text_field(wp_unslash($_POST[$field_name])) : '';
+                    }
+                }
                 set_transient('talentora_application_data_' . $job_id, $sanitized_data, 60);
             }
             wp_safe_redirect(get_permalink($job_id) . '#application-form');
@@ -251,6 +260,38 @@ class ApplicationHandler
             $errors[] = esc_html__('Cover letter is required.', 'talentora');
         }
 
+        // Validate custom fields
+        $custom_fields_json = get_option('talentora_custom_form_fields', '[]');
+        $custom_fields = json_decode($custom_fields_json, true);
+        $custom_data_to_save = array();
+
+        if (is_array($custom_fields) && !empty($custom_fields)) {
+            foreach ($custom_fields as $field) {
+                if (empty($field['name'])) continue;
+                $field_name = 'talentora_custom_' . $field['name'];
+                
+                $val = isset($_POST[$field_name]) ? wp_unslash($_POST[$field_name]) : '';
+                
+                // Sanitize
+                if ($field['type'] === 'textarea') {
+                    $val = sanitize_textarea_field($val);
+                } elseif ($field['type'] === 'url') {
+                    $val = esc_url_raw($val);
+                } elseif ($field['type'] === 'checkbox') {
+                    $val = !empty($val) ? '1' : '0';
+                } else {
+                    $val = sanitize_text_field($val);
+                }
+                
+                // Validate
+                if (!empty($field['required']) && empty($val)) {
+                    $errors[] = sprintf(esc_html__('%s is required.', 'talentora'), $field['label']);
+                }
+                
+                $custom_data_to_save[$field_name] = $val;
+            }
+        }
+
         // Handle resume upload
         $resume_id = 0;
         if (!empty($files) && isset($files['error']) && UPLOAD_ERR_OK === $files['error']) {
@@ -269,7 +310,7 @@ class ApplicationHandler
         }
 
         // Create application post
-        $application_id = $this->create_application($job_id, $name, $email, $phone, $cover_letter, $resume_id);
+        $application_id = $this->create_application($job_id, $name, $email, $phone, $cover_letter, $resume_id, $custom_data_to_save);
 
         if ($application_id) {
             // Send notifications
@@ -362,10 +403,11 @@ class ApplicationHandler
      * @param string $phone        Applicant phone.
      * @param string $cover_letter Cover letter.
      * @param int    $resume_id    Resume attachment ID.
+     * @param array  $custom_data  Custom form fields data.
      * @return int Application post ID or 0 on failure.
      * @since 1.0.0
      */
-    private function create_application($job_id, $name, $email, $phone, $cover_letter, $resume_id)
+    private function create_application($job_id, $name, $email, $phone, $cover_letter, $resume_id, $custom_data = array())
     {
         $application_data = array(
             'post_title' => sprintf(
@@ -388,6 +430,12 @@ class ApplicationHandler
             update_post_meta($application_id, 'talentora_applicant_phone', $phone);
             update_post_meta($application_id, 'talentora_cover_letter', $cover_letter);
             update_post_meta($application_id, 'talentora_resume_id', $resume_id);
+            
+            if (!empty($custom_data) && is_array($custom_data)) {
+                foreach ($custom_data as $key => $val) {
+                    update_post_meta($application_id, $key, $val);
+                }
+            }
 
             // Set default status to pending
             update_post_meta($application_id, 'talentora_application_status', 'Pending');
@@ -511,6 +559,42 @@ class ApplicationHandler
                         </div>
                     </div>
                 </div>
+
+                <?php
+                // Render custom form fields
+                $custom_fields_json = get_option('talentora_custom_form_fields', '[]');
+                $custom_fields = json_decode($custom_fields_json, true);
+                
+                if (is_array($custom_fields) && !empty($custom_fields)) {
+                    foreach ($custom_fields as $field) {
+                        if (empty($field['name'])) continue;
+                        $field_id = 'talentora_custom_' . esc_attr($field['name']);
+                        $is_required = !empty($field['required']) ? 'required' : '';
+                        $req_star = !empty($field['required']) ? ' <span class="required">*</span>' : '';
+                        $value = isset($data[$field_id]) ? $data[$field_id] : '';
+                        
+                        echo '<div class="talentora-form-field full-width custom-field">';
+                        echo '<label for="' . esc_attr($field_id) . '">' . esc_html($field['label']) . $req_star . '</label>';
+                        
+                        switch ($field['type']) {
+                            case 'textarea':
+                                echo '<textarea id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" rows="4" ' . $is_required . '>' . esc_textarea($value) . '</textarea>';
+                                break;
+                            case 'checkbox':
+                                $checked = checked($value, '1', false);
+                                echo '<label style="font-weight: normal; display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="1" ' . $checked . ' ' . $is_required . '> ' . esc_html__('Yes', 'talentora') . '</label>';
+                                break;
+                            case 'url':
+                                echo '<div class="input-with-icon"><span class="dashicons dashicons-admin-links"></span><input type="url" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="' . esc_attr($value) . '" ' . $is_required . '></div>';
+                                break;
+                            default: // text
+                                echo '<div class="input-with-icon"><span class="dashicons dashicons-edit"></span><input type="text" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="' . esc_attr($value) . '" ' . $is_required . '></div>';
+                                break;
+                        }
+                        echo '</div>';
+                    }
+                }
+                ?>
 
                 <div class="talentora-form-field full-width">
                     <label for="cover_letter">

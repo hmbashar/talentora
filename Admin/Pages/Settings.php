@@ -114,6 +114,18 @@ class Settings
             'talentora_general_section'
         );
 
+        // Form Builder Settings
+        register_setting('talentora_form_builder_settings', 'talentora_custom_form_fields', array(
+            'type' => 'string',
+            'sanitize_callback' => array($this, 'sanitize_form_fields')
+        ));
+
+        add_settings_section(
+            'talentora_form_builder_section',
+            __('Application Form Builder', 'talentora'),
+            array($this, 'form_builder_section_callback'),
+            'talentora_form_builder_settings'
+        );
 
         // Email Template Settings
         register_setting('talentora_email_settings', 'talentora_admin_notification_subject', 'sanitize_text_field');
@@ -214,6 +226,11 @@ class Settings
                     <span class="dashicons dashicons-admin-generic"></span>
                     <span><?php esc_html_e('General Settings', 'talentora'); ?></span>
                 </a>
+                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=talentora_job&page=talentora-settings&tab=form_builder' ) ); ?>"
+                    class="nav-tab <?php echo $active_tab == 'form_builder' ? 'nav-tab-active' : ''; ?>">
+                    <span class="dashicons dashicons-feedback"></span>
+                    <span><?php esc_html_e('Form Builder', 'talentora'); ?></span>
+                </a>
                 <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=talentora_job&page=talentora-settings&tab=email_templates' ) ); ?>"
                     class="nav-tab <?php echo $active_tab == 'email_templates' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-email"></span>
@@ -237,6 +254,9 @@ class Settings
                             if ($active_tab == 'general') {
                                 settings_fields('talentora_general_settings');
                                 do_settings_sections('talentora_general_settings');
+                            } else if ($active_tab == 'form_builder') {
+                                settings_fields('talentora_form_builder_settings');
+                                do_settings_sections('talentora_form_builder_settings');
                             } else if ($active_tab == 'email_templates') {
                                 settings_fields('talentora_email_settings');
                                 do_settings_sections('talentora_email_settings');
@@ -383,6 +403,136 @@ class Settings
                 <?php
     }
 
+
+    /**
+     * Sanitize Form Builder Fields
+     */
+    public function sanitize_form_fields($value) {
+        $decoded = json_decode(stripslashes($value), true);
+        if (is_array($decoded)) {
+            $clean = array();
+            foreach ($decoded as $field) {
+                if (!empty($field['label']) && !empty($field['type'])) {
+                    $clean[] = array(
+                        'name' => sanitize_title($field['label']),
+                        'label' => sanitize_text_field($field['label']),
+                        'type' => sanitize_text_field($field['type']),
+                        'required' => !empty($field['required']) ? 1 : 0
+                    );
+                }
+            }
+            return wp_json_encode($clean);
+        }
+        return '[]';
+    }
+
+    /**
+     * Form Builder Section Callback
+     */
+    public function form_builder_section_callback() {
+        $value = get_option('talentora_custom_form_fields', '[]');
+        if(empty($value)) $value = '[]';
+        ?>
+        <div class="talentora-form-builder-wrap">
+            <p class="description"><?php esc_html_e('Add custom fields to your built-in application form. These will appear dynamically.', 'talentora'); ?></p>
+            <input type="hidden" name="talentora_custom_form_fields" id="talentora_custom_form_fields" value="<?php echo esc_attr($value); ?>">
+            
+            <div id="talentora-form-builder-ui" style="margin-top: 20px;"></div>
+            
+            <button type="button" class="button button-secondary" id="talentora-add-field-btn" style="margin-top: 15px;">
+                <span class="dashicons dashicons-plus" style="margin-top: 3px;"></span> <?php esc_html_e('Add New Field', 'talentora'); ?>
+            </button>
+            
+            <style>
+                .talentora-fb-field { background: #fff; border: 1px solid #ccd0d4; padding: 20px; margin-bottom: 15px; border-radius: 4px; position: relative; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
+                .talentora-fb-field .remove-field { position: absolute; top: 15px; right: 15px; color: #d63638; cursor: pointer; }
+                .talentora-fb-field .remove-field:hover { color: #8a2424; }
+                .talentora-fb-row { display: flex; gap: 20px; align-items: center; }
+                .talentora-fb-row > div { flex: 1; }
+                .talentora-fb-row label { display: block; margin-bottom: 8px; font-weight: 600; color: #1d2327; }
+                .talentora-fb-row input[type="text"], .talentora-fb-row select { width: 100%; max-width: none; }
+                .talentora-fb-req-wrap { flex: 0 0 auto !important; margin-top: 25px; }
+            </style>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const container = document.getElementById('talentora-form-builder-ui');
+                const addBtn = document.getElementById('talentora-add-field-btn');
+                const hiddenInput = document.getElementById('talentora_custom_form_fields');
+                
+                let fields = [];
+                try {
+                    fields = JSON.parse(hiddenInput.value || '[]');
+                } catch(e) { fields = []; }
+                
+                function render() {
+                    container.innerHTML = '';
+                    if(fields.length === 0) {
+                        container.innerHTML = '<p class="description"><?php esc_html_e("No custom fields added yet.", "talentora"); ?></p>';
+                    }
+                    
+                    fields.forEach((field, index) => {
+                        const div = document.createElement('div');
+                        div.className = 'talentora-fb-field';
+                        
+                        div.innerHTML = `
+                            <span class="dashicons dashicons-trash remove-field" data-index="${index}" title="Remove Field"></span>
+                            <div class="talentora-fb-row">
+                                <div>
+                                    <label>Field Label</label>
+                                    <input type="text" class="fb-label regular-text" value="${field.label || ''}" data-index="${index}" placeholder="e.g. LinkedIn Profile URL">
+                                </div>
+                                <div>
+                                    <label>Field Type</label>
+                                    <select class="fb-type" data-index="${index}">
+                                        <option value="text" ${field.type === 'text' ? 'selected' : ''}>Text</option>
+                                        <option value="textarea" ${field.type === 'textarea' ? 'selected' : ''}>Textarea</option>
+                                        <option value="url" ${field.type === 'url' ? 'selected' : ''}>URL</option>
+                                        <option value="checkbox" ${field.type === 'checkbox' ? 'selected' : ''}>Checkbox</option>
+                                    </select>
+                                </div>
+                                <div class="talentora-fb-req-wrap">
+                                    <label style="font-weight: normal;"><input type="checkbox" class="fb-req" data-index="${index}" ${field.required ? 'checked' : ''}> Required Field</label>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    });
+                    
+                    hiddenInput.value = JSON.stringify(fields);
+                }
+                
+                addBtn.addEventListener('click', () => {
+                    fields.push({ label: '', type: 'text', required: 0 });
+                    render();
+                });
+                
+                container.addEventListener('input', (e) => {
+                    if(e.target.classList.contains('fb-label')) {
+                        fields[e.target.dataset.index].label = e.target.value;
+                    }
+                    if(e.target.classList.contains('fb-type')) {
+                        fields[e.target.dataset.index].type = e.target.value;
+                    }
+                    if(e.target.classList.contains('fb-req')) {
+                        fields[e.target.dataset.index].required = e.target.checked ? 1 : 0;
+                    }
+                    hiddenInput.value = JSON.stringify(fields);
+                });
+                
+                container.addEventListener('click', (e) => {
+                    if(e.target.classList.contains('remove-field')) {
+                        fields.splice(e.target.dataset.index, 1);
+                        render();
+                    }
+                });
+                
+                render();
+            });
+            </script>
+        </div>
+        <?php
+    }
 
     /**
      * Email templates section callback.
