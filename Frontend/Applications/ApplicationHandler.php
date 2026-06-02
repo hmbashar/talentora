@@ -97,18 +97,8 @@ class ApplicationHandler
                 : '',
         );
 
-        // Extract only the resume file entry from $_FILES.
-        $resume_file = array();
-
-        if (isset($_FILES['resume']) && is_array($_FILES['resume'])) {
-            $resume_file = array(
-                'name' => isset($_FILES['resume']['name']) ? sanitize_file_name(wp_unslash($_FILES['resume']['name'])) : '',
-                'type' => isset($_FILES['resume']['type']) ? sanitize_mime_type(wp_unslash($_FILES['resume']['type'])) : '',
-                'tmp_name' => isset($_FILES['resume']['tmp_name']) ? sanitize_text_field(wp_unslash($_FILES['resume']['tmp_name'])) : '',
-                'error' => isset($_FILES['resume']['error']) ? absint($_FILES['resume']['error']) : UPLOAD_ERR_NO_FILE,
-                'size' => isset($_FILES['resume']['size']) ? absint($_FILES['resume']['size']) : 0,
-            );
-        }
+        // Pass the raw $_FILES['resume'] array so tmp_name is unadulterated.
+        $resume_file = isset($_FILES['resume']) ? $_FILES['resume'] : array();
 
         $result = $this->process_application_submission($input, $resume_file);
 
@@ -182,18 +172,8 @@ class ApplicationHandler
                 : '',
         );
 
-        // Extract only the resume file entry from $_FILES.
-        $resume_file = array();
-
-        if (isset($_FILES['resume']) && is_array($_FILES['resume'])) {
-            $resume_file = array(
-                'name' => isset($_FILES['resume']['name']) ? sanitize_file_name(wp_unslash($_FILES['resume']['name'])) : '',
-                'type' => isset($_FILES['resume']['type']) ? sanitize_mime_type(wp_unslash($_FILES['resume']['type'])) : '',
-                'tmp_name' => isset($_FILES['resume']['tmp_name']) ? sanitize_text_field(wp_unslash($_FILES['resume']['tmp_name'])) : '',
-                'error' => isset($_FILES['resume']['error']) ? absint($_FILES['resume']['error']) : UPLOAD_ERR_NO_FILE,
-                'size' => isset($_FILES['resume']['size']) ? absint($_FILES['resume']['size']) : 0,
-            );
-        }
+        // Pass the raw $_FILES['resume'] array so tmp_name is unadulterated.
+        $resume_file = isset($_FILES['resume']) ? $_FILES['resume'] : array();
 
         $result = $this->process_application_submission($input, $resume_file);
 
@@ -383,18 +363,28 @@ class ApplicationHandler
         // These are core WordPress admin includes required for wp_handle_upload()
         // and wp_generate_attachment_metadata(). Guarded by function_exists()
         // to avoid redundant loading.
-        if (!function_exists('wp_handle_sideload')) {
+        if (!function_exists('wp_handle_upload')) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
         if (!function_exists('wp_generate_attachment_metadata')) {
             require_once ABSPATH . 'wp-admin/includes/image.php';
         }
 
-        $upload = wp_handle_sideload($file, array('test_form' => false));
+        $upload = wp_handle_upload($file, array('test_form' => false));
 
         if (isset($upload['error'])) {
-            $errors[] = $upload['error'];
-            return 0;
+            // Fallback for tricky local environments where is_uploaded_file fails incorrectly
+            if ($upload['error'] === __('Specified file failed upload test.') && @is_readable($file['tmp_name'])) {
+                $upload = wp_upload_bits($file['name'], null, file_get_contents($file['tmp_name']));
+                if (!empty($upload['error'])) {
+                    $errors[] = $upload['error'];
+                    return 0;
+                }
+                $upload['type'] = $file['type'];
+            } else {
+                $errors[] = $upload['error'];
+                return 0;
+            }
         }
 
         // Create attachment
