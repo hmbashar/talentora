@@ -16,6 +16,7 @@ if (!defined('ABSPATH')) {
 
 use Talentora\Admin\Metaboxes\JobMetabox;
 use Talentora\Admin\Pages\Settings;
+use Talentora\Admin\Pages\Docs;
 use Talentora\Admin\Assets\Assets;
 
 /**
@@ -25,6 +26,7 @@ class AdminManager
 {
     protected $job_metabox;
     protected $settings;
+    protected $docs;
     protected $assets;
 
     /**
@@ -46,6 +48,7 @@ class AdminManager
     {
         $this->job_metabox = new JobMetabox();
         $this->settings = new Settings();
+        $this->docs = new Docs();
         $this->assets = new Assets();
 
         // Add admin menu
@@ -68,6 +71,16 @@ class AdminManager
             'manage_options',
             'talentora-settings',
             array($this->settings, 'render_settings_page')
+        );
+
+        // Add Docs submenu
+        add_submenu_page(
+            'edit.php?post_type=talentora_job',
+            __('Docs & Support', 'talentora'),
+            __('Docs & Support', 'talentora'),
+            'manage_options',
+            'talentora-docs',
+            array($this->docs, 'render_docs_page')
         );
     }
 }

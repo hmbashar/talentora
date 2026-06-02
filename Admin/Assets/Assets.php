@@ -145,5 +145,15 @@ class Assets
                 )
             ));
         }
+
+        // 5. Docs Page
+        if ($hook === 'talentora_job_page_talentora-docs') {
+            wp_enqueue_style(
+                'talentora-admin-docs',
+                TALENTORA_URL . 'assets/css/admin-docs.css',
+                array(),
+                TALENTORA_VERSION
+            );
+        }
     }
 }

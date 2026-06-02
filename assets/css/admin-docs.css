@@ -1,0 +1,153 @@
+.talentora-premium-docs-wrap {
+    max-width: 1200px;
+    margin: 30px auto 30px 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.talentora-premium-docs-wrap .docs-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    border-radius: 16px;
+    padding: 40px;
+    color: #fff;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+    margin-right: 20px; /* WordPress padding compensation */
+}
+
+.talentora-premium-docs-wrap .docs-header h1 {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+    border: none;
+    padding: 0;
+}
+
+.talentora-premium-docs-wrap .docs-header p {
+    font-size: 16px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.talentora-premium-docs-wrap .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-right: 20px;
+}
+
+.talentora-premium-docs-wrap .docs-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.talentora-premium-docs-wrap .docs-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    border-color: #cbd5e1;
+}
+
+.talentora-premium-docs-wrap .icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.talentora-premium-docs-wrap .docs-card:hover .icon-wrapper {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.talentora-premium-docs-wrap .icon-wrapper .dashicons {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #64748b;
+    transition: all 0.3s ease;
+}
+
+.talentora-premium-docs-wrap .docs-card:hover .icon-wrapper .dashicons {
+    color: #fff;
+}
+
+/* Custom Colors */
+.talentora-premium-docs-wrap .sponsor-card .icon-wrapper { background: #fef2f2; }
+.talentora-premium-docs-wrap .sponsor-card .dashicons { color: #ef4444; }
+.talentora-premium-docs-wrap .sponsor-card:hover .icon-wrapper { background: #ef4444; }
+
+.talentora-premium-docs-wrap .rating-card .icon-wrapper { background: #fff7ed; }
+.talentora-premium-docs-wrap .rating-card .dashicons { color: #f97316; }
+.talentora-premium-docs-wrap .rating-card:hover .icon-wrapper { background: #f97316; }
+
+.talentora-premium-docs-wrap .video-card .icon-wrapper { background: #f0fdf4; }
+.talentora-premium-docs-wrap .video-card .dashicons { color: #22c55e; }
+.talentora-premium-docs-wrap .video-card:hover .icon-wrapper { background: #22c55e; }
+
+.talentora-premium-docs-wrap .facebook-card .icon-wrapper { background: #eff6ff; }
+.talentora-premium-docs-wrap .facebook-card .dashicons { color: #3b82f6; }
+.talentora-premium-docs-wrap .facebook-card:hover .icon-wrapper { background: #3b82f6; }
+
+.talentora-premium-docs-wrap .github-card .icon-wrapper { background: #f8fafc; }
+.talentora-premium-docs-wrap .github-card .dashicons { color: #0f172a; }
+.talentora-premium-docs-wrap .github-card:hover .icon-wrapper { background: #0f172a; }
+
+.talentora-premium-docs-wrap .docs-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #0f172a;
+}
+
+.talentora-premium-docs-wrap .docs-desc {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Arrow on hover */
+.talentora-premium-docs-wrap .docs-card::after {
+    content: '→';
+    position: absolute;
+    bottom: 30px;
+    right: 24px;
+    font-size: 20px;
+    color: #cbd5e1;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.talentora-premium-docs-wrap .docs-card:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+    color: #4f46e5;
+}
+
+.talentora-premium-docs-wrap .sponsor-card:hover::after { color: #ef4444; }
+.talentora-premium-docs-wrap .rating-card:hover::after { color: #f97316; }
+.talentora-premium-docs-wrap .video-card:hover::after { color: #22c55e; }
+.talentora-premium-docs-wrap .facebook-card:hover::after { color: #3b82f6; }
+.talentora-premium-docs-wrap .github-card:hover::after { color: #0f172a; }
+
+@media (max-width: 768px) {
+    .talentora-premium-docs-wrap { margin-right: 20px; }
+    .talentora-premium-docs-wrap .docs-header { margin-right: 0; padding: 30px 20px; }
+    .talentora-premium-docs-wrap .docs-grid { margin-right: 0; }
+}

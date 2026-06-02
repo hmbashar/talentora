@@ -223,11 +223,13 @@ class JobsList
             <div class="talentora-filter-bar">
                 <form id="talentora-job-filter-form" method="get" class="talentora-filters">
                     <div class="filter-field">
-                        <input type="text" name="job_keyword" placeholder="<?php esc_attr_e('Search jobs...', 'talentora'); ?>"
+                        <span class="dashicons dashicons-search filter-field-icon"></span>
+                        <input type="text" name="job_keyword" placeholder="<?php esc_attr_e('Job title or keyword...', 'talentora'); ?>"
                             value="<?php echo esc_attr($keyword); ?>">
                     </div>
 
-                    <div class="filter-field">
+                    <div class="filter-field filter-field-select">
+                        <span class="dashicons dashicons-portfolio filter-field-icon"></span>
                         <?php
                         $categories = get_terms(array(
                             'taxonomy' => 'talentora_job_category',
@@ -248,7 +250,8 @@ class JobsList
                         <?php endif; ?>
                     </div>
 
-                    <div class="filter-field">
+                    <div class="filter-field filter-field-select">
+                        <span class="dashicons dashicons-clock filter-field-icon"></span>
                         <?php
                         $types = get_terms(array(
                             'taxonomy' => 'talentora_job_type',
@@ -270,13 +273,15 @@ class JobsList
                     </div>
 
                     <div class="filter-field">
-                        <input type="text" name="job_location" placeholder="<?php esc_attr_e('Location', 'talentora'); ?>"
+                        <span class="dashicons dashicons-location filter-field-icon"></span>
+                        <input type="text" name="job_location" placeholder="<?php esc_attr_e('Location or zip...', 'talentora'); ?>"
                             value="<?php echo esc_attr($location); ?>">
                     </div>
 
                     <div class="filter-field">
                         <button type="submit" class="talentora-btn">
-                            <?php esc_html_e('Search', 'talentora'); ?>
+                            <span class="dashicons dashicons-search"></span>
+                            <?php esc_html_e('Find Jobs', 'talentora'); ?>
                         </button>
                     </div>
                 </form>

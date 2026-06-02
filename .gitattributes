@@ -43,3 +43,4 @@ node_modules/           export-ignore
 build/                  export-ignore 
 postcss.config.js       export-ignore
 DEVELOPER_GUIDE.md      export-ignore
+CNAME                   export-ignore
