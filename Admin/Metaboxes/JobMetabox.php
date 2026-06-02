@@ -93,6 +93,7 @@ class JobMetabox
                         <input type="text" id="talentora_location" name="talentora_location"
                             value="<?php echo esc_attr($location); ?>"
                             placeholder="<?php esc_attr_e('e.g., New York, NY', 'talentora'); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('Enter the physical location or specify "Remote".', 'talentora'); ?></p>
                     </div>
 
                     <div class="field-group half-width">
@@ -115,6 +116,7 @@ class JobMetabox
                                     class="talentora-input">
                             </div>
                         </div>
+                        <p class="description"><?php esc_html_e('Specify the minimum and maximum salary offered.', 'talentora'); ?></p>
                     </div>
                 </div>
 
@@ -127,6 +129,7 @@ class JobMetabox
                         <input type="text" id="talentora_experience" name="talentora_experience"
                             value="<?php echo esc_attr($experience); ?>"
                             placeholder="<?php esc_attr_e('e.g., 2 Years+', 'talentora'); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('Specify the required years of experience.', 'talentora'); ?></p>
                     </div>
 
                     <div class="field-group half-width">
@@ -137,6 +140,7 @@ class JobMetabox
                         <input type="number" id="talentora_vacancy" name="talentora_vacancy"
                             value="<?php echo esc_attr($vacancy); ?>"
                             placeholder="<?php esc_attr_e('e.g., 3', 'talentora'); ?>" min="1" class="talentora-input">
+                        <p class="description"><?php esc_html_e('Number of open positions available.', 'talentora'); ?></p>
                     </div>
                 </div>
 
@@ -150,6 +154,7 @@ class JobMetabox
                             value="<?php echo esc_attr($working_hours); ?>"
                             placeholder="<?php esc_attr_e('e.g., 9:00 AM - 5:00 PM', 'talentora'); ?>"
                             class="talentora-input">
+                        <p class="description"><?php esc_html_e('Specify the daily working hours.', 'talentora'); ?></p>
                     </div>
 
                     <div class="field-group half-width">
@@ -160,6 +165,7 @@ class JobMetabox
                         <input type="text" id="talentora_working_days" name="talentora_working_days"
                             value="<?php echo esc_attr($working_days); ?>"
                             placeholder="<?php esc_attr_e('e.g., Mon - Fri', 'talentora'); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('Specify the weekly working days.', 'talentora'); ?></p>
                     </div>
                 </div>
 
@@ -171,6 +177,7 @@ class JobMetabox
                         </label>
                         <input type="date" id="talentora_deadline" name="talentora_deadline"
                             value="<?php echo esc_attr($deadline); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('The final date for accepting applications.', 'talentora'); ?></p>
                     </div>
 
                     <div class="field-group half-width">
@@ -180,6 +187,7 @@ class JobMetabox
                         </label>
                         <input type="date" id="talentora_joining_date" name="talentora_joining_date"
                             value="<?php echo esc_attr($joining_date); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('The expected date the candidate will start.', 'talentora'); ?></p>
                     </div>
                 </div>
 
@@ -215,6 +223,7 @@ class JobMetabox
                         <input type="text" id="talentora_company_name" name="talentora_company_name"
                             value="<?php echo esc_attr($company_name); ?>"
                             placeholder="<?php esc_attr_e('e.g., Acme Corporation', 'talentora'); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('The name of the hiring company.', 'talentora'); ?></p>
                     </div>
 
                     <div class="field-group half-width">
@@ -225,6 +234,7 @@ class JobMetabox
                         <input type="url" id="talentora_company_website" name="talentora_company_website"
                             value="<?php echo esc_attr($company_website); ?>"
                             placeholder="<?php esc_attr_e('https://example.com', 'talentora'); ?>" class="talentora-input">
+                        <p class="description"><?php esc_html_e('The official website of the hiring company.', 'talentora'); ?></p>
                     </div>
                 </div>
 
@@ -260,6 +270,7 @@ class JobMetabox
                                     </button>
                                 </div>
                             </div>
+                            <p class="description" style="margin-top:10px;"><?php esc_html_e('Upload a logo for the company.', 'talentora'); ?></p>
                         </div>
                     </div>
                 </div>
@@ -301,6 +312,7 @@ class JobMetabox
                                 <?php esc_html_e('★ Filled', 'talentora'); ?>
                             </option>
                         </select>
+                        <p class="description"><?php esc_html_e('Set the current status of this job posting.', 'talentora'); ?></p>
                     </div>
 
                     <div class="field-group half-width">
