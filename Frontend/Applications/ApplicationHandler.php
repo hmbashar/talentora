@@ -284,7 +284,10 @@ class ApplicationHandler
                 if ($field['type'] === 'textarea') {
                     $val = sanitize_textarea_field($val);
                 } elseif ($field['type'] === 'url') {
-                    $val = esc_url_raw($val);
+                    $val = sanitize_url($val);
+                    if (!empty($val) && filter_var($val, FILTER_VALIDATE_URL) === false) {
+                        $errors[] = sprintf(esc_html__('%s must be a valid URL.', 'talentora'), $field['label']);
+                    }
                 } elseif ($field['type'] === 'checkbox') {
                     $val = !empty($val) ? '1' : '0';
                 } else {

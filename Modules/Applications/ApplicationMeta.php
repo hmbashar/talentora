@@ -258,6 +258,50 @@ class ApplicationMeta
                         </div>
                     </div>
                 </div>
+
+                <?php
+                // Display Custom Fields
+                $custom_fields_json = get_option('talentora_custom_form_fields', '[]');
+                $custom_fields = json_decode($custom_fields_json, true);
+
+                if (is_array($custom_fields) && !empty($custom_fields)):
+                    echo '<div class="section-header" style="margin-top: 30px;">
+                            <h3><span class="dashicons dashicons-forms"></span> ' . esc_html__('Additional Information', 'talentora') . '</h3>
+                          </div>';
+                    
+                    $count = 0;
+                    foreach ($custom_fields as $field) {
+                        if (empty($field['name'])) continue;
+                        $field_name = 'talentora_custom_' . $field['name'];
+                        $value = get_post_meta($post->ID, $field_name, true);
+                        
+                        if ($count % 2 === 0) echo '<div class="field-row">';
+                        
+                        echo '<div class="field-group half-width">';
+                        echo '<span class="detail-label">';
+                        echo '<span class="dashicons dashicons-arrow-right-alt2"></span> ';
+                        echo esc_html($field['label']);
+                        echo '</span>';
+                        
+                        echo '<span class="detail-value">';
+                        if ($field['type'] === 'url' && !empty($value)) {
+                            echo '<a href="' . esc_url($value) . '" target="_blank">' . esc_html($value) . '</a>';
+                        } elseif ($field['type'] === 'checkbox') {
+                            echo !empty($value) ? esc_html__('Yes', 'talentora') : esc_html__('No', 'talentora');
+                        } elseif ($field['type'] === 'textarea') {
+                            echo nl2br(esc_html($value));
+                        } else {
+                            echo esc_html($value ? $value : __('Not provided', 'talentora'));
+                        }
+                        echo '</span>';
+                        echo '</div>';
+                        
+                        if ($count % 2 === 1) echo '</div>';
+                        $count++;
+                    }
+                    if ($count % 2 !== 0) echo '</div>'; // close if odd number
+                endif;
+                ?>
             </div>
 
         </div>
@@ -627,18 +671,34 @@ class ApplicationMeta
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Writing to php://output is not file system I/O.
 		$output = fopen( 'php://output', 'w' );
 
+		// Fetch custom fields config
+		$custom_fields_json = get_option('talentora_custom_form_fields', '[]');
+		$custom_fields = json_decode($custom_fields_json, true);
+		if (!is_array($custom_fields)) {
+			$custom_fields = array();
+		}
+
+		$headers = array(
+			esc_html__( 'ID', 'talentora' ),
+			esc_html__( 'Applicant Name', 'talentora' ),
+			esc_html__( 'Email', 'talentora' ),
+			esc_html__( 'Phone', 'talentora' ),
+			esc_html__( 'Job Title', 'talentora' ),
+			esc_html__( 'Status', 'talentora' ),
+			esc_html__( 'Date Submitted', 'talentora' ),
+		);
+
+		// Add custom field headers
+		foreach ($custom_fields as $field) {
+			if (!empty($field['name'])) {
+				$headers[] = esc_html($field['label']);
+			}
+		}
+
 		// Header row (CSV values are data, so use esc_html__).
 		fputcsv(
 			$output,
-			array(
-				esc_html__( 'ID', 'talentora' ),
-				esc_html__( 'Applicant Name', 'talentora' ),
-				esc_html__( 'Email', 'talentora' ),
-				esc_html__( 'Phone', 'talentora' ),
-				esc_html__( 'Job Title', 'talentora' ),
-				esc_html__( 'Status', 'talentora' ),
-				esc_html__( 'Date Submitted', 'talentora' ),
-			)
+			$headers
 		);
 
 		while ( $query->have_posts() ) {
@@ -658,17 +718,31 @@ class ApplicationMeta
 			$dt = get_post_datetime( $post_id );
 			$submitted = $dt ? wp_date( 'Y-m-d H:i:s', $dt->getTimestamp() ) : '';
 
+			$row = array(
+				$post_id,
+				(string) get_post_meta( $post_id, 'talentora_applicant_name', true ),
+				(string) get_post_meta( $post_id, 'talentora_applicant_email', true ),
+				(string) get_post_meta( $post_id, 'talentora_applicant_phone', true ),
+				(string) $job_title,
+				(string) $status,
+				(string) $submitted,
+			);
+
+			// Add custom field values
+			foreach ($custom_fields as $field) {
+				if (!empty($field['name'])) {
+					$field_name = 'talentora_custom_' . $field['name'];
+					$val = get_post_meta($post_id, $field_name, true);
+					if ($field['type'] === 'checkbox') {
+						$val = !empty($val) ? __('Yes', 'talentora') : __('No', 'talentora');
+					}
+					$row[] = (string) $val;
+				}
+			}
+
 			fputcsv(
 				$output,
-				array(
-					$post_id,
-					(string) get_post_meta( $post_id, 'talentora_applicant_name', true ),
-					(string) get_post_meta( $post_id, 'talentora_applicant_email', true ),
-					(string) get_post_meta( $post_id, 'talentora_applicant_phone', true ),
-					(string) $job_title,
-					(string) $status,
-					(string) $submitted,
-				)
+				$row
 			);
 		}
 
