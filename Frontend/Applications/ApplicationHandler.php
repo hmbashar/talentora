@@ -97,8 +97,18 @@ class ApplicationHandler
                 : '',
         );
 
-        // Pass the raw $_FILES['resume'] array so tmp_name is unadulterated.
-        $resume_file = isset($_FILES['resume']) ? $_FILES['resume'] : array();
+        // Extract only the resume file entry from $_FILES.
+        $resume_file = array();
+
+        if (isset($_FILES['resume']) && is_array($_FILES['resume'])) {
+            $resume_file = array(
+                'name' => isset($_FILES['resume']['name']) ? sanitize_file_name(wp_unslash($_FILES['resume']['name'])) : '',
+                'type' => isset($_FILES['resume']['type']) ? sanitize_mime_type(wp_unslash($_FILES['resume']['type'])) : '',
+                'tmp_name' => isset($_FILES['resume']['tmp_name']) ? sanitize_text_field(wp_unslash($_FILES['resume']['tmp_name'])) : '',
+                'error' => isset($_FILES['resume']['error']) ? absint($_FILES['resume']['error']) : UPLOAD_ERR_NO_FILE,
+                'size' => isset($_FILES['resume']['size']) ? absint($_FILES['resume']['size']) : 0,
+            );
+        }
 
         $result = $this->process_application_submission($input, $resume_file);
 
@@ -172,8 +182,18 @@ class ApplicationHandler
                 : '',
         );
 
-        // Pass the raw $_FILES['resume'] array so tmp_name is unadulterated.
-        $resume_file = isset($_FILES['resume']) ? $_FILES['resume'] : array();
+        // Extract only the resume file entry from $_FILES.
+        $resume_file = array();
+
+        if (isset($_FILES['resume']) && is_array($_FILES['resume'])) {
+            $resume_file = array(
+                'name' => isset($_FILES['resume']['name']) ? sanitize_file_name(wp_unslash($_FILES['resume']['name'])) : '',
+                'type' => isset($_FILES['resume']['type']) ? sanitize_mime_type(wp_unslash($_FILES['resume']['type'])) : '',
+                'tmp_name' => isset($_FILES['resume']['tmp_name']) ? sanitize_text_field(wp_unslash($_FILES['resume']['tmp_name'])) : '',
+                'error' => isset($_FILES['resume']['error']) ? absint($_FILES['resume']['error']) : UPLOAD_ERR_NO_FILE,
+                'size' => isset($_FILES['resume']['size']) ? absint($_FILES['resume']['size']) : 0,
+            );
+        }
 
         $result = $this->process_application_submission($input, $resume_file);
 
@@ -378,21 +398,8 @@ class ApplicationHandler
         $upload = wp_handle_upload($file, array('test_form' => false));
 
         if (isset($upload['error'])) {
-            // Try raw move_uploaded_file as an ultimate bypass for local environment strictness
-            $upload_dir = wp_upload_dir();
-            $target_file = wp_unique_filename($upload_dir['path'], basename($file['name']));
-            $target_path = $upload_dir['path'] . '/' . $target_file;
-            
-            if (@move_uploaded_file($file['tmp_name'], $target_path)) {
-                $upload = array(
-                    'file' => $target_path,
-                    'url'  => $upload_dir['url'] . '/' . $target_file,
-                    'type' => $file['type'],
-                );
-            } else {
-                $errors[] = $upload['error'];
-                return 0;
-            }
+            $errors[] = $upload['error'];
+            return 0;
         }
 
         // Create attachment
