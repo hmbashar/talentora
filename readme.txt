@@ -1,10 +1,10 @@
-=== Talentora – Simple & Powerful Job Board ===
+=== Talentora – Complete Job Board & Recruitment Solution ===
 
 Contributors: hmbashar
 Tags: job board, job listing, recruitment, employment, careers
 Requires at least: 5.8
 Tested up to: 7.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -170,6 +170,9 @@ No. Talentora only loads its assets on pages where they are needed (job listing 
 4. **Settings Page** – The Talentora → Settings admin panel with the General Settings tab (apply form shortcode, jobs per page, application statuses, currency symbol) and the Email Templates and Email Logs tabs.
 
 == Changelog ==
+
+= 1.0.2 =
+* Tweak: Updated plugin title to "Talentora – Complete Job Board & Recruitment Solution".
 
 = 1.0.1 =
 * Enhancement: Added a new "Docs & Support" page in the WordPress admin dashboard with a premium UI.
