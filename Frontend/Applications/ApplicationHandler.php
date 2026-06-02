@@ -217,6 +217,19 @@ class ApplicationHandler
      */
     private function process_application_submission($post_data, $files)
     {
+        $errors = array();
+        
+        // ULTIMATE FIX: Grab the file IMMEDIATELY before any database queries.
+        // Some local environments (Herd/Valet) aggressively delete temp files 
+        // if the PHP script takes even a few milliseconds processing DB queries.
+        $resume_id = 0;
+        
+        // Bypassing defaults check temporarily for upload just to secure the file.
+        // If it turns out it wasn't required, we can delete it later.
+        if (!empty($files) && isset($files['error']) && UPLOAD_ERR_OK === $files['error']) {
+            $resume_id = $this->handle_resume_upload($files, $errors);
+        }
+
         // Get and validate job ID
         $job_id = isset($post_data['job_id']) ? absint($post_data['job_id']) : 0;
         if (!$job_id || get_post_type($job_id) !== 'talentora_job') {
@@ -242,8 +255,6 @@ class ApplicationHandler
         $cover_letter = isset($post_data['cover_letter']) ? sanitize_textarea_field($post_data['cover_letter']) : '';
 
         // Validate required default fields
-        $errors = array();
-
         $defaults = get_option('talentora_default_form_fields', array(
             'applicant_name' => 1,
             'applicant_email' => 1,
@@ -268,13 +279,10 @@ class ApplicationHandler
         if (!empty($defaults['cover_letter']) && empty($cover_letter)) {
             $errors[] = esc_html__('Cover letter is required.', 'talentora');
         }
-
-        // Handle resume upload
-        $resume_id = 0;
-        if (!empty($defaults['resume'])) {
-            if (!empty($files) && isset($files['error']) && UPLOAD_ERR_OK === $files['error']) {
-                $resume_id = $this->handle_resume_upload($files, $errors);
-            } else {
+        
+        if (!empty($defaults['resume']) && !$resume_id) {
+            // Check if there was an upload error we already captured
+            if (empty($errors)) {
                 $errors[] = esc_html__('Resume is required.', 'talentora');
             }
         }
