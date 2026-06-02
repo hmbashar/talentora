@@ -241,23 +241,42 @@ class ApplicationHandler
         $phone = isset($post_data['applicant_phone']) ? sanitize_text_field($post_data['applicant_phone']) : '';
         $cover_letter = isset($post_data['cover_letter']) ? sanitize_textarea_field($post_data['cover_letter']) : '';
 
-        // Validate required fields
+        // Validate required default fields
         $errors = array();
 
-        if (empty($name)) {
+        $defaults = get_option('talentora_default_form_fields', array(
+            'applicant_name' => 1,
+            'applicant_email' => 1,
+            'applicant_phone' => 1,
+            'resume' => 1,
+            'cover_letter' => 1
+        ));
+        if (!is_array($defaults)) $defaults = array();
+
+        if (!empty($defaults['applicant_name']) && empty($name)) {
             $errors[] = esc_html__('Name is required.', 'talentora');
         }
 
-        if (empty($email) || !is_email($email)) {
+        if (!empty($defaults['applicant_email']) && (empty($email) || !is_email($email))) {
             $errors[] = esc_html__('Valid email is required.', 'talentora');
         }
 
-        if (empty($phone)) {
+        if (!empty($defaults['applicant_phone']) && empty($phone)) {
             $errors[] = esc_html__('Phone is required.', 'talentora');
         }
 
-        if (empty($cover_letter)) {
+        if (!empty($defaults['cover_letter']) && empty($cover_letter)) {
             $errors[] = esc_html__('Cover letter is required.', 'talentora');
+        }
+
+        // Handle resume upload
+        $resume_id = 0;
+        if (!empty($defaults['resume'])) {
+            if (!empty($files) && isset($files['error']) && UPLOAD_ERR_OK === $files['error']) {
+                $resume_id = $this->handle_resume_upload($files, $errors);
+            } else {
+                $errors[] = esc_html__('Resume is required.', 'talentora');
+            }
         }
 
         // Validate custom fields
@@ -272,11 +291,14 @@ class ApplicationHandler
                 
                 $val = isset($_POST[$field_name]) ? wp_unslash($_POST[$field_name]) : '';
                 
-                // Sanitize
+                // Sanitize and Validate
                 if ($field['type'] === 'textarea') {
                     $val = sanitize_textarea_field($val);
                 } elseif ($field['type'] === 'url') {
-                    $val = esc_url_raw($val);
+                    $val = sanitize_url($val);
+                    if (!empty($val) && filter_var($val, FILTER_VALIDATE_URL) === false) {
+                        $errors[] = sprintf(esc_html__('%s must be a valid URL.', 'talentora'), $field['label']);
+                    }
                 } elseif ($field['type'] === 'checkbox') {
                     $val = !empty($val) ? '1' : '0';
                 } else {
@@ -506,59 +528,88 @@ class ApplicationHandler
                     <input type="text" id="talentora_website" name="talentora_website" value="">
                 </div>
 
-                <div class="form-grid-row">
-                    <div class="talentora-form-field">
-                        <label for="applicant_name">
-                            <?php esc_html_e('Full Name', 'talentora'); ?> <span class="required">*</span>
-                        </label>
-                        <div class="input-with-icon">
-                            <span class="dashicons dashicons-admin-users"></span>
-                            <input type="text" id="applicant_name" name="applicant_name"
-                                value="<?php echo isset($data['applicant_name']) ? esc_attr($data['applicant_name']) : ''; ?>"
-                                placeholder="<?php esc_attr_e('John Doe', 'talentora'); ?>" required>
-                        </div>
-                    </div>
-
-                    <div class="talentora-form-field">
-                        <label for="applicant_email">
-                            <?php esc_html_e('Email Address', 'talentora'); ?> <span class="required">*</span>
-                        </label>
-                        <div class="input-with-icon">
-                            <span class="dashicons dashicons-email"></span>
-                            <input type="email" id="applicant_email" name="applicant_email"
-                                value="<?php echo isset($data['applicant_email']) ? esc_attr($data['applicant_email']) : ''; ?>"
-                                placeholder="<?php esc_attr_e('john@example.com', 'talentora'); ?>" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-grid-row">
-                    <div class="talentora-form-field">
-                        <label for="applicant_phone">
-                            <?php esc_html_e('Phone Number', 'talentora'); ?> <span class="required">*</span>
-                        </label>
-                        <div class="input-with-icon">
-                            <span class="dashicons dashicons-smartphone"></span>
-                            <input type="tel" id="applicant_phone" name="applicant_phone"
-                                value="<?php echo isset($data['applicant_phone']) ? esc_attr($data['applicant_phone']) : ''; ?>"
-                                placeholder="<?php esc_attr_e('+1 234 567 8900', 'talentora'); ?>" required>
-                        </div>
-                    </div>
-
-                    <div class="talentora-form-field">
-                        <label for="resume">
-                            <?php esc_html_e('Resume / CV', 'talentora'); ?> <span class="required">*</span>
-                        </label>
-                        <div class="file-input-wrapper">
-                            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="inputfile" required>
-                            <label for="resume" class="file-input-label">
-                                <span class="dashicons dashicons-upload"></span>
-                                <span class="file-label-text"><?php esc_html_e('Choose a file...', 'talentora'); ?></span>
+                <?php
+                $defaults = get_option('talentora_default_form_fields', array(
+                    'applicant_name' => 1,
+                    'applicant_email' => 1,
+                    'applicant_phone' => 1,
+                    'resume' => 1,
+                    'cover_letter' => 1
+                ));
+                if (!is_array($defaults)) $defaults = array();
+                
+                if (!empty($defaults['applicant_name']) || !empty($defaults['applicant_email'])) {
+                    echo '<div class="form-grid-row">';
+                    if (!empty($defaults['applicant_name'])) {
+                        ?>
+                        <div class="talentora-form-field">
+                            <label for="applicant_name">
+                                <?php esc_html_e('Full Name', 'talentora'); ?> <span class="required">*</span>
                             </label>
-                            <span class="file-help-text"><?php esc_html_e('PDF or DOC, max 5MB', 'talentora'); ?></span>
+                            <div class="input-with-icon">
+                                <span class="dashicons dashicons-admin-users"></span>
+                                <input type="text" id="applicant_name" name="applicant_name"
+                                    value="<?php echo isset($data['applicant_name']) ? esc_attr($data['applicant_name']) : ''; ?>"
+                                    placeholder="<?php esc_attr_e('John Doe', 'talentora'); ?>" required>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <?php
+                    }
+                    if (!empty($defaults['applicant_email'])) {
+                        ?>
+                        <div class="talentora-form-field">
+                            <label for="applicant_email">
+                                <?php esc_html_e('Email Address', 'talentora'); ?> <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <span class="dashicons dashicons-email"></span>
+                                <input type="email" id="applicant_email" name="applicant_email"
+                                    value="<?php echo isset($data['applicant_email']) ? esc_attr($data['applicant_email']) : ''; ?>"
+                                    placeholder="<?php esc_attr_e('john@example.com', 'talentora'); ?>" required>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    echo '</div>';
+                }
+
+                if (!empty($defaults['applicant_phone']) || !empty($defaults['resume'])) {
+                    echo '<div class="form-grid-row">';
+                    if (!empty($defaults['applicant_phone'])) {
+                        ?>
+                        <div class="talentora-form-field">
+                            <label for="applicant_phone">
+                                <?php esc_html_e('Phone Number', 'talentora'); ?> <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <span class="dashicons dashicons-smartphone"></span>
+                                <input type="tel" id="applicant_phone" name="applicant_phone"
+                                    value="<?php echo isset($data['applicant_phone']) ? esc_attr($data['applicant_phone']) : ''; ?>"
+                                    placeholder="<?php esc_attr_e('+1 234 567 8900', 'talentora'); ?>" required>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    if (!empty($defaults['resume'])) {
+                        ?>
+                        <div class="talentora-form-field">
+                            <label for="resume">
+                                <?php esc_html_e('Resume / CV', 'talentora'); ?> <span class="required">*</span>
+                            </label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="inputfile" required>
+                                <label for="resume" class="file-input-label">
+                                    <span class="dashicons dashicons-upload"></span>
+                                    <span class="file-label-text"><?php esc_html_e('Choose a file...', 'talentora'); ?></span>
+                                </label>
+                                <span class="file-help-text"><?php esc_html_e('PDF or DOC, max 5MB', 'talentora'); ?></span>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    echo '</div>';
+                }
+                ?>
 
                 <?php
                 // Render custom form fields
@@ -571,6 +622,7 @@ class ApplicationHandler
                         $field_id = 'talentora_custom_' . esc_attr($field['name']);
                         $is_required = !empty($field['required']) ? 'required' : '';
                         $req_star = !empty($field['required']) ? ' <span class="required">*</span>' : '';
+                        $placeholder = !empty($field['placeholder']) ? 'placeholder="' . esc_attr($field['placeholder']) . '"' : '';
                         $value = isset($data[$field_id]) ? $data[$field_id] : '';
                         
                         echo '<div class="talentora-form-field full-width custom-field">';
@@ -578,17 +630,17 @@ class ApplicationHandler
                         
                         switch ($field['type']) {
                             case 'textarea':
-                                echo '<textarea id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" rows="4" ' . $is_required . '>' . esc_textarea($value) . '</textarea>';
+                                echo '<textarea id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" rows="4" ' . $placeholder . ' ' . $is_required . '>' . esc_textarea($value) . '</textarea>';
                                 break;
                             case 'checkbox':
                                 $checked = checked($value, '1', false);
                                 echo '<label style="font-weight: normal; display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="1" ' . $checked . ' ' . $is_required . '> ' . esc_html__('Yes', 'talentora') . '</label>';
                                 break;
                             case 'url':
-                                echo '<div class="input-with-icon"><span class="dashicons dashicons-admin-links"></span><input type="url" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="' . esc_attr($value) . '" ' . $is_required . '></div>';
+                                echo '<div class="input-with-icon"><span class="dashicons dashicons-admin-links"></span><input type="url" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="' . esc_attr($value) . '" ' . $placeholder . ' ' . $is_required . '></div>';
                                 break;
                             default: // text
-                                echo '<div class="input-with-icon"><span class="dashicons dashicons-edit"></span><input type="text" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="' . esc_attr($value) . '" ' . $is_required . '></div>';
+                                echo '<div class="input-with-icon"><span class="dashicons dashicons-edit"></span><input type="text" id="' . esc_attr($field_id) . '" name="' . esc_attr($field_id) . '" value="' . esc_attr($value) . '" ' . $placeholder . ' ' . $is_required . '></div>';
                                 break;
                         }
                         echo '</div>';
@@ -596,6 +648,7 @@ class ApplicationHandler
                 }
                 ?>
 
+                <?php if (!empty($defaults['cover_letter'])): ?>
                 <div class="talentora-form-field full-width">
                     <label for="cover_letter">
                         <?php esc_html_e('Cover Letter', 'talentora'); ?> <span class="required">*</span>
@@ -604,6 +657,7 @@ class ApplicationHandler
                         placeholder="<?php esc_attr_e('Tell us why you are a great fit for this role...', 'talentora'); ?>"
                         required><?php echo isset($data['cover_letter']) ? esc_textarea($data['cover_letter']) : ''; ?></textarea>
                 </div>
+                <?php endif; ?>
 
                 <div class="talentora-form-submit">
                     <button type="submit" name="talentora_submit_application" class="talentora-button primary large">

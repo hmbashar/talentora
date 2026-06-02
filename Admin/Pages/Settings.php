@@ -119,6 +119,11 @@ class Settings
             'type' => 'string',
             'sanitize_callback' => array($this, 'sanitize_form_fields')
         ));
+        
+        register_setting('talentora_form_builder_settings', 'talentora_default_form_fields', array(
+            'type' => 'array',
+            'sanitize_callback' => array($this, 'sanitize_default_fields')
+        ));
 
         add_settings_section(
             'talentora_form_builder_section',
@@ -417,6 +422,7 @@ class Settings
                         'name' => sanitize_title($field['label']),
                         'label' => sanitize_text_field($field['label']),
                         'type' => sanitize_text_field($field['type']),
+                        'placeholder' => isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '',
                         'required' => !empty($field['required']) ? 1 : 0
                     );
                 }
@@ -427,14 +433,51 @@ class Settings
     }
 
     /**
+     * Sanitize Default Fields
+     */
+    public function sanitize_default_fields($value) {
+        if (!is_array($value)) return array();
+        $clean = array();
+        $allowed = array('applicant_name', 'applicant_email', 'applicant_phone', 'resume', 'cover_letter');
+        foreach ($allowed as $field) {
+            $clean[$field] = !empty($value[$field]) ? 1 : 0;
+        }
+        return $clean;
+    }
+
+    /**
      * Form Builder Section Callback
      */
     public function form_builder_section_callback() {
         $value = get_option('talentora_custom_form_fields', '[]');
         if(empty($value)) $value = '[]';
+        
+        $defaults = get_option('talentora_default_form_fields', array(
+            'applicant_name' => 1,
+            'applicant_email' => 1,
+            'applicant_phone' => 1,
+            'resume' => 1,
+            'cover_letter' => 1
+        ));
+        if (!is_array($defaults)) {
+            $defaults = array();
+        }
         ?>
         <div class="talentora-form-builder-wrap">
-            <p class="description"><?php esc_html_e('Add custom fields to your built-in application form. These will appear dynamically.', 'talentora'); ?></p>
+            <div class="talentora-default-fields-wrap" style="margin-bottom: 30px; padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                <h3 style="margin-top: 0;"><span class="dashicons dashicons-admin-generic" style="margin-top: 2px;"></span> <?php esc_html_e('Default Fields', 'talentora'); ?></h3>
+                <p class="description"><?php esc_html_e('Toggle which default fields should be included in the application form.', 'talentora'); ?></p>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+                    <label><input type="checkbox" name="talentora_default_form_fields[applicant_name]" value="1" <?php checked(!isset($defaults['applicant_name']) || $defaults['applicant_name']); ?>> <?php esc_html_e('Full Name', 'talentora'); ?></label>
+                    <label><input type="checkbox" name="talentora_default_form_fields[applicant_email]" value="1" <?php checked(!isset($defaults['applicant_email']) || $defaults['applicant_email']); ?>> <?php esc_html_e('Email Address', 'talentora'); ?></label>
+                    <label><input type="checkbox" name="talentora_default_form_fields[applicant_phone]" value="1" <?php checked(!isset($defaults['applicant_phone']) || $defaults['applicant_phone']); ?>> <?php esc_html_e('Phone Number', 'talentora'); ?></label>
+                    <label><input type="checkbox" name="talentora_default_form_fields[resume]" value="1" <?php checked(!isset($defaults['resume']) || $defaults['resume']); ?>> <?php esc_html_e('Resume / CV', 'talentora'); ?></label>
+                    <label><input type="checkbox" name="talentora_default_form_fields[cover_letter]" value="1" <?php checked(!isset($defaults['cover_letter']) || $defaults['cover_letter']); ?>> <?php esc_html_e('Cover Letter', 'talentora'); ?></label>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 5px;"><span class="dashicons dashicons-forms" style="margin-top: 2px;"></span> <?php esc_html_e('Custom Fields', 'talentora'); ?></h3>
+            <p class="description" style="margin-bottom: 20px;"><?php esc_html_e('Add custom fields to your built-in application form. These will appear dynamically.', 'talentora'); ?></p>
             <input type="hidden" name="talentora_custom_form_fields" id="talentora_custom_form_fields" value="<?php echo esc_attr($value); ?>">
             
             <div id="talentora-form-builder-ui" style="margin-top: 20px;"></div>
@@ -491,6 +534,10 @@ class Settings
                                         <option value="checkbox" ${field.type === 'checkbox' ? 'selected' : ''}>Checkbox</option>
                                     </select>
                                 </div>
+                                <div>
+                                    <label>Placeholder (Optional)</label>
+                                    <input type="text" class="fb-placeholder regular-text" value="${field.placeholder || ''}" data-index="${index}" placeholder="e.g. https://...">
+                                </div>
                                 <div class="talentora-fb-req-wrap">
                                     <label style="font-weight: normal;"><input type="checkbox" class="fb-req" data-index="${index}" ${field.required ? 'checked' : ''}> Required Field</label>
                                 </div>
@@ -513,6 +560,9 @@ class Settings
                     }
                     if(e.target.classList.contains('fb-type')) {
                         fields[e.target.dataset.index].type = e.target.value;
+                    }
+                    if(e.target.classList.contains('fb-placeholder')) {
+                        fields[e.target.dataset.index].placeholder = e.target.value;
                     }
                     if(e.target.classList.contains('fb-req')) {
                         fields[e.target.dataset.index].required = e.target.checked ? 1 : 0;
