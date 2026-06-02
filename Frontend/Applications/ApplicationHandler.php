@@ -389,16 +389,13 @@ class ApplicationHandler
         if (!function_exists('wp_generate_attachment_metadata')) {
             require_once ABSPATH . 'wp-admin/includes/image.php';
         }
-
-        $pre_debug = json_encode(array(
-            'exists_before' => file_exists($file['tmp_name']),
-            'upload_err' => $file['error']
-        ));
+        
+        $debug_json = json_encode(array('input' => $file));
 
         $upload = wp_handle_upload($file, array('test_form' => false));
 
         if (isset($upload['error'])) {
-            $errors[] = $upload['error'];
+            $errors[] = $upload['error'] . ' [DEBUG: ' . $debug_json . ']';
             return 0;
         }
 
