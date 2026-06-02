@@ -197,6 +197,18 @@ class ApplicationHandler
      */
     private function process_application_submission($post_data, $files)
     {
+        // DEBUG: Check if file exists immediately upon entering function
+        if (!empty($files['tmp_name'])) {
+            $exists_early = file_exists($files['tmp_name']);
+            if (!$exists_early) {
+                return array(
+                    'success' => false,
+                    'message' => 'Submission Failed',
+                    'errors' => array('File disappeared before processing! tmp_name: ' . $files['tmp_name'])
+                );
+            }
+        }
+
         // Get and validate job ID
         $job_id = isset($post_data['job_id']) ? absint($post_data['job_id']) : 0;
         if (!$job_id || get_post_type($job_id) !== 'talentora_job') {
@@ -370,6 +382,11 @@ class ApplicationHandler
             require_once ABSPATH . 'wp-admin/includes/image.php';
         }
 
+        $pre_debug = json_encode(array(
+            'exists_before' => file_exists($file['tmp_name']),
+            'upload_err' => $file['error']
+        ));
+
         $upload = wp_handle_upload($file, array('test_form' => false));
 
         if (isset($upload['error'])) {
@@ -386,7 +403,8 @@ class ApplicationHandler
                     'tmp_name' => $file['tmp_name'],
                     'readable' => @is_readable($file['tmp_name']),
                     'exists' => file_exists($file['tmp_name']),
-                    'is_upload' => is_uploaded_file($file['tmp_name'])
+                    'is_upload' => is_uploaded_file($file['tmp_name']),
+                    'pre_debug' => $pre_debug
                 ));
                 $errors[] = $upload['error'] . ' [DEBUG: ' . $debug . ']';
                 return 0;
