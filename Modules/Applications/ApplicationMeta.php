@@ -644,9 +644,25 @@ class ApplicationMeta
             return;
         }
 
+        $export_url = add_query_arg(array(
+            'action' => 'talentora_export_applications',
+            'nonce' => wp_create_nonce('talentora_export_applications')
+        ), admin_url('admin-post.php'));
+
+        // Append filters to export URL
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if (!empty($_GET['talentora_status'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $export_url = add_query_arg('talentora_status', sanitize_text_field(wp_unslash($_GET['talentora_status'])), $export_url);
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if (!empty($_GET['talentora_job_filter'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $export_url = add_query_arg('talentora_job_filter', absint($_GET['talentora_job_filter']), $export_url);
+        }
         ?>
         <div class="alignleft actions">
-            <a href="<?php echo esc_url(add_query_arg(array('action' => 'talentora_export_applications', 'nonce' => wp_create_nonce('talentora_export_applications')), admin_url('admin-post.php'))); ?>"
+            <a href="<?php echo esc_url($export_url); ?>"
                 class="button button-primary">
                 <?php esc_html_e('Export CSV', 'talentora'); ?>
             </a>
@@ -674,13 +690,43 @@ class ApplicationMeta
 			wp_die( esc_html__( 'You do not have permission to export applications.', 'talentora' ) );
 		}
 
-		$query = new \WP_Query(
-			array(
-				'post_type'      => 'talentora_app',
-				'posts_per_page' => -1,
-				'post_status'    => 'publish',
-			)
+		$args = array(
+			'post_type'      => 'talentora_app',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
 		);
+
+        $meta_query = array();
+        
+        // Apply Status Filter
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if (!empty($_GET['talentora_status'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $meta_query[] = array(
+                'key' => 'talentora_application_status',
+                'value' => sanitize_text_field(wp_unslash($_GET['talentora_status'])),
+                'compare' => '='
+            );
+        }
+
+        // Apply Job Filter
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if (!empty($_GET['talentora_job_filter'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $meta_query[] = array(
+                'key' => 'talentora_job_id',
+                'value' => absint($_GET['talentora_job_filter']),
+                'compare' => '=',
+                'type' => 'NUMERIC'
+            );
+        }
+
+        if (!empty($meta_query)) {
+            $meta_query['relation'] = 'AND';
+            $args['meta_query'] = $meta_query;
+        }
+
+		$query = new \WP_Query($args);
 
 		if ( ! $query->have_posts() ) {
 			wp_die( esc_html__( 'No applications found.', 'talentora' ) );
