@@ -54,6 +54,30 @@ class ApplicationMeta
         add_action('admin_post_talentora_download_resume', array($this, 'handle_resume_download'));
         add_action('manage_posts_extra_tablenav', array($this, 'render_export_button'));
         add_action('admin_post_talentora_export_applications', array($this, 'handle_csv_export'));
+        
+        // List table filters
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        add_action('restrict_manage_posts', array($this, 'add_list_filters'));
+        add_action('pre_get_posts', array($this, 'filter_list_query'));
+    }
+
+    /**
+     * Enqueue admin scripts.
+     *
+     * @param string $hook The current admin page.
+     * @since 1.0.0
+     */
+    public function enqueue_admin_scripts($hook)
+    {
+        if ($hook === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] === 'talentora_app') {
+            wp_enqueue_script(
+                'talentora-admin-applications-filter',
+                \TALENTORA_URL . 'assets/js/admin-applications-filter.js',
+                array('jquery'),
+                \TALENTORA_VERSION,
+                true
+            );
+        }
     }
 
     /**
@@ -749,4 +773,99 @@ class ApplicationMeta
 		wp_reset_postdata();
 		exit;
 	}
+
+    /**
+     * Add filter dropdowns to list table.
+     *
+     * @param string $post_type Current post type.
+     * @since 1.0.0
+     */
+    public function add_list_filters($post_type)
+    {
+        if ($post_type !== 'talentora_app') {
+            return;
+        }
+
+        // 1. Status Filter
+        $statuses = $this->get_statuses();
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $current_status = isset($_GET['talentora_status']) ? sanitize_text_field(wp_unslash($_GET['talentora_status'])) : '';
+
+        echo '<select name="talentora_status" id="talentora-status-filter">';
+        echo '<option value="">' . esc_html__('All Statuses', 'talentora') . '</option>';
+        foreach ($statuses as $status) {
+            printf('<option value="%s" %s>%s</option>', esc_attr($status), selected($current_status, $status, false), esc_html($status));
+        }
+        echo '</select>';
+
+        // 2. Job Filter
+        $jobs = get_posts(array(
+            'post_type' => 'talentora_job',
+            'post_status' => 'any',
+            'numberposts' => -1,
+            'orderby' => 'title',
+            'order' => 'ASC',
+        ));
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $current_job = isset($_GET['talentora_job_filter']) ? absint($_GET['talentora_job_filter']) : 0;
+
+        echo '<select name="talentora_job_filter" id="talentora-job-filter">';
+        echo '<option value="">' . esc_html__('All Jobs', 'talentora') . '</option>';
+        foreach ($jobs as $job) {
+            printf('<option value="%d" %s>%s</option>', esc_attr($job->ID), selected($current_job, $job->ID, false), esc_html($job->post_title));
+        }
+        echo '</select>';
+    }
+
+    /**
+     * Filter applications query by status and job.
+     *
+     * @param \WP_Query $query The query object.
+     * @since 1.0.0
+     */
+    public function filter_list_query($query)
+    {
+        if (!$query->is_main_query()) {
+            return;
+        }
+
+        global $pagenow;
+        if (is_admin() && $pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] === 'talentora_app') {
+            $meta_query = $query->get('meta_query');
+            if (!is_array($meta_query)) {
+                $meta_query = array();
+            }
+
+            // Status Filter
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            if (!empty($_GET['talentora_status'])) {
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                $status = sanitize_text_field(wp_unslash($_GET['talentora_status']));
+                $meta_query[] = array(
+                    'key' => 'talentora_application_status',
+                    'value' => $status,
+                    'compare' => '='
+                );
+            }
+
+            // Job Filter
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            if (!empty($_GET['talentora_job_filter'])) {
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                $job_id = absint($_GET['talentora_job_filter']);
+                $meta_query[] = array(
+                    'key' => 'talentora_job_id',
+                    'value' => $job_id,
+                    'compare' => '=',
+                    'type' => 'NUMERIC'
+                );
+            }
+
+            if (!empty($meta_query)) {
+                $meta_query['relation'] = 'AND';
+                $query->set('meta_query', $meta_query);
+            }
+        }
+    }
 }
