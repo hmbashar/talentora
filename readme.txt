@@ -177,6 +177,8 @@ No. Talentora only loads its assets on pages where they are needed (job listing 
 * Enhancement: Export CSV now respects active application filters.
 * Security: Uploaded resumes are now stored in a protected directory and accessed securely.
 * Security: Added strict server-side validation for URL custom fields.
+* UI Enhancement: Replaced the standard browser date picker in the Job Post editor with a premium, responsive Flatpickr calendar popup.
+* Enhancement: All Flatpickr JS/CSS assets are now bundled and loaded locally from the plugin instead of an external CDN for improved reliability and privacy.
 
 = 1.0.2 =
 * Tweak: Updated plugin title to "Talentora – Complete Job Board & Recruitment Solution".
