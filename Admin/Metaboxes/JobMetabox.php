@@ -175,8 +175,8 @@ class JobMetabox
                             <span class="dashicons dashicons-calendar-alt"></span>
                             <?php esc_html_e('Application Deadline', 'talentora'); ?>
                         </label>
-                        <input type="date" id="talentora_deadline" name="talentora_deadline"
-                            value="<?php echo esc_attr($deadline); ?>" class="talentora-input">
+                        <input type="text" id="talentora_deadline" name="talentora_deadline"
+                            value="<?php echo esc_attr($deadline); ?>" class="talentora-input talentora-datepicker" placeholder="YYYY-MM-DD">
                         <p class="description"><?php esc_html_e('The final date for accepting applications.', 'talentora'); ?></p>
                     </div>
 
@@ -185,8 +185,8 @@ class JobMetabox
                             <span class="dashicons dashicons-calendar"></span>
                             <?php esc_html_e('Expected Joining Date', 'talentora'); ?>
                         </label>
-                        <input type="date" id="talentora_joining_date" name="talentora_joining_date"
-                            value="<?php echo esc_attr($joining_date); ?>" class="talentora-input">
+                        <input type="text" id="talentora_joining_date" name="talentora_joining_date"
+                            value="<?php echo esc_attr($joining_date); ?>" class="talentora-input talentora-datepicker" placeholder="YYYY-MM-DD">
                         <p class="description"><?php esc_html_e('The expected date the candidate will start.', 'talentora'); ?></p>
                     </div>
                 </div>
@@ -197,8 +197,8 @@ class JobMetabox
                             <span class="dashicons dashicons-clock"></span>
                             <?php esc_html_e('Expiry Date (Optional)', 'talentora'); ?>
                         </label>
-                        <input type="date" id="talentora_expiry_date" name="talentora_expiry_date"
-                            value="<?php echo esc_attr($expiry_date); ?>" class="talentora-input">
+                        <input type="text" id="talentora_expiry_date" name="talentora_expiry_date"
+                            value="<?php echo esc_attr($expiry_date); ?>" class="talentora-input talentora-datepicker" placeholder="YYYY-MM-DD">
                         <p class="description">
                             <span class="dashicons dashicons-info"></span>
                             <?php esc_html_e('Job will be automatically hidden after this date.', 'talentora'); ?>

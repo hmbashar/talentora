@@ -43,4 +43,12 @@ jQuery(document).ready(function ($) {
             $('#talentora_third_party_field').show();
         }
     });
+
+    // Initialize Flatpickr for premium date inputs
+    if (typeof flatpickr !== 'undefined') {
+        flatpickr('.talentora-datepicker', {
+            dateFormat: "Y-m-d",
+            allowInput: true
+        });
+    }
 });

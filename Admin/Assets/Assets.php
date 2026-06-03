@@ -49,20 +49,37 @@ class Assets
         if ($post_type === 'talentora_job') {
             wp_enqueue_media();
 
+            // Flatpickr CSS
+            wp_enqueue_style(
+                'flatpickr',
+                'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css',
+                array(),
+                '4.6.13'
+            );
+
+            // Flatpickr JS
+            wp_enqueue_script(
+                'flatpickr',
+                'https://cdn.jsdelivr.net/npm/flatpickr',
+                array(),
+                '4.6.13',
+                true
+            );
+
             // Job Metabox CSS
             wp_enqueue_style(
                 'talentora-admin-job-metabox',
-                TALENTORA_URL . 'assets/css/admin-job-metabox.css',
+                \TALENTORA_URL . 'assets/css/admin-job-metabox.css',
                 array(),
-                TALENTORA_VERSION
+                \TALENTORA_VERSION
             );
 
             // Job Metabox JS
             wp_enqueue_script(
                 'talentora-admin-job-metabox',
-                TALENTORA_URL . 'assets/js/admin-job-metabox.js',
-                array('jquery'),
-                TALENTORA_VERSION,
+                \TALENTORA_URL . 'assets/js/admin-job-metabox.js',
+                array('jquery', 'flatpickr'),
+                \TALENTORA_VERSION,
                 true
             );
         }
