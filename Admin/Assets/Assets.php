@@ -52,17 +52,17 @@ class Assets
             // Flatpickr CSS
             wp_enqueue_style(
                 'flatpickr',
-                'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css',
+                \TALENTORA_URL . 'assets/css/flatpickr.min.css',
                 array(),
-                '4.6.13'
+                \TALENTORA_VERSION
             );
 
             // Flatpickr JS
             wp_enqueue_script(
                 'flatpickr',
-                'https://cdn.jsdelivr.net/npm/flatpickr',
+                \TALENTORA_URL . 'assets/js/flatpickr.min.js',
                 array(),
-                '4.6.13',
+                \TALENTORA_VERSION,
                 true
             );
 
