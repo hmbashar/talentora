@@ -4,7 +4,7 @@ Contributors: hmbashar
 Tags: job board, job listing, recruitment, employment, careers
 Requires at least: 5.8
 Tested up to: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -170,6 +170,13 @@ No. Talentora only loads its assets on pages where they are needed (job listing 
 4. **Settings Page** – The Talentora → Settings admin panel with the General Settings tab (apply form shortcode, jobs per page, application statuses, currency symbol) and the Email Templates and Email Logs tabs.
 
 == Changelog ==
+
+= 1.0.3 =
+* Feature: Added Dynamic Form Builder to application form (add custom text, URL, and checkbox fields).
+* Feature: Added AJAX-based filtering for applications list table by Status and Job.
+* Enhancement: Export CSV now respects active application filters.
+* Security: Uploaded resumes are now stored in a protected directory and accessed securely.
+* Security: Added strict server-side validation for URL custom fields.
 
 = 1.0.2 =
 * Tweak: Updated plugin title to "Talentora – Complete Job Board & Recruitment Solution".
