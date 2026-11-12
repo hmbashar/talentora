@@ -44,3 +44,8 @@ build/                  export-ignore
 postcss.config.js       export-ignore
 DEVELOPER_GUIDE.md      export-ignore
 CNAME                   export-ignore
+
+docs/                   export-ignore
+docs/video/             export-ignore
+*.mp4                   export-ignore
+*.srt                   export-ignore
