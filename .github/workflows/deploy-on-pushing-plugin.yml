@@ -9,6 +9,8 @@ jobs:
   deploy:
     name: Deploy to WordPress.org
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
