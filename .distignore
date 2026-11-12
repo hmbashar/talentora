@@ -47,7 +47,3 @@ DEVELOPER_GUIDE.md
 docs
 index.html
 CNAME
-# Video tutorial: GitHub only, never ship to WordPress.org
-docs/video
-*.mp4
-*.srt
