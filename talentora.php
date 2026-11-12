@@ -3,7 +3,7 @@
  * Plugin Name: Talentora – Complete Job Board & Recruitment Solution
  * Plugin URI: https://github.com/hmbashar/talentora
  * Description: A complete and simple job board plugin for WordPress. Manage jobs, receive applications, and customize email templates.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Md Abul Bashar
  * Author URI: https://github.com/hmbashar
  * License: GPL2
@@ -54,7 +54,7 @@ final class Talentora
     private function define_constants()
     {
         if (!defined('TALENTORA_VERSION')) {
-            define('TALENTORA_VERSION', '1.0.3');
+            define('TALENTORA_VERSION', '1.0.4');
         }
 
         // Define Plugin Path.
